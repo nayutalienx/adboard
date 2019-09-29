@@ -12,12 +12,12 @@ namespace BusinessLogicLayer.Implementation
     {
         private readonly IAdvertRepository _advertRepository;
         private readonly IUserRepository _userRepository;
-        private readonly ICommentRepository _commentRepository;
-        public AdvertManager(IAdvertRepository advertRepositor, IUserRepository userRepository, ICommentRepository commentRepository)
+        
+        public AdvertManager(IAdvertRepository advertRepositor, IUserRepository userRepository)
         {
             _advertRepository = advertRepositor;
             _userRepository = userRepository;
-            _commentRepository = commentRepository;
+            
         }
 
         public void Create(NewAdvertDto dto)
