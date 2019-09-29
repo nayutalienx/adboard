@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BusinessLogicLayer.Objects
+namespace BusinessLogicLayer.Abstraction
 {
     public class Class1
     {
