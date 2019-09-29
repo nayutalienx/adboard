@@ -2,7 +2,8 @@
 
 namespace DataAccessLayer.Abstraction
 {
-    public class Class1
+   
+    public interface IAdvertRepositiory : IRepository<Advert>
     {
     }
 }

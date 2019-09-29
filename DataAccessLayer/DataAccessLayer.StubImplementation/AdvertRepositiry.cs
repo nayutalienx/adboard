@@ -2,7 +2,7 @@
 
 namespace DataAccessLayer.StubImplementation
 {
-    public class Class1
+    public class AdvertRepositiry : BaseRepository<Advert>, IAdvertRepositiory
     {
     }
 }
