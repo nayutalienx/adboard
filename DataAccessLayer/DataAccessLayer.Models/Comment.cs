@@ -18,6 +18,8 @@ namespace DataAccessLayer.Models
         /// <summary>
         /// автор комментария
         /// </summary>
-        public User Author { get; set; }
+        public string AuthorName { get; set; }
+        public long AdvertId { get; set; }
+
     }
 }
