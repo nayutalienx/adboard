@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer.Models", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Objects", "BusinessLogicLayer\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj", "{F056C8B8-F80D-41A8-823A-FF8F1BB1299F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer.Abstraction", "BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj", "{D7B6A6EA-0889-4CA2-889B-D966153890E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Abstraction", "BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj", "{D7B6A6EA-0889-4CA2-889B-D966153890E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer.Implementation", "BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj", "{8BA1C299-ADBA-4FF6-9E2D-4D02EE37CC2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Implementation", "BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj", "{8BA1C299-ADBA-4FF6-9E2D-4D02EE37CC2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

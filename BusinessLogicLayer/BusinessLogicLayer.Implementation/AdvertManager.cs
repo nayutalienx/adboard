@@ -2,7 +2,8 @@
 
 namespace BusinessLogicLayer.Implementation
 {
-    public class Class1
+    public class AdvertManager
     {
+        // жду data access layer
     }
 }
