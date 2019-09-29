@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Abstract
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer.Implementation", "BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj", "{8BA1C299-ADBA-4FF6-9E2D-4D02EE37CC2F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp17", "DataAcccessLayer\ConsoleApp17\ConsoleApp17.csproj", "{85331B0B-2BD0-431B-9D0E-A8BA3E7478DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "DataAcccessLayer\ConsoleApp17\DataAccessLayer.csproj", "{85331B0B-2BD0-431B-9D0E-A8BA3E7478DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
