@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp17.DataAccessLayer.Models
+namespace DataAccessLayer.Models
 {
+
     public class Role
     {
         public enum Roles

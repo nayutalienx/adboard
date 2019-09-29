@@ -1,10 +1,8 @@
-﻿using ConsoleApp17.DataAccessLayer.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
-namespace ConsoleApp17.DataAccessLayer.Models
+namespace DataAccessLayer.Models
 {
+
     public class Advert : BaseEntity
     {  /// <summary>
        /// название объявления
@@ -48,8 +46,5 @@ namespace ConsoleApp17.DataAccessLayer.Models
         /// цена
         /// </summary>
         public int Price { get; set; }
-
-
-
     }
 }

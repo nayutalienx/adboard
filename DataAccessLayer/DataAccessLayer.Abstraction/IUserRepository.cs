@@ -1,9 +1,8 @@
-﻿using ConsoleApp17.DataAccessLayer.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApp17.DataAccessLayer.Abstraction
+namespace DataAccessLayer.Abstraction
 {
     public interface IUserRepository : IRepository<User>
     {
