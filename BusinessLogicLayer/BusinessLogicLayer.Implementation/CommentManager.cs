@@ -1,11 +1,26 @@
-﻿using System;
+﻿using BusinessLogicLayer.Abstraction;
+using BusinessLogicLayer.Objects.Comment;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BusinessLogicLayer.Implementation
 {
-    public class CommentManager
+    public class CommentManager : ICommentManager
     {
-        // жду data access layer
+        public void AddComment(NewCommentDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public CommentDto[] GetCommentsByAdvert(long id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveCommentsByAdvert(long id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

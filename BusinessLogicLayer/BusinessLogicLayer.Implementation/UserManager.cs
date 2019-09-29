@@ -1,11 +1,21 @@
-﻿using System;
+﻿using BusinessLogicLayer.Abstraction;
+using BusinessLogicLayer.Objects.User;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BusinessLogicLayer.Implementation
 {
-    public class UserManager
+    public class UserManager : IUserManager
     {
-        // жду data access layer
+        public UserDto Login(LoginUserDto dto)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Register(RegisterUserDto dto)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
