@@ -55,12 +55,17 @@ namespace BusinessLogicLayer.Implementation
                     AdvertId = x.Id,
                     Header = x.Topic,
                     Description = x.Description,
+                    Category = x.Category,
+                    SubCategory = x.Subcategory,
+                    Photo = x.Photo,
+                    Price = x.Price,
                     TimeCreated = x.CreatedDataTime,
                     Author = new UserDto
                     {
                         Name = author.Name,
                         PhoneNumber = author.PhoneNumber
                     }
+
                 };
             }).ToArray();
         }
@@ -76,6 +81,10 @@ namespace BusinessLogicLayer.Implementation
                     AdvertId = x.Id,
                     Header = x.Topic,
                     Description = x.Description,
+                    Category = x.Category,
+                    SubCategory = x.Subcategory,
+                    Photo = x.Photo,
+                    Price = x.Price,
                     TimeCreated = x.CreatedDataTime,
                     Author = new UserDto
                     {
@@ -109,6 +118,10 @@ namespace BusinessLogicLayer.Implementation
                     AdvertId = x.Id,
                     Header = x.Topic,
                     Description = x.Description,
+                    Category = x.Category,
+                    SubCategory = x.Subcategory,
+                    Photo = x.Photo,
+                    Price = x.Price,
                     TimeCreated = x.CreatedDataTime,
                     Author = new UserDto
                     {
@@ -137,6 +150,9 @@ namespace BusinessLogicLayer.Implementation
 
             advert.Topic = dto.Header;
             advert.Description = dto.Description;
+            advert.Category = dto.Category;
+            advert.Subcategory = dto.SubCategory;
+            advert.Price = dto.Price;
 
             _advertRepository.Update(advert);
         }

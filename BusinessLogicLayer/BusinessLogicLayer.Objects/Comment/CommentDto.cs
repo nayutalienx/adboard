@@ -9,6 +9,7 @@ namespace BusinessLogicLayer.Objects.Comment
         public long AdvertId { get; set; }
         public string AuthorName { get; set; }
         public string Text { get; set; }
+        public DateTime TimeCreated { get; set; }
 
     }
 }

@@ -13,15 +13,15 @@ namespace BusinessLogicLayer.Implementation
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IAdvertRepository _advertRepository;
-        private readonly IUserRepository _userRepository;
+        
 
-        public CommentManager(IAdvertRepository advertRepository, ICommentRepository commentRepository, IUserRepository userRepository)
+        public CommentManager(IAdvertRepository advertRepository, ICommentRepository commentRepository)
         {
             _advertRepository = advertRepository;
 
             _commentRepository = commentRepository;
 
-            _userRepository = userRepository;
+            
         }
 
         public void AddComment(NewCommentDto dto)
@@ -40,7 +40,8 @@ namespace BusinessLogicLayer.Implementation
             {
                 AdvertId = dto.AdvertId,
                 AuthorName = dto.AuthorName,
-                Text = dto.Text
+                Text = dto.Text,
+                CreatedDateTime = DateTime.Now
             });
         }
 
@@ -54,7 +55,8 @@ namespace BusinessLogicLayer.Implementation
                 {
                     AdvertId = x.AdvertId,
                     AuthorName = x.AuthorName,
-                    Text = x.Text
+                    Text = x.Text,
+                    TimeCreated = x.CreatedDateTime
                 };
             }).ToArray();
         }
