@@ -4,11 +4,11 @@ using System;
 
 namespace DataAccessLayer.StubImplementation
 {
-    public class AdvertRepositiry : BaseRepository<Advert>, IAdvertRepository
+    public class AdvertRepository : BaseRepository<Advert>, IAdvertRepository
     {
         public Advert[] GetAll(long user_id)
         {
-            throw new NotImplementedException();
+            return Context.FindAll(x => { return x.UserId == user_id; }).ToArray();
         }
     }
 }

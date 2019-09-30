@@ -8,6 +8,7 @@ namespace DataAccessLayer.StubImplementation
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
+        private static long id = 0;
         protected readonly List<T> Context;
 
         protected BaseRepository()
@@ -17,14 +18,14 @@ namespace DataAccessLayer.StubImplementation
 
         public void Add(T entity)
         {
-            var random = new Random();
-            entity.Id = random.Next(1, 1000);
+            entity.Id = id++;
             Context.Add(entity);
         }
 
         public void Update(T entity)
         {
-            Context.Add(entity);
+            var en = Get(entity.Id);
+            en = entity;
         }
 
         public T Get(long id)

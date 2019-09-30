@@ -9,4 +9,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
+    <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj" />
+    <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj" />
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.StubImplementation\DataAccessLayer.StubImplementation.csproj" />
+  </ItemGroup>
+
 </Project>

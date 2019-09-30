@@ -28,24 +28,15 @@ namespace DataAccessLayer.Models
         /// <summary>
         /// автор
         /// </summary>
-        public User Author { get; set; }
+        public long UserId { get; set; }
         /// <summary>
         /// фото
         /// </summary>
         public object Photo { get; set; }
-        /// <summary>
-        /// комментарии
-        /// </summary>
-        public ICollection<Comment> Comment { get; set; }
-        public Advert()
-        {
-            Comment = new List<Comment>();
-
-        }
 
         /// <summary>
         /// цена
         /// </summary>
-        public int Price { get; set; }
+        public uint Price { get; set; }
     }
 }

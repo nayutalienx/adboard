@@ -36,8 +36,11 @@ namespace BusinessLogicLayer.Implementation
             {
                 Topic = dto.Header,
                 Description = dto.Description,
+                Category = dto.Category,
+                Subcategory = dto.SubCategory,
+                Price = dto.Price,
                 CreatedDataTime = DateTime.Now,
-                Id = dto.UserId
+                UserId = dto.UserId
             };
 
             _advertRepository.Add(advert);
@@ -46,7 +49,7 @@ namespace BusinessLogicLayer.Implementation
         public AdvertDto[] GetAll()
         {
             return _advertRepository.GetAll().Select(x => {
-                var author = _userRepository.Get(x.Id);
+                var author = _userRepository.Get(x.UserId);
                 return new AdvertDto
                 {
                     AdvertId = x.Id,
@@ -90,7 +93,7 @@ namespace BusinessLogicLayer.Implementation
             var advert = _advertRepository.Get(dto.AdvertId);
             if (advert == null)
                 throw new Exception("Объявление не найдено");
-            if (advert.Author.Id != dto.UserId)
+            if (advert.UserId != dto.UserId)
                 throw new Exception("Вы не имеете право удалять это объявление");
             _advertRepository.Remove(advert);
         }
@@ -100,7 +103,7 @@ namespace BusinessLogicLayer.Implementation
             return _advertRepository.GetAll().Where(x => {
                 return x.Topic.Contains(query) || x.Description.Contains(query);
             }).Select(x => {
-                var author = _userRepository.Get(x.Author.Id);
+                var author = _userRepository.Get(x.UserId);
                 return new AdvertDto
                 {
                     AdvertId = x.Id,
@@ -129,7 +132,7 @@ namespace BusinessLogicLayer.Implementation
             if (advert == null)
                 throw new Exception("Объявление не найдено");
 
-            if (advert.Author.Id != dto.UserId)
+            if (advert.UserId != dto.UserId)
                 throw new Exception("Вы не имеете право редактировать это объявление");
 
             advert.Topic = dto.Header;

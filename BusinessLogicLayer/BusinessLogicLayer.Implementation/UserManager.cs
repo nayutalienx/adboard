@@ -38,9 +38,9 @@ namespace BusinessLogicLayer.Implementation
             if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Password) || string.IsNullOrWhiteSpace(dto.Name) || string.IsNullOrWhiteSpace(dto.PhoneNumber))
                 throw new ArgumentException();
 
-            var user = _userRepository.Get(dto.Email);
+            var user = _userRepository.CheckEmail(dto.Email);
 
-            if (user != null)
+            if (user)
                 throw new Exception("Пользователь с таким email уже существует");
 
             _userRepository.Add(new User

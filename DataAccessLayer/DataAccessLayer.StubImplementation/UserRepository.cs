@@ -8,14 +8,14 @@ namespace DataAccessLayer.StubImplementation
 {
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        public User Get(string email)
+        public bool CheckEmail(string email)
         {
-            throw new NotImplementedException();
+            return Context.Exists(x => { return x.Email.Equals(email); });
         }
 
         public User Login(string email, string password)
         {
-            throw new NotImplementedException();
+            return Context.Find(x => { return (x.Email.Equals(email) && x.Password.Equals(password)); });
         }
     }
 }

@@ -10,12 +10,14 @@ namespace DataAccessLayer.StubImplementation
     {
         public Comment[] GetCommentsByAdvert(long id)
         {
-            throw new NotImplementedException();
+            return Context.FindAll(x => { return x.AdvertId == id; }).ToArray();
         }
 
         public void RemoveCommentsByAdvert(long id)
         {
-            throw new NotImplementedException();
+            Context.RemoveAll(x => {
+                return x.AdvertId == id;
+            });
         }
     }
 }
