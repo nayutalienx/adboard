@@ -24,7 +24,7 @@ namespace at
         static void p(CommentDto[] comments)
         {
             foreach (var comment in comments)
-                p($"{comment.AuthorName}: {comment.Text}");
+                p($"{comment.AuthorName}: {comment.Text} [date:{comment.TimeCreated.ToString("dd MMMM")}]");
         }
         static string r()
         {
