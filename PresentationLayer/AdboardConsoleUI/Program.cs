@@ -4,6 +4,7 @@ using BusinessLogicLayer.Objects.Advert;
 using BusinessLogicLayer.Objects.Comment;
 using BusinessLogicLayer.Objects.User;
 using DataAccessLayer.StubImplementation;
+using Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -37,10 +38,7 @@ namespace at
             // business-logic test
             //
 
-            var serviceCollection = new ServiceCollection()
-                .InstallStubDataAccessLayer()
-                .InstallBusinessLogic()
-                .BuildServiceProvider();
+            var serviceCollection = new ServiceCollection().Install().BuildServiceProvider();
 
             bool loop = true;
 

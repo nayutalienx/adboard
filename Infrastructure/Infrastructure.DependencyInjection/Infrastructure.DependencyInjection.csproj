@@ -1,20 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj" />
-    <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj" />
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Abstraction\DataAccessLayer.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Models\DataAccessLayer.Models.csproj" />
     <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.StubImplementation\DataAccessLayer.StubImplementation.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>
