@@ -13,7 +13,6 @@
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj" />
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj" />
-    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.StubImplementation\DataAccessLayer.StubImplementation.csproj" />
     <ProjectReference Include="..\..\Infrastructure\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
 

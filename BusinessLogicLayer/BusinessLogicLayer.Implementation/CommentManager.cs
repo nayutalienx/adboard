@@ -1,4 +1,6 @@
-﻿using BusinessLogicLayer.Abstraction;
+﻿using AutoMapper;
+using BusinessLogicLayer.Abstraction;
+using BusinessLogicLayer.Objects.Advert;
 using BusinessLogicLayer.Objects.Comment;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
@@ -13,57 +15,42 @@ namespace BusinessLogicLayer.Implementation
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IAdvertRepository _advertRepository;
-        
+        private readonly IMapper _mapper;
 
-        public CommentManager(IAdvertRepository advertRepository, ICommentRepository commentRepository)
+        public CommentManager(IAdvertRepository advertRepository, ICommentRepository commentRepository, IMapper mapper)
         {
             _advertRepository = advertRepository;
-
             _commentRepository = commentRepository;
-
-            
+            _mapper = mapper;
         }
 
         public void AddComment(NewCommentDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException();
-            if (dto.UserId == -1)
+            if (dto.AuthorId == -1)
                 throw new Exception("Гости не могут оставлять комментарии");
-            var advert = _advertRepository.Get(dto.AdvertId);
+            var advert = _mapper.Map<Advert>(_advertRepository.Get(dto.AdvertId));
             if (advert == null)
                 throw new Exception("Такого объявления не существует");
             if (string.IsNullOrWhiteSpace(dto.Text))
                 throw new Exception("Текст обязателен");
 
-            _commentRepository.Add(new Comment
-            {
-                AdvertId = dto.AdvertId,
-                AuthorName = dto.AuthorName,
-                Text = dto.Text,
-                CreatedDateTime = DateTime.Now
-            });
+            _commentRepository.Add(_mapper.Map<Comment>(dto));
+            _commentRepository.SaveChanges();
         }
 
-        public CommentDto[] GetCommentsByAdvert(long id)
+        public CommentDto[] GetCommentsByAdvert(AdvertDto dto)
         {
-            var advert = _advertRepository.Get(id);
+            var advert = _advertRepository.Get(dto.Id);
             if (advert == null)
                 throw new Exception("Такого объявления не существует");
-            return _commentRepository.GetCommentsByAdvert(id).Select(x => {
-                return new CommentDto
-                {
-                    AdvertId = x.AdvertId,
-                    AuthorName = x.AuthorName,
-                    Text = x.Text,
-                    TimeCreated = x.CreatedDateTime
-                };
-            }).ToArray();
+            return _mapper.Map<CommentDto[]>(_commentRepository.GetCommentsByAdvert(advert));
         }
 
-        public void RemoveCommentsByAdvert(long id)
+        public void RemoveCommentsByAdvert(RemoveAdvertDto dto)
         {
-            _commentRepository.RemoveCommentsByAdvert(id);
+            _commentRepository.RemoveCommentsByAdvert(_mapper.Map<Advert>(dto));
         }
     }
 }

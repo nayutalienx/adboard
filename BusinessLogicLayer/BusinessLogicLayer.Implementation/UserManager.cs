@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Abstraction;
+﻿using AutoMapper;
+using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Objects.User;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
@@ -11,9 +12,11 @@ namespace BusinessLogicLayer.Implementation
     public class UserManager : IUserManager
     {
         private readonly IUserRepository _userRepository;
-        public UserManager(IUserRepository userRepository)
+        private readonly IMapper _mapper;
+        public UserManager(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
         public UserDto Login(LoginUserDto dto)
         {
@@ -24,13 +27,9 @@ namespace BusinessLogicLayer.Implementation
 
             if (user == null)
                 throw new Exception("Данные введены неверено или такого пользователя нет");
-
-            return new UserDto
-            {
-                Id = user.Id,
-                Name = user.Name,
-                PhoneNumber = user.PhoneNumber
-            };
+            
+            return _mapper.Map<UserDto>(user);
+            
         }
 
         public void Register(RegisterUserDto dto)
@@ -43,14 +42,9 @@ namespace BusinessLogicLayer.Implementation
             if (user)
                 throw new Exception("Пользователь с таким email уже существует");
 
-            _userRepository.Add(new User
-            {
-                Name = dto.Name,
-                PhoneNumber = dto.PhoneNumber,
-                Email = dto.Email,
-                Password = dto.Password
-            });
+            _userRepository.Add(_mapper.Map<User>(dto));
 
+            _userRepository.SaveChanges();
         }
     }
 }

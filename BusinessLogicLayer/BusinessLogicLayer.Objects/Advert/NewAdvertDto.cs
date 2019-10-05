@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogicLayer.Objects.User;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,6 @@ namespace BusinessLogicLayer.Objects.Advert
         public string SubCategory { get; set; }
         public object Photo { get; set; }
         public uint Price { get; set; }
-        public long UserId { get; set; }
+        public long AuthorId { get; set; }
     }
 }

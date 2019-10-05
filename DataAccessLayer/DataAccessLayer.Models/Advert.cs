@@ -5,38 +5,22 @@ namespace DataAccessLayer.Models
 {
 
     public class Advert : BaseEntity
-    {  /// <summary>
-       /// название объявления
-       /// </summary>
-        public string Topic { get; set; }
-        /// <summary>
-        /// описание объявления
-        /// </summary>
+    {  
+        public string Header { get; set; }
+        
         public string Description { get; set; }
-        /// <summary>
-        /// категория объявления
-        /// </summary>
+       
         public string Category { get; set; }
-        /// <summary>
-        /// подкатегория
-        /// </summary>
-        public string Subcategory { get; set; }
-        /// <summary>
-        /// дата и время создания
-        /// </summary>
-        public DateTime CreatedDataTime { get; set; }
-        /// <summary>
-        /// автор
-        /// </summary>
-        public long UserId { get; set; }
-        /// <summary>
-        /// фото
-        /// </summary>
-        public object Photo { get; set; }
-
-        /// <summary>
-        /// цена
-        /// </summary>
+        
+        public string SubCategory { get; set; }
+        
+        public DateTime CreatedDateTime { get; set; }
+       
+        public long AuthorId { get; set; }
+        public virtual User Author { get; set; }
+        
         public uint Price { get; set; }
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

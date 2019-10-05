@@ -3,7 +3,7 @@ using BusinessLogicLayer.Implementation;
 using BusinessLogicLayer.Objects.Advert;
 using BusinessLogicLayer.Objects.Comment;
 using BusinessLogicLayer.Objects.User;
-using DataAccessLayer.StubImplementation;
+
 using Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,12 +20,12 @@ namespace at
         static void p(AdvertDto[] ads)
         {
             foreach (var ad in ads)
-                p($"[id:{ad.AdvertId}] [date:{ad.TimeCreated.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category}/{ad.SubCategory} Price: {ad.Price}");
+                p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category}/{ad.SubCategory} Price: {ad.Price}");
         }
         static void p(CommentDto[] comments)
         {
             foreach (var comment in comments)
-                p($"{comment.AuthorName}: {comment.Text} [date:{comment.TimeCreated.ToString("dd MMMM")}]");
+                p($"{comment.AuthorName}: {comment.Text} [date:{comment.CreatedDateTime.ToString("dd MMMM")}]");
         }
         static string r()
         {
@@ -55,6 +55,7 @@ namespace at
 
             while (loop)
             {
+                
                 p("Введите команду (help - вывод команд)");
                 var command = r();
                 var words = command.Split(" ");
@@ -106,8 +107,7 @@ namespace at
                             });
                             p("Регистрация прошла успешно, теперь залогиньтесь");
                         }
-                        catch (Exception ex)
-                        {
+                        catch (Exception ex) {
                             p(ex.Message);
                         }
                         break;
@@ -115,6 +115,7 @@ namespace at
                         currentUser = new UserDto { Id = -1, Name = "Гость", PhoneNumber = "" };
                         p($"Здраствуйте, {currentUser.Name}");
                         break;
+                    
                     case "ad_create" when words.Length == 6:
                         try
                         {
@@ -125,7 +126,7 @@ namespace at
                                 Category = words[3],
                                 SubCategory = words[4],
                                 Price = UInt32.Parse(words[5]),
-                                UserId = currentUser.Id
+                                AuthorId = currentUser.Id
                             });
                             p("Объявление успешно добавлено");
                         }
@@ -142,7 +143,7 @@ namespace at
                         p("Все ваши объявления");
                         try
                         {
-                            p(advertManager.GetAllByUser(currentUser.Id));
+                            p(advertManager.GetAllByUser(currentUser));
                         }
                         catch (Exception ex)
                         {
@@ -172,12 +173,14 @@ namespace at
                     case "ad_remove" when words.Length == 2:
                         try
                         {
-                            advertManager.Remove(new RemoveAdvertDto
+                            var ad = new RemoveAdvertDto
                             {
                                 AdvertId = Int64.Parse(words[1]),
                                 UserId = currentUser.Id
-                            });
-                            commentManager.RemoveCommentsByAdvert(Int64.Parse(words[1]));
+                            };
+                            commentManager.RemoveCommentsByAdvert(ad);
+                            advertManager.Remove(ad);
+                            
                             p("Объявление успешно удалено");
                         }
                         catch (Exception ex)
@@ -193,9 +196,8 @@ namespace at
                         {
                             commentManager.AddComment(new NewCommentDto
                             {
-                                UserId = currentUser.Id,
+                                AuthorId = currentUser.Id,
                                 AdvertId = Int64.Parse(words[1]),
-                                AuthorName = currentUser.Name,
                                 Text = words[2]
                             });
                             p("Комментарий успешно добавлен");
@@ -209,7 +211,8 @@ namespace at
                         p("Список комментариев этого объявления:");
                         try
                         {
-                            p(commentManager.GetCommentsByAdvert(Int64.Parse(words[1])));
+                            var ad = advertManager.Get(Int64.Parse(words[1]));
+                            p(commentManager.GetCommentsByAdvert(ad));
                         }
                         catch (Exception ex) { p(ex.Message); }
                         break;

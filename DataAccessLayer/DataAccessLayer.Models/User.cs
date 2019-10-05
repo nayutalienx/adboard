@@ -10,5 +10,7 @@ namespace DataAccessLayer.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public virtual ICollection<Advert> Adverts { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

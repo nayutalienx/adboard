@@ -6,6 +6,6 @@ namespace DataAccessLayer.Abstraction
    
     public interface IAdvertRepository : IRepository<Advert>
     {
-        public Advert[] GetAll(long user_id);
+        public Advert[] GetAllByUser(User user);
     }
 }

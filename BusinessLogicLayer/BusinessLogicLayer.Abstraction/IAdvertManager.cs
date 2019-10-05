@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Objects.Advert;
+using BusinessLogicLayer.Objects.User;
 using System;
 
 namespace BusinessLogicLayer.Abstraction
@@ -7,7 +8,8 @@ namespace BusinessLogicLayer.Abstraction
     {
         void Create(NewAdvertDto dto);
         AdvertDto[] GetAll();
-        AdvertDto[] GetAllByUser(long user_id);
+        AdvertDto Get(long id);
+        AdvertDto[] GetAllByUser(UserDto user);
         void Update(UpdateAdvertDto dto);
         void Remove(RemoveAdvertDto dto);
         AdvertDto[] Search(string query);

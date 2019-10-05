@@ -14,7 +14,7 @@
     <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj" />
     <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Abstraction\DataAccessLayer.Abstraction.csproj" />
     <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Models\DataAccessLayer.Models.csproj" />
-    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.StubImplementation\DataAccessLayer.StubImplementation.csproj" />
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Repositories\DataAccessLayer.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

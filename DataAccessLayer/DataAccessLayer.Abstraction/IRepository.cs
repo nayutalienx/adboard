@@ -17,5 +17,7 @@ namespace DataAccessLayer.Abstraction
 
         void Remove(T entity);
 
+        void SaveChanges();
+
     }
 }
