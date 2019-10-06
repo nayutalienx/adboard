@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstraction;
 using DataAccessLayer.EntityFramework;
 using DataAccessLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,8 @@ namespace DataAccessLayer.Repositories
 
         public Advert[] GetAllByUser(User user)
         {
-            return Entity.Where(ad => ad.Author.Id == user.Id).ToArray();
+            return Entity.Where(ad => ad.Author.Id == user.Id).ToArray(); ;
+           
         }
     }
 }

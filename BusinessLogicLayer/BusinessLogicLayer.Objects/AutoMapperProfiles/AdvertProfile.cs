@@ -11,8 +11,8 @@ namespace BusinessLogicLayer.Objects.AutoMapperProfiles
         {
             CreateMap<DataAccessLayer.Models.Advert, AdvertDto>().ReverseMap();
 
-            CreateMap<NewAdvertDto, DataAccessLayer.Models.Advert>();
-                //.ForMember(dest => dest.AuthorId, option => option.MapFrom(source => source.Author.Id));
+            CreateMap<NewAdvertDto, DataAccessLayer.Models.Advert>()
+                .ForMember(dest => dest.CreatedDateTime, option => option.MapFrom(source => System.DateTime.Now));
 
             CreateMap<RemoveAdvertDto, DataAccessLayer.Models.Advert>()
                 .ForMember(dest => dest.Id, option => option.MapFrom(source => source.AdvertId));

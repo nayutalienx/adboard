@@ -20,7 +20,10 @@ namespace at
         static void p(AdvertDto[] ads)
         {
             foreach (var ad in ads)
-                p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category}/{ad.SubCategory} Price: {ad.Price}");
+            {
+                if (ad != null)
+                    p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category}/{ad.SubCategory} Price: {ad.Price}");
+            }
         }
         static void p(CommentDto[] comments)
         {
@@ -34,28 +37,25 @@ namespace at
 
         static void Main(string[] args)
         {
-            //
-            // business-logic test
-            //
+            
 
             var serviceCollection = new ServiceCollection().Install().BuildServiceProvider();
 
             bool loop = true;
 
-            var advertManager = serviceCollection.GetService<IAdvertManager>();
-            var commentManager = serviceCollection.GetService<ICommentManager>();
-            var userManager = serviceCollection.GetService<IUserManager>();
+            
 
             UserDto currentUser = new UserDto { Id = -1, Name = "Гость", PhoneNumber = "" };
 
             p($"Здраствуйте, {currentUser.Name}");
 
 
-
-
+            AdvertDto[] advertList = null;
             while (loop)
             {
-                
+                var advertManager = serviceCollection.GetService<IAdvertManager>();
+                var commentManager = serviceCollection.GetService<ICommentManager>();
+                var userManager = serviceCollection.GetService<IUserManager>();
                 p("Введите команду (help - вывод команд)");
                 var command = r();
                 var words = command.Split(" ");
@@ -137,7 +137,8 @@ namespace at
                         break;
                     case "ad_getall" when words.Length == 1:
                         p("Все объявления:");
-                        p(advertManager.GetAll());
+                        advertList = advertManager.GetAll();
+                        p(advertList);
                         break;
                     case "ad_getall_my" when words.Length == 1:
                         p("Все ваши объявления");
@@ -165,7 +166,7 @@ namespace at
                             });
                             p("Объявление успешно обновлено");
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) 
                         {
                             p(ex.Message);
                         }
@@ -173,6 +174,7 @@ namespace at
                     case "ad_remove" when words.Length == 2:
                         try
                         {
+
                             var ad = new RemoveAdvertDto
                             {
                                 AdvertId = Int64.Parse(words[1]),
@@ -185,6 +187,7 @@ namespace at
                         }
                         catch (Exception ex)
                         {
+                            
                             p(ex.Message);
                         }
                         break;
@@ -230,12 +233,6 @@ namespace at
 
             Console.ReadKey();
             return;
-            //
-            // business-logic test end
-            //
-
-            
-
             
         }
     }

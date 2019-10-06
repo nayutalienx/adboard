@@ -13,6 +13,7 @@ namespace DataAccessLayer.EntityFramework.Configurations
             builder.Property(p => p.Header).HasMaxLength(30);
             builder.Property(p => p.Category).HasMaxLength(30);
             builder.Property(p => p.SubCategory).HasMaxLength(30);
+            
         }
     }
 }

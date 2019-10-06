@@ -12,6 +12,7 @@ namespace DataAccessLayer.EntityFramework.Configurations
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.Property(p => p.Text).HasMaxLength(300);
+            
         }
     }
 }

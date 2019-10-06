@@ -12,28 +12,26 @@ namespace BusinessLogicLayer.Implementation
     public class AdvertManager : IAdvertManager
     {
         private readonly IAdvertRepository _advertRepository;
-        private readonly IUserRepository _userRepository;
+        
         private readonly IMapper _mapper;
 
-        public AdvertManager(IAdvertRepository advertRepositor, IUserRepository userRepository, IMapper mapper)
+        public AdvertManager(IAdvertRepository advertRepositor, IMapper mapper)
         {
             _advertRepository = advertRepositor;
-            _userRepository = userRepository;
+            
             _mapper = mapper;
             
         }
 
         public void Create(NewAdvertDto dto)
         {
+            if (dto.AuthorId == -1)
+                throw new Exception($"{nameof(dto)} Гости не могут добавлять объявления");
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            //if (dto.Author.Id == -1)
-            //    throw new Exception("Гости не могут создавать объявления");
-            if (string.IsNullOrWhiteSpace(dto.Header))
-                throw new Exception("Наименование обязательно");
-
+            if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description) || string.IsNullOrWhiteSpace(dto.Category) || string.IsNullOrWhiteSpace(dto.SubCategory))
+                throw new Exception($"{nameof(dto)} Заполните все данные");
             var advert = _mapper.Map<Advert>(dto);
-
             _advertRepository.Add(advert);
             _advertRepository.SaveChanges();
         }
@@ -51,19 +49,21 @@ namespace BusinessLogicLayer.Implementation
         public AdvertDto[] GetAllByUser(UserDto user)
         {
             if (user.Id == -1)
-                throw new Exception("У гостей не может быть объявлений");
+                throw new Exception($"{nameof(user)} У гостей не может быть объявлений");
             return _mapper.Map<AdvertDto[]>(_advertRepository.GetAllByUser(_mapper.Map<User>(user)));
         }
 
         public void Remove(RemoveAdvertDto dto)
         {
+            if (dto == null)
+                throw new ArgumentNullException(nameof(dto));
             if (dto.UserId == -1)
-                throw new Exception("Гости не могут удалять объявления");
-            var advert = _mapper.Map<AdvertDto>(_advertRepository.Get(dto.AdvertId));
-            if (advert == null)
-                throw new Exception("Объявление не найдено");
-            if (advert.Author.Id != dto.UserId)
-                throw new Exception("Вы не имеете право удалять это объявление");
+                throw new Exception($"{nameof(dto)} Гости не могут удалять объявления");
+            var _ad = _advertRepository.Get(dto.AdvertId);
+            if (_ad == null)
+                throw new Exception($"{nameof(dto)} Такого объявления не существует");
+            if (_ad.AuthorId != dto.UserId)
+                throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
             _advertRepository.Remove(_mapper.Map<Advert>(dto));
             _advertRepository.SaveChanges();
         }
@@ -80,23 +80,14 @@ namespace BusinessLogicLayer.Implementation
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
             if (dto.UserId == -1)
-                throw new Exception("Гости не могут обновлять объявления");
-            if (string.IsNullOrWhiteSpace(dto.Header))
-                throw new Exception("Наименование обязательно");
-
-            var advert = _mapper.Map<AdvertDto>(_advertRepository.Get(dto.AdvertId));
-            if (advert == null)
-                throw new Exception("Объявление не найдено");
-
-            if (advert.Author.Id != dto.UserId)
-                throw new Exception("Вы не имеете право редактировать это объявление");
-
-            //advert.Header = dto.Header;
-            //advert.Description = dto.Description;
-            //advert.Category = dto.Category;
-            //advert.SubCategory = dto.SubCategory;
-            //advert.Price = dto.Price;
-
+                throw new Exception($"{nameof(dto)} Гости не могут обновлять объявления");
+            if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description) || string.IsNullOrWhiteSpace(dto.Category) || string.IsNullOrWhiteSpace(dto.SubCategory))
+                throw new Exception($"{nameof(dto)} Заполните все данные");
+            var _ad = _advertRepository.Get(dto.AdvertId);
+            if (_ad == null)
+                throw new Exception($"{nameof(dto)} Такого объявления не существует");
+            if (_ad.AuthorId != dto.UserId)
+                throw new Exception($"{nameof(dto)} Вы не имеете право изменять это объявление");
             _advertRepository.Update(_mapper.Map<Advert>(dto));
             _advertRepository.SaveChanges();
         }

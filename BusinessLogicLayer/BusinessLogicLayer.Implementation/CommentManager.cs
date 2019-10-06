@@ -30,9 +30,6 @@ namespace BusinessLogicLayer.Implementation
                 throw new ArgumentNullException();
             if (dto.AuthorId == -1)
                 throw new Exception("Гости не могут оставлять комментарии");
-            var advert = _mapper.Map<Advert>(_advertRepository.Get(dto.AdvertId));
-            if (advert == null)
-                throw new Exception("Такого объявления не существует");
             if (string.IsNullOrWhiteSpace(dto.Text))
                 throw new Exception("Текст обязателен");
 

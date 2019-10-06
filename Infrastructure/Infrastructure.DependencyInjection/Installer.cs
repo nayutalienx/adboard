@@ -22,10 +22,10 @@ namespace Infrastructure.DependencyInjection
             serviceCollection.AddTransient<IAdvertManager, AdvertManager>()
                 .AddTransient<IUserManager, UserManager>()
                 .AddTransient<ICommentManager, CommentManager>()
-                .AddScoped<IAdvertRepository, AdvertRepository>()
-                .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<ICommentRepository, CommentRepository>()
-                .AddDbContext<AdboardContext>(ServiceLifetime.Scoped)
+                .AddTransient<IAdvertRepository, AdvertRepository>()
+                .AddTransient<IUserRepository, UserRepository>()
+                .AddTransient<ICommentRepository, CommentRepository>()
+                .AddDbContext<AdboardContext>(ServiceLifetime.Transient)
                 .AddSingleton(mapperConfiguration.CreateMapper());
             return serviceCollection;
 

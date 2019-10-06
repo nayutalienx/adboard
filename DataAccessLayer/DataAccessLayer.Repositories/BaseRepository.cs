@@ -22,9 +22,9 @@ namespace DataAccessLayer.Repositories
 
         public T Get(long id)
         {
-            var result = Entity.Find(id);
-            Context.Entry(result).State = EntityState.Detached;
-            return result;
+            var e = Entity.Find(id);
+            Context.Entry(e).State = EntityState.Detached;
+            return e;  
         }
 
         public T[] GetAll()
@@ -34,7 +34,6 @@ namespace DataAccessLayer.Repositories
 
         public void Remove(T entity)
         {
-            Entity.Attach(entity);
             Entity.Remove(entity);
         }
 

@@ -16,11 +16,15 @@ namespace DataAccessLayer.Repositories
 
         public Comment[] GetCommentsByAdvert(Advert advert)
         {
+            if (advert == null)
+                throw new ArgumentNullException(nameof(advert));
             return Entity.Where(c => c.Advert.Id == advert.Id).ToArray();
         }
 
         public void RemoveCommentsByAdvert(Advert advert)
         {
+            if (advert == null)
+                throw new ArgumentNullException(nameof(advert));
             Entity.RemoveRange(GetCommentsByAdvert(advert));
         }
     }

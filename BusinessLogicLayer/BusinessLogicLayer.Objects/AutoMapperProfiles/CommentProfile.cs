@@ -13,7 +13,8 @@ namespace BusinessLogicLayer.Objects.AutoMapperProfiles
                 .ForMember(dest => dest.AuthorName, option => option.MapFrom(source => source.Author.Name))
                 .ReverseMap();
 
-            CreateMap<NewCommentDto, DataAccessLayer.Models.Comment>();
+            CreateMap<NewCommentDto, DataAccessLayer.Models.Comment>()
+                .ForMember(dest => dest.CreatedDateTime, option => option.MapFrom(source => System.DateTime.Now));
         }
     }
 }

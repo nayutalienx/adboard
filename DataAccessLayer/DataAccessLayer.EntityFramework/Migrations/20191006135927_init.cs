@@ -52,33 +52,39 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 name: "Comments",
                 columns: table => new
                 {
-                    AuthorId = table.Column<long>(nullable: false),
-                    AdvertId = table.Column<long>(nullable: false),
-                    Id = table.Column<long>(nullable: false),
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    Text = table.Column<string>(maxLength: 300, nullable: true)
+                    Text = table.Column<string>(maxLength: 300, nullable: true),
+                    AuthorId = table.Column<long>(nullable: false),
+                    AdvertId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Comments", x => new { x.AdvertId, x.AuthorId });
+                    table.PrimaryKey("PK_Comments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Comments_Adverts_AdvertId",
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Comments_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Adverts_AuthorId",
                 table: "Adverts",
                 column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AdvertId",
+                table: "Comments",
+                column: "AdvertId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AuthorId",

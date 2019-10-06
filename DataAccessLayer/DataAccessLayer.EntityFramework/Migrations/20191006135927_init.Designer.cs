@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.EntityFramework.Migrations
 {
     [DbContext(typeof(AdboardContext))]
-    [Migration("20191005233636_init")]
+    [Migration("20191006135927_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -61,6 +61,11 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Comment", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<long>("AdvertId")
                         .HasColumnType("bigint");
 
@@ -70,14 +75,13 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("AdvertId", "AuthorId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
 
                     b.HasIndex("AuthorId");
 
@@ -126,13 +130,13 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Comments")
                         .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.User", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

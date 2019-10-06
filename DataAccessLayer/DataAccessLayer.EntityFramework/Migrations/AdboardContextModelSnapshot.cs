@@ -59,6 +59,11 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Comment", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<long>("AdvertId")
                         .HasColumnType("bigint");
 
@@ -68,14 +73,13 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.Property<DateTime>("CreatedDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("Id")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(300)")
                         .HasMaxLength(300);
 
-                    b.HasKey("AdvertId", "AuthorId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdvertId");
 
                     b.HasIndex("AuthorId");
 
@@ -124,13 +128,13 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Comments")
                         .HasForeignKey("AdvertId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.User", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
