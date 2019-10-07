@@ -12,7 +12,10 @@ namespace DataAccessLayer.EntityFramework.Configurations
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
             builder.Property(p => p.Text).HasMaxLength(300);
-            
+            builder.HasOne<User>(c => c.Author)
+                .WithMany(a => a.Comments)
+                .HasForeignKey(c => c.AuthorId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
