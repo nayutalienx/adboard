@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.DependencyIn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer.EntityFramework", "DataAccessLayer\DataAccessLayer.EntityFramework\DataAccessLayer.EntityFramework.csproj", "{5AC635A6-B2E9-4E3A-B01A-8F73C913DC30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer.Repositories", "DataAccessLayer\DataAccessLayer.Repositories\DataAccessLayer.Repositories.csproj", "{E103D797-C206-4BB3-AAFC-FD0EE1AD2352}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer.Repositories", "DataAccessLayer\DataAccessLayer.Repositories\DataAccessLayer.Repositories.csproj", "{E103D797-C206-4BB3-AAFC-FD0EE1AD2352}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
