@@ -11,6 +11,16 @@ namespace DataAccessLayer.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<Advert> builder) {
             builder.Property(p => p.Header).HasMaxLength(30);
+
+            builder.HasOne<User>(advert => advert.Author)
+                .WithMany(user => user.Adverts)
+                .HasForeignKey(advert => advert.AuthorId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne<Category>(advert => advert.Category)
+                .WithMany(category => category.Adverts)
+                .HasForeignKey(advert => advert.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

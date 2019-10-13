@@ -3,27 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.EntityFramework.Migrations
 {
-    public partial class first_try : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Country = table.Column<string>(maxLength: 30, nullable: true),
-                    Area = table.Column<string>(maxLength: 30, nullable: true),
-                    City = table.Column<string>(maxLength: 30, nullable: true),
-                    Street = table.Column<string>(maxLength: 30, nullable: true),
-                    HouseNumber = table.Column<string>(maxLength: 30, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Categories",
                 columns: table => new
@@ -66,8 +49,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     CategoryId = table.Column<long>(nullable: false),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
                     AuthorId = table.Column<long>(nullable: false),
-                    Price = table.Column<long>(nullable: false),
-                    LocationId = table.Column<long>(nullable: false)
+                    Price = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -84,10 +66,28 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Country = table.Column<string>(maxLength: 30, nullable: true),
+                    Area = table.Column<string>(maxLength: 30, nullable: true),
+                    City = table.Column<string>(maxLength: 30, nullable: true),
+                    Street = table.Column<string>(maxLength: 30, nullable: true),
+                    HouseNumber = table.Column<string>(maxLength: 30, nullable: true),
+                    AdvertId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Adverts_Addresses_LocationId",
-                        column: x => x.LocationId,
-                        principalTable: "Addresses",
+                        name: "FK_Addresses_Adverts_AdvertId",
+                        column: x => x.AdvertId,
+                        principalTable: "Adverts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -101,7 +101,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
                     Text = table.Column<string>(maxLength: 300, nullable: true),
                     AuthorId = table.Column<long>(nullable: false),
-                    AdvertId = table.Column<long>(nullable: true)
+                    AdvertId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -111,13 +111,13 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Comments_Users_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -127,7 +127,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Data = table.Column<byte[]>(nullable: true),
-                    AdvertId = table.Column<long>(nullable: true)
+                    AdvertId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -137,8 +137,14 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         column: x => x.AdvertId,
                         principalTable: "Adverts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_AdvertId",
+                table: "Addresses",
+                column: "AdvertId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Adverts_AuthorId",
@@ -149,11 +155,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 name: "IX_Adverts_CategoryId",
                 table: "Adverts",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Adverts_LocationId",
-                table: "Adverts",
-                column: "LocationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AdvertId",
@@ -174,6 +175,9 @@ namespace DataAccessLayer.EntityFramework.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
                 name: "Comments");
 
             migrationBuilder.DropTable(
@@ -187,9 +191,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
         }
     }
 }

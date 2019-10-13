@@ -11,7 +11,10 @@ namespace DataAccessLayer.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<Photo> builder)
         {
-            
+            builder.HasOne<Advert>(photo => photo.Advert)
+                .WithMany(advert => advert.Photos)
+                .HasForeignKey(photo => photo.AdvertId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -16,7 +16,6 @@ namespace DataAccessLayer.Models
         public uint Price { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Photo> Photos { get; set; }
-        public long LocationId { get; set; }
         public virtual Address Location { get; set; }
     }
 }

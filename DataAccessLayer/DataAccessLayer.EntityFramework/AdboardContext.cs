@@ -21,8 +21,8 @@ namespace DataAccessLayer.EntityFramework
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             modelBuilder.ApplyConfiguration(new PhotoConfiguration());
              
-        }
-
+        } 
+          
         DbSet<User> Users { get; set; }
         DbSet<Advert> Adverts { get; set; }
         DbSet<Comment> Comments { get; set; }
@@ -30,6 +30,6 @@ namespace DataAccessLayer.EntityFramework
         DbSet<Address> Addresses { get; set; }
         DbSet<Photo> Photos { get; set; }
 
-          
+           
     }
 }

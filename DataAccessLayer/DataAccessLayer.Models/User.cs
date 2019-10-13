@@ -11,5 +11,7 @@ namespace DataAccessLayer.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+        public virtual ICollection<Advert> Adverts { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

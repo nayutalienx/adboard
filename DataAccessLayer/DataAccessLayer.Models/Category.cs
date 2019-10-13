@@ -8,5 +8,6 @@ namespace DataAccessLayer.Models
     {
         public string Major { get; set; }
         public string Minor { get; set; }
+        public virtual ICollection<Advert> Adverts { get; set; }
     }
 }

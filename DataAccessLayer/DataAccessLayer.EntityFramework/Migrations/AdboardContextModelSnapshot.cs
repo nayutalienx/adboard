@@ -26,6 +26,9 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("AdvertId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Area")
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
@@ -47,6 +50,9 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .HasMaxLength(30);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AdvertId")
+                        .IsUnique();
 
                     b.ToTable("Addresses");
                 });
@@ -74,9 +80,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<long>("LocationId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
 
@@ -85,8 +88,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("LocationId");
 
                     b.ToTable("Adverts");
                 });
@@ -118,7 +119,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("AdvertId")
+                    b.Property<long>("AdvertId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("AuthorId")
@@ -147,7 +148,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("AdvertId")
+                    b.Property<long>("AdvertId")
                         .HasColumnType("bigint");
 
                     b.Property<byte[]>("Data")
@@ -191,45 +192,52 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("DataAccessLayer.Models.Address", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
+                        .WithOne("Location")
+                        .HasForeignKey("DataAccessLayer.Models.Address", "AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("Adverts")
                         .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("Adverts")
                         .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccessLayer.Models.Address", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Comment", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Advert", null)
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Comments")
-                        .HasForeignKey("AdvertId");
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Photo", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Advert", null)
+                    b.HasOne("DataAccessLayer.Models.Advert", "Advert")
                         .WithMany("Photos")
-                        .HasForeignKey("AdvertId");
+                        .HasForeignKey("AdvertId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

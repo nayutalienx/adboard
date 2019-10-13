@@ -132,14 +132,8 @@ namespace BusinessLogicLayer.Implementation
             if (_ad.Author.Id != dto.UserId)
                 throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
             
-            foreach (var comment in _ad.Comments)
-                _commentRepository.Remove(comment);
-            
-            _addressRepository.Remove(_ad.Location);
             _advertRepository.Remove(_ad);
             _advertRepository.SaveChanges();
-            _addressRepository.SaveChanges();
-            _commentRepository.SaveChanges();
 
         }
 

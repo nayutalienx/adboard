@@ -17,7 +17,10 @@ namespace DataAccessLayer.EntityFramework.Configurations
             builder.Property(p => p.Street).HasMaxLength(30);
             builder.Property(p => p.HouseNumber).HasMaxLength(30);
 
-
+            builder.HasOne<Advert>(address => address.Advert)
+                .WithOne(advert => advert.Location)
+                .HasForeignKey<Address>(address => address.AdvertId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
