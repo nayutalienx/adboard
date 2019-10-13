@@ -17,18 +17,13 @@ namespace BusinessLogicLayer.Implementation
     {
         private readonly IAdvertRepository _advertRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IAddressRepository _addressRepository;
-        private readonly ICommentRepository _commentRepository;
         
         private readonly IMapper _mapper;
 
-        public AdvertManager(IAdvertRepository advertRepositor,ICategoryRepository categoryRepository, IAddressRepository addressRepository,
-            ICommentRepository commentRepository, IMapper mapper)
+        public AdvertManager(IAdvertRepository advertRepositor,ICategoryRepository categoryRepository, IMapper mapper)
         {
             _advertRepository = advertRepositor;
             _categoryRepository = categoryRepository;
-            _addressRepository = addressRepository;
-            _commentRepository = commentRepository;
             _mapper = mapper;
         }
 
@@ -82,10 +77,10 @@ namespace BusinessLogicLayer.Implementation
                 throw new NullReferenceException("Не задан фильтр");
 
             if (!string.IsNullOrEmpty(filter.Header))
-                adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}"));
+                adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}%"));
 
             if (!string.IsNullOrEmpty(filter.Description))
-                adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}"));
+                adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
 
             if (filter.CreatedDateTime != null)
                 adverts = adverts.Where(x => x.CreatedDateTime > filter.CreatedDateTime.From && x.CreatedDateTime < filter.CreatedDateTime.To);
@@ -108,7 +103,7 @@ namespace BusinessLogicLayer.Implementation
         {
             if (user.Id == -1)
                 throw new Exception($"{nameof(user)} У гостей не может быть объявлений");
-            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAllByUser(_mapper.Map<User>(user)).ToArray());
+            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().Where(ad => ad.Author.Id == user.Id).ToArray());
         }
 
         public CategoryDto[] GetAllCategories()

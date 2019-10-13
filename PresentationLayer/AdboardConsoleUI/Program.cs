@@ -23,7 +23,7 @@ namespace at
             foreach (var ad in ads)
             {
                 if (ad != null)
-                    p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category.Major}/{ad.Category.Minor} Price: {ad.Price} Location:{ad.Location.Country} {ad.Location.City}");
+                    p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category.Major}/{ad.Category.Minor} Price: {ad.Price} Location:{ad.Location.Country}/{ad.Location.Area}/{ad.Location.City}/{ad.Location.Street}/{ad.Location.HouseNumber}");
             }
         }
         static void p(CategoryDto[] cats)

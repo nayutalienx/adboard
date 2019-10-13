@@ -15,11 +15,5 @@ namespace DataAccessLayer.Repositories
         {
         }
 
-
-        public IQueryable<Advert> GetAllByUser(User user)
-        {
-            return Entity.Where(ad => ad.Author.Id == user.Id);
-           
-        }
     }
 }
