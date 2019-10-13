@@ -17,14 +17,17 @@ namespace Infrastructure.DependencyInjection
                 config.AddProfile(new UserProfile());
                 config.AddProfile(new AdvertProfile());
                 config.AddProfile(new CommentProfile());
+                config.AddProfile(new CategoryProfile());
+                config.AddProfile(new PhotoProfile());
+                config.AddProfile(new AddressProfile());
             });
 
             serviceCollection.AddTransient<IAdvertManager, AdvertManager>()
                 .AddTransient<IUserManager, UserManager>()
-                .AddTransient<ICommentManager, CommentManager>()
                 .AddTransient<IAdvertRepository, AdvertRepository>()
                 .AddTransient<IUserRepository, UserRepository>()
-                .AddTransient<ICommentRepository, CommentRepository>()
+                .AddTransient<ICategoryRepository, CategoryRepository>()
+                .AddTransient<IAddressRepository, AddressRepository>()
                 .AddDbContext<AdboardContext>(ServiceLifetime.Transient)
                 .AddSingleton(mapperConfiguration.CreateMapper());
             return serviceCollection;

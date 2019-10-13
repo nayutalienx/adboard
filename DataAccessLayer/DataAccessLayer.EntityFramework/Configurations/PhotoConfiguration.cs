@@ -7,11 +7,11 @@ using System.Text;
 
 namespace DataAccessLayer.EntityFramework.Configurations
 {
-    class CommentConfiguration : IEntityTypeConfiguration<Comment>
+    class PhotoConfiguration : IEntityTypeConfiguration<Photo>
     {
-        public void Configure(EntityTypeBuilder<Comment> builder)
+        public void Configure(EntityTypeBuilder<Photo> builder)
         {
-            builder.Property(p => p.Text).HasMaxLength(300);
+            
         }
     }
 }

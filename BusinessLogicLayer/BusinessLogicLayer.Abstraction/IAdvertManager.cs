@@ -1,4 +1,7 @@
 ﻿using BusinessLogicLayer.Objects.Advert;
+using BusinessLogicLayer.Objects.Category;
+using BusinessLogicLayer.Objects.Comment;
+using BusinessLogicLayer.Objects.Paging;
 using BusinessLogicLayer.Objects.User;
 using System;
 
@@ -10,8 +13,11 @@ namespace BusinessLogicLayer.Abstraction
         AdvertDto[] GetAll();
         AdvertDto Get(long id);
         AdvertDto[] GetAllByUser(UserDto user);
+        void AddCategory(CategoryDto dto);
+        CategoryDto[] GetAllCategories();
         void Update(UpdateAdvertDto dto);
         void Remove(RemoveAdvertDto dto);
-        AdvertDto[] Search(string query);
+        PagingResult<AdvertDto> GetAdvertsByFilter(AdvertFilter filter);
+        void AddComment(NewCommentDto dto);
     }
 }

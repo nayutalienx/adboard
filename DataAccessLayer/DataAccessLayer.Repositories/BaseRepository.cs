@@ -23,13 +23,12 @@ namespace DataAccessLayer.Repositories
         public T Get(long id)
         {
             var e = Entity.Find(id);
-            Context.Entry(e).State = EntityState.Detached;
             return e;  
         }
 
-        public T[] GetAll()
+        public IQueryable<T> GetAll()
         {
-            return Entity.ToArray();
+            return Entity;
         }
 
         public void Remove(T entity)
