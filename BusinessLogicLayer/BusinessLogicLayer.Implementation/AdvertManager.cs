@@ -16,17 +16,19 @@ namespace BusinessLogicLayer.Implementation
     public class AdvertManager : IAdvertManager
     {
         private readonly IAdvertRepository _advertRepository;
-
         private readonly ICategoryRepository _categoryRepository;
         private readonly IAddressRepository _addressRepository;
+        private readonly ICommentRepository _commentRepository;
         
         private readonly IMapper _mapper;
 
-        public AdvertManager(IAdvertRepository advertRepositor,ICategoryRepository categoryRepository, IAddressRepository addressRepository, IMapper mapper)
+        public AdvertManager(IAdvertRepository advertRepositor,ICategoryRepository categoryRepository, IAddressRepository addressRepository,
+            ICommentRepository commentRepository, IMapper mapper)
         {
             _advertRepository = advertRepositor;
             _categoryRepository = categoryRepository;
             _addressRepository = addressRepository;
+            _commentRepository = commentRepository;
             _mapper = mapper;
         }
 
@@ -118,17 +120,27 @@ namespace BusinessLogicLayer.Implementation
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
+            
             if (dto.UserId == -1)
                 throw new Exception($"{nameof(dto)} Гости не могут удалять объявления");
+            
             var _ad = _advertRepository.Get(dto.AdvertId);
+            
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
+            
             if (_ad.Author.Id != dto.UserId)
                 throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
+            
+            foreach (var comment in _ad.Comments)
+                _commentRepository.Remove(comment);
+            
             _addressRepository.Remove(_ad.Location);
             _advertRepository.Remove(_ad);
             _advertRepository.SaveChanges();
             _addressRepository.SaveChanges();
+            _commentRepository.SaveChanges();
+
         }
 
        

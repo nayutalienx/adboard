@@ -16,6 +16,8 @@ namespace DataAccessLayer.EntityFramework.Configurations
             builder.Property(p => p.City).HasMaxLength(30);
             builder.Property(p => p.Street).HasMaxLength(30);
             builder.Property(p => p.HouseNumber).HasMaxLength(30);
+
+
         }
     }
 }
