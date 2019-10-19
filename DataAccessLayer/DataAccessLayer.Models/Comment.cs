@@ -12,6 +12,7 @@ namespace DataAccessLayer.Models
         public virtual User Author { get; set; }
         public long AdvertId { get; set; }
         public virtual Advert Advert { get; set; }
+         
 
     }
 }

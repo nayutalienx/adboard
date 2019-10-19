@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Adboard.API</name>
+    </assembly>
+    <members>
+        <member name="M:Adboard.API.Controllers.AdvertsController.GetAll">
+            <summary>
+            Get all adverts
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Adboard.API.Controllers.ValuesController.GetValueFromHeader(System.Int32)">
+            <summary>
+            GET api/v1/values/header
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

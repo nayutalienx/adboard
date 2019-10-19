@@ -10,7 +10,6 @@ namespace BusinessLogicLayer.Objects.AutoMapperProfiles
     {
         public CommentProfile() {
             CreateMap<DataAccessLayer.Models.Comment, CommentDto>()
-                .ForMember(dest => dest.AuthorName, option => option.MapFrom(source => source.Author.Name))
                 .ReverseMap();
 
             CreateMap<NewCommentDto, DataAccessLayer.Models.Comment>()

@@ -7,7 +7,5 @@ namespace DataAccessLayer.Abstraction
 {
     public interface ICommentRepository : IRepository<Comment>
     {
-        Comment[] GetCommentsByAdvert(Advert advert);
-        void RemoveCommentsByAdvert(Advert advert);
     }
 }

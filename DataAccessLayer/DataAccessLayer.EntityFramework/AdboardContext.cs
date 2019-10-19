@@ -17,13 +17,19 @@ namespace DataAccessLayer.EntityFramework
             modelBuilder.ApplyConfiguration(new AdvertConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
-
-        }
-
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new PhotoConfiguration());
+             
+        } 
+          
         DbSet<User> Users { get; set; }
         DbSet<Advert> Adverts { get; set; }
         DbSet<Comment> Comments { get; set; }
+        DbSet<Category> Categories { get; set; }
+        DbSet<Address> Addresses { get; set; }
+        DbSet<Photo> Photos { get; set; }
 
-        
+           
     }
 }

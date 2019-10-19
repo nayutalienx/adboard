@@ -1,13 +1,14 @@
 ﻿using DataAccessLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataAccessLayer.Abstraction
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        T[] GetAll();
+        IQueryable<T> GetAll();
 
         T Get(long id);
 

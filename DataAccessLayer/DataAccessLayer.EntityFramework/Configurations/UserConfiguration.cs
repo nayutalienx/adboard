@@ -12,6 +12,8 @@ namespace DataAccessLayer.EntityFramework.Configurations
             builder.Property(p => p.PhoneNumber).HasMaxLength(25);
             builder.Property(p => p.Email).HasMaxLength(50);
             builder.Property(p => p.Password).HasMaxLength(32); // md5 length
+
+            
         }
     }
 }
