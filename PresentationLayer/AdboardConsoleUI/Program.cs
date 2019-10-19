@@ -23,7 +23,7 @@ namespace at
             foreach (var ad in ads)
             {
                 if (ad != null)
-                    p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category.Major}/{ad.Category.Minor} Price: {ad.Price} Location:{ad.Location.Country}/{ad.Location.Area}/{ad.Location.City}/{ad.Location.Street}/{ad.Location.HouseNumber}");
+                    p($"[id:{ad.Id}] [date:{ad.CreatedDateTime.ToString("dd MMMM")}] [author:{ad.Author.Name} (phone:{ad.Author.PhoneNumber})] Header:{ad.Header} Description: {ad.Description} Category: {ad.Category.ParentCategoryId}/{ad.Category.Name} Price: {ad.Price} Location:{ad.Location.Country}/{ad.Location.Area}/{ad.Location.City}/{ad.Location.Street}/{ad.Location.HouseNumber}");
             }
         }
         static void p(CategoryDto[] cats)
@@ -31,7 +31,12 @@ namespace at
             foreach (var c in cats)
             {
                 if (c != null)
-                    p($"{c.Major}/{c.Minor} [id:{c.Id}]"); 
+                    p($"{c.Name}/ [id:{c.Id}]");
+                if (c.ParentCategoryId != null)
+                    p($"{c.ParentCategoryId}");
+                if (c.ParentCategory != null && c.ParentCategory.Name != null)
+                    p($"{c.ParentCategory.Name}");
+                
             }
         }
         static void p(CommentDto[] comments)
@@ -130,7 +135,8 @@ namespace at
                     case "category_add" when words.Length == 3:
                         try
                         {
-                            advertManager.AddCategory(new CategoryDto { Major = words[1], Minor = words[2] });
+                            int? temp = Int64.Parse(words[2]) == 0 ? (int?)null : Int32.Parse(words[2]);
+                            advertManager.AddCategory(new CategoryDto { Name = words[1], ParentCategoryId = temp });
                             p("Категория успешно добавлена.");
                         }
                         catch (Exception ex) {

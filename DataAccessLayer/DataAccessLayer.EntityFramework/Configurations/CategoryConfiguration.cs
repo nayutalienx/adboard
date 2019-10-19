@@ -11,8 +11,17 @@ namespace DataAccessLayer.EntityFramework.Configurations
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {
-            builder.Property(p => p.Major).HasMaxLength(30);
-            builder.Property(p => p.Minor).HasMaxLength(30);
+            builder.Property(p => p.Name).HasMaxLength(30);
+
+            builder.HasOne<Category>(c => c.ParentCategory)
+                .WithMany(c => c.SubCategories)
+                .HasForeignKey(c => c.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany<Category>(c => c.SubCategories)
+                .WithOne(c => c.ParentCategory)
+                .HasForeignKey(c => c.ParentCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

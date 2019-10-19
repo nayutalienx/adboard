@@ -60,7 +60,10 @@ namespace BusinessLogicLayer.Tests
                 Size = 2,
                 CurrentPage = 1,
                 CreatedDateTime = null,
-                Description = null
+                Description = null,
+                Category = null,
+                HasPhotoOnly = null,
+                Price = null
             };
 
             // act

@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.EntityFramework.Migrations
 {
-    public partial class init : Migration
+    public partial class category_tree : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,13 +13,19 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Major = table.Column<string>(maxLength: 30, nullable: true),
-                    Minor = table.Column<string>(maxLength: 30, nullable: true)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 30, nullable: true),
+                    ParentCategoryId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories_ParentCategoryId",
+                        column: x => x.ParentCategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,7 +33,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: true),
                     PhoneNumber = table.Column<string>(maxLength: 25, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: true),
@@ -43,7 +50,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Header = table.Column<string>(maxLength: 30, nullable: true),
                     Description = table.Column<string>(nullable: true),
                     CategoryId = table.Column<long>(nullable: false),
@@ -73,7 +80,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Country = table.Column<string>(maxLength: 30, nullable: true),
                     Area = table.Column<string>(maxLength: 30, nullable: true),
                     City = table.Column<string>(maxLength: 30, nullable: true),
@@ -97,7 +104,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
                     Text = table.Column<string>(maxLength: 300, nullable: true),
                     AuthorId = table.Column<long>(nullable: false),
@@ -125,7 +132,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Data = table.Column<byte[]>(nullable: true),
                     AdvertId = table.Column<long>(nullable: false)
                 },
@@ -155,6 +162,11 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 name: "IX_Adverts_CategoryId",
                 table: "Adverts",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_ParentCategoryId",
+                table: "Categories",
+                column: "ParentCategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_AdvertId",

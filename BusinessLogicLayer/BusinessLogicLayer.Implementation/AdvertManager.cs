@@ -76,14 +76,23 @@ namespace BusinessLogicLayer.Implementation
             if (filter == null)
                 throw new NullReferenceException("Не задан фильтр");
 
+            if (filter.HasPhotoOnly != null)
+                adverts = adverts.Where(x => x.Photos != null);
+
             if (!string.IsNullOrEmpty(filter.Header))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}%"));
+
+            if (filter.Category != null)
+                adverts = adverts.Where(x => x.CategoryId == filter.Category.Id);
 
             if (!string.IsNullOrEmpty(filter.Description))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
 
             if (filter.CreatedDateTime != null)
                 adverts = adverts.Where(x => x.CreatedDateTime > filter.CreatedDateTime.From && x.CreatedDateTime < filter.CreatedDateTime.To);
+
+            if (filter.Price != null)
+                adverts = adverts.Where(x => x.Price > filter.Price.From && x.Price < filter.Price.To);
 
             adverts.Take(filter.Size).Skip((filter.CurrentPage - 1) * filter.Size);
 

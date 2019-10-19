@@ -32,14 +32,14 @@ namespace BusinessLogicLayer.Tests
                 new Category
                 {
                     Id = 1,
-                    Major = "Animals",
-                    Minor = "Cats"
+                    Name = "Animals",
+                    ParentCategoryId = null
                 },
                 new Category
                 {
                     Id = 2,
-                    Major = "Transport",
-                    Minor = "Moto"
+                    Name = "Cats",
+                    ParentCategoryId = 1
                 }
             };
         }
@@ -47,8 +47,8 @@ namespace BusinessLogicLayer.Tests
             Category category = new Category
             {
                 Id = 1,
-                Major = "Animals",
-                Minor = "Cats"
+                Name = "Animals",
+                ParentCategoryId = null
             };
 
             var users = GetFakeUsers();
