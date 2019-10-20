@@ -68,7 +68,7 @@ namespace at
             while (loop)
             {
                 var advertManager = serviceCollection.GetService<IAdvertManager>();
-                
+                var categoryManager = serviceCollection.GetService<ICategoryManager>();
                 var userManager = serviceCollection.GetService<IUserManager>();
                 p("Введите команду (help - вывод команд)");
                 var command = r();
@@ -136,7 +136,7 @@ namespace at
                         try
                         {
                             int? temp = Int64.Parse(words[2]) == 0 ? (int?)null : Int32.Parse(words[2]);
-                            advertManager.AddCategory(new NewCategoryDto { Name = words[1], ParentCategoryId = temp });
+                            categoryManager.AddCategory(new NewCategoryDto { Name = words[1], ParentCategoryId = temp });
                             p("Категория успешно добавлена.");
                         }
                         catch (Exception ex) {
@@ -145,7 +145,7 @@ namespace at
                         break;
                     case "category_getall" when words.Length == 1:
                         try {
-                            p(advertManager.GetAllCategories());
+                            p(categoryManager.GetAllCategories());
                         } catch (Exception ex) {
                             p(ex.Message);
                         }
