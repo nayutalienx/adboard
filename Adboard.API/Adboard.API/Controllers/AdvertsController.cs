@@ -1,17 +1,15 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
+
 using System.Net;
-using System.Threading.Tasks;
+
 using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Objects.Advert;
-using BusinessLogicLayer.Objects.Category;
+
 using BusinessLogicLayer.Objects.Comment;
-using BusinessLogicLayer.Objects.User;
-using Infrastructure.DependencyInjection;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Adboard.API.Controllers
 {
@@ -22,12 +20,8 @@ namespace Adboard.API.Controllers
     {
         private readonly IAdvertManager _advertManager;
 
-        public AdvertsController() {
-            var serviceCollection = new ServiceCollection()
-                .Install()
-                .BuildServiceProvider();
-
-            _advertManager = serviceCollection.GetService<IAdvertManager>();
+        public AdvertsController(IAdvertManager advertManager) {
+            _advertManager = advertManager;
         }
         /// <summary>
         /// Get all adverts

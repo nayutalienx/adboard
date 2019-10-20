@@ -12,6 +12,7 @@ namespace Infrastructure.DependencyInjection
 {
     public static class Installer
     {
+
         public static IServiceCollection Install(this IServiceCollection serviceCollection) {
             var mapperConfiguration = new MapperConfiguration(config => {
                 config.AddProfile(new UserProfile());
@@ -35,5 +36,6 @@ namespace Infrastructure.DependencyInjection
             return serviceCollection;
 
         }
+     
     }
 }

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+
 using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Objects.Category;
-using Infrastructure.DependencyInjection;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+
 
 namespace Adboard.API.Controllers
 {
@@ -19,13 +18,9 @@ namespace Adboard.API.Controllers
     {
         private readonly ICategoryManager _categoryManager;
 
-        public CategoriesController()
+        public CategoriesController(ICategoryManager categoryManager)
         {
-            var serviceCollection = new ServiceCollection()
-                .Install()
-                .BuildServiceProvider();
-
-            _categoryManager = serviceCollection.GetService<ICategoryManager>();
+            _categoryManager = categoryManager;
         }
 
         /// <summary>

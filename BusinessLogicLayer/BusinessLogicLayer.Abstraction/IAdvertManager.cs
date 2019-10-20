@@ -11,9 +11,6 @@ namespace BusinessLogicLayer.Abstraction
     {
         void Create(NewAdvertDto dto);
         AdvertDto[] GetAll();
-        //AdvertDto Get(long id);
-        //void AddCategory(NewCategoryDto dto);
-        //CategoryDto[] GetAllCategories();
         void Update(UpdateAdvertDto dto);
         void Remove(RemoveAdvertDto dto);
         PagingResult<AdvertDto> GetAdvertsByFilter(AdvertFilter filter);
