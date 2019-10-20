@@ -32,7 +32,7 @@ namespace Adboard.API.Controllers
         /// Get all categories
         /// </summary>
         /// <returns></returns>
-        [HttpGet("categories")]
+        [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<CategoryDto>), statusCode: (int)HttpStatusCode.OK)]
         public ActionResult GetAllCategories()
         {
@@ -45,7 +45,7 @@ namespace Adboard.API.Controllers
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        [HttpPost("categories")]
+        [HttpPost()]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult AddCategory([FromBody] NewCategoryDto category)
         {

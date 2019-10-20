@@ -7,8 +7,11 @@ using BusinessLogicLayer.Objects.User;
 
 using Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 
 namespace at
 {
@@ -30,12 +33,16 @@ namespace at
         {
             foreach (var c in cats)
             {
-                if (c != null)
-                    p($"{c.Name}/ [id:{c.Id}]");
-                if (c.ParentCategoryId != null)
-                    p($"{c.ParentCategoryId}");
-                if (c.ParentCategory != null && c.ParentCategory.Name != null)
-                    p($"{c.ParentCategory.Name}");
+
+                if (c != null) {
+                    if (c.ParentCategory != null && c.ParentCategory.Name != null)
+                    {
+                        p($"{c.Id}|{c.ParentCategory.Name}/{c.Name}");
+                    }
+                    else {
+                        p($"{c.Id}|root/{c.Name}");
+                    }
+                }
                 
             }
         }
@@ -57,18 +64,17 @@ namespace at
 
             bool loop = true;
 
-            
+            const string host = "https://localhost:44379";
+            var client = new HttpClient();
+            HttpResponseMessage response;
+            HttpRequestMessage request;
 
             UserDto currentUser = new UserDto { Id = -1, Name = "Гость", PhoneNumber = "" };
 
             p($"Здраствуйте, {currentUser.Name}");
 
-
-            AdvertDto[] advertList = null;
             while (loop)
             {
-                var advertManager = serviceCollection.GetService<IAdvertManager>();
-                var categoryManager = serviceCollection.GetService<ICategoryManager>();
                 var userManager = serviceCollection.GetService<IUserManager>();
                 p("Введите команду (help - вывод команд)");
                 var command = r();
@@ -136,16 +142,37 @@ namespace at
                         try
                         {
                             int? temp = Int64.Parse(words[2]) == 0 ? (int?)null : Int32.Parse(words[2]);
-                            categoryManager.AddCategory(new NewCategoryDto { Name = words[1], ParentCategoryId = temp });
-                            p("Категория успешно добавлена.");
+                            request = new HttpRequestMessage
+                            {
+                                Content = new StringContent(JsonConvert.SerializeObject(new NewCategoryDto
+                                {
+                                    Name = words[1],
+                                    ParentCategoryId = temp
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri($"{host}/api/v1/categories")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p($"Категория добавлена: {response.StatusCode}");
+
                         }
-                        catch (Exception ex) {
+                        catch (Exception ex)
+                        {
                             p(ex.Message);
                         }
                         break;
                     case "category_getall" when words.Length == 1:
                         try {
-                            p(categoryManager.GetAllCategories());
+                            request = new HttpRequestMessage
+                            {
+                                Method = HttpMethod.Get,
+                                RequestUri = new Uri($"{host}/api/v1/categories")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p(JsonConvert.DeserializeObject<CategoryDto[]>(response.Content.ReadAsStringAsync().Result));
+
                         } catch (Exception ex) {
                             p(ex.Message);
                         }
@@ -153,16 +180,25 @@ namespace at
                     case "ad_create" when words.Length == 5:
                         try
                         {
-                            advertManager.Create(new NewAdvertDto
+                            request = new HttpRequestMessage
                             {
-                                Header = words[1],
-                                Description = words[2],
-                                CategoryId = Int64.Parse(words[3]),
-                                Price = UInt32.Parse(words[4]),
-                                AuthorId = currentUser.Id,
-                                Location = new BusinessLogicLayer.Objects.Address.AddressDto { Country = "Country", Area = "Area", City = "City", HouseNumber = "HouseNumber", Street = "Street"}
-                            });
-                            p("Объявление успешно добавлено");
+                                Content = new StringContent(JsonConvert.SerializeObject(new NewAdvertDto
+                                {
+                                    Header = words[1],
+                                    Description = words[2],
+                                    CategoryId = Int64.Parse(words[3]),
+                                    Price = UInt32.Parse(words[4]),
+                                    AuthorId = currentUser.Id,
+                                    Location = new BusinessLogicLayer.Objects.Address.AddressDto { Country = "Country", Area = "Area", City = "City", HouseNumber = "HouseNumber", Street = "Street" }
+
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri($"{host}/api/v1/adverts")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p($"Объявление добавлено: {response.StatusCode}");
+
                         }
                         catch (Exception ex)
                         {
@@ -171,14 +207,37 @@ namespace at
                         break;
                     case "ad_getall" when words.Length == 1:
                         p("Все объявления:");
-                        advertList = advertManager.GetAll();
-                        p(advertList);
+
+                        request = new HttpRequestMessage
+                        {
+                            Method = HttpMethod.Get,
+                            RequestUri = new Uri($"{host}/api/v1/adverts")
+                        };
+                        response = client.SendAsync(request).Result;
+
+                        p(JsonConvert.DeserializeObject<AdvertDto[]>(response.Content.ReadAsStringAsync().Result));
+
+
                         break;
                     case "ad_getall_my" when words.Length == 1:
                         p("Все ваши объявления");
                         try
                         {
-                            p(advertManager.GetAdvertsByFilter(new AdvertFilter { UserId = currentUser.Id, Size = 20 }).Items.ToArray());
+
+                            request = new HttpRequestMessage
+                            {
+                                Content = new StringContent(JsonConvert.SerializeObject(new AdvertFilter
+                                {
+                                    UserId = currentUser.Id,
+                                    Size = 20
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri($"{host}/api/v1/adverts/filter")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p(JsonConvert.DeserializeObject<AdvertDto[]>(response.Content.ReadAsStringAsync().Result));
+
                         }
                         catch (Exception ex)
                         {
@@ -188,20 +247,28 @@ namespace at
                     case "ad_update" when words.Length == 6:
                         try
                         {
-                            advertManager.Update(new UpdateAdvertDto
+                         
+                            request = new HttpRequestMessage
                             {
-                                AuthorId = currentUser.Id,
-                                Id = Int64.Parse(words[1]),
-                                Header = words[2],
-                                Description = words[3],
-                                CategoryId = Int64.Parse(words[4]),
-                                Price = UInt32.Parse(words[5]),
-                                Location = new BusinessLogicLayer.Objects.Address.AddressDto { Country = "Country1", Area = "Area1", City = "City1", HouseNumber = "HouseNumber1", Street = "Stree1at" }
+                                Content = new StringContent(JsonConvert.SerializeObject(new UpdateAdvertDto
+                                {
+                                    AuthorId = currentUser.Id,
+                                    Id = Int64.Parse(words[1]),
+                                    Header = words[2],
+                                    Description = words[3],
+                                    CategoryId = Int64.Parse(words[4]),
+                                    Price = UInt32.Parse(words[5]),
+                                    Location = new BusinessLogicLayer.Objects.Address.AddressDto { Country = "Country1", Area = "Area1", City = "City1", HouseNumber = "HouseNumber1", Street = "Stree1at" }
 
-                            });
-                            p("Объявление успешно обновлено");
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Put,
+                                RequestUri = new Uri($"{host}/api/v1/adverts")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p($"Объявление обновлено: {response.StatusCode}");
                         }
-                        catch (Exception ex) 
+                        catch (Exception ex)
                         {
                             p(ex.Message);
                         }
@@ -209,32 +276,46 @@ namespace at
                     case "ad_remove" when words.Length == 2:
                         try
                         {
-
-                            var ad = new RemoveAdvertDto
-                            {
-                                AdvertId = Int64.Parse(words[1]),
-                                UserId = currentUser.Id
-                            };
-                            advertManager.Remove(ad);
                             
-                            p("Объявление успешно удалено");
+                            request = new HttpRequestMessage
+                            {
+                                Content = new StringContent(JsonConvert.SerializeObject(new RemoveAdvertDto
+                                {
+                                    AdvertId = Int64.Parse(words[1]),
+                                    UserId = currentUser.Id
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Delete,
+                                RequestUri = new Uri($"{host}/api/v1/adverts")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p($"Объявление удалено: {response.StatusCode}");
+
                         }
                         catch (Exception ex)
                         {
-                            
+
                             p(ex.Message);
                         }
                         break;
                     case "comment_add" when words.Length == 3:
                         try
                         {
-                            advertManager.AddComment(new NewCommentDto
+                            request = new HttpRequestMessage
                             {
-                                AuthorId = currentUser.Id,
-                                AdvertId = Int64.Parse(words[1]),
-                                Text = words[2]
-                            });
-                            p("Комментарий успешно добавлен");
+                                Content = new StringContent(JsonConvert.SerializeObject(new NewCommentDto
+                                {
+                                    AuthorId = currentUser.Id,
+                                    AdvertId = Int64.Parse(words[1]),
+                                    Text = words[2]
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri($"{host}/api/v1/adverts/comments")
+                            };
+                            response = client.SendAsync(request).Result;
+
+                            p($"Комментарий добавлен: {response.StatusCode}");
+
                         }
                         catch (Exception ex)
                         {
@@ -245,8 +326,22 @@ namespace at
                         p("Список комментариев этого объявления:");
                         try
                         {
-                            var ad = advertManager.GetAdvertsByFilter(new AdvertFilter { AdvertId = Int64.Parse(words[1]) }).Items.ToArray()[0];
-                            p(ad.Comments);
+                       
+                            request = new HttpRequestMessage
+                            {
+                                Content = new StringContent(JsonConvert.SerializeObject(new AdvertFilter
+                                {
+                                    AdvertId = Int64.Parse(words[1]),
+                                    Size = 20
+                                }), Encoding.UTF8, "application/json"),
+                                Method = HttpMethod.Post,
+                                RequestUri = new Uri($"{host}/api/v1/adverts/filter")
+                            };
+                            response = client.SendAsync(request).Result;
+                            
+                            p(JsonConvert.DeserializeObject<AdvertDto[]>(response.Content.ReadAsStringAsync().Result)[0].Comments);
+
+
                         }
                         catch (Exception ex) { p(ex.Message); }
                         break;
