@@ -16,6 +16,7 @@ namespace BusinessLogicLayer.Tests
     {
         private readonly Mock<IAdvertRepository> _advertRepository;
         private readonly Mock<ICategoryRepository> _categoryRepository;
+        private readonly CategoryManager _categoryManager;
         private readonly AdvertManager _advertManager;
 
         public AdvertManagerTest() {
@@ -33,7 +34,9 @@ namespace BusinessLogicLayer.Tests
             _advertRepository = new Mock<IAdvertRepository>();
             _categoryRepository = new Mock<ICategoryRepository>();
 
-            _advertManager = new AdvertManager(_advertRepository.Object, _categoryRepository.Object, mapper);
+            _advertManager = new AdvertManager(_advertRepository.Object, mapper);
+            _categoryManager = new CategoryManager(_categoryRepository.Object, mapper);
+
         
         }
         [SetUp]
@@ -61,7 +64,7 @@ namespace BusinessLogicLayer.Tests
                 CurrentPage = 1,
                 CreatedDateTime = null,
                 Description = null,
-                Category = null,
+                CategoryId = null,
                 HasPhotoOnly = null,
                 Price = null
             };
@@ -112,7 +115,7 @@ namespace BusinessLogicLayer.Tests
             // arrange 
             int length = 2;
             // act 
-            var cats = _advertManager.GetAllCategories();
+            var cats = _categoryManager.GetAllCategories();
             // assert
             Assert.AreEqual(length, cats.Length);
         }
