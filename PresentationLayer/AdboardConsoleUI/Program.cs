@@ -136,7 +136,7 @@ namespace at
                         try
                         {
                             int? temp = Int64.Parse(words[2]) == 0 ? (int?)null : Int32.Parse(words[2]);
-                            advertManager.AddCategory(new CategoryDto { Name = words[1], ParentCategoryId = temp });
+                            advertManager.AddCategory(new NewCategoryDto { Name = words[1], ParentCategoryId = temp });
                             p("Категория успешно добавлена.");
                         }
                         catch (Exception ex) {
@@ -178,7 +178,7 @@ namespace at
                         p("Все ваши объявления");
                         try
                         {
-                            p(advertManager.GetAllByUser(currentUser));
+                            p(advertManager.GetAdvertsByFilter(new AdvertFilter { UserId = currentUser.Id, Size = 20 }).Items.ToArray());
                         }
                         catch (Exception ex)
                         {
@@ -245,7 +245,7 @@ namespace at
                         p("Список комментариев этого объявления:");
                         try
                         {
-                            var ad = advertManager.Get(Int64.Parse(words[1]));
+                            var ad = advertManager.GetAdvertsByFilter(new AdvertFilter { AdvertId = Int64.Parse(words[1]) }).Items.ToArray()[0];
                             p(ad.Comments);
                         }
                         catch (Exception ex) { p(ex.Message); }

@@ -9,6 +9,7 @@ using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BusinessLogicLayer.Implementation
@@ -27,7 +28,7 @@ namespace BusinessLogicLayer.Implementation
             _mapper = mapper;
         }
 
-        public void AddCategory(CategoryDto dto)
+        public void AddCategory(NewCategoryDto dto)
         {
             _categoryRepository.Add(_mapper.Map<Category>(dto));
             _categoryRepository.SaveChanges();
@@ -76,14 +77,20 @@ namespace BusinessLogicLayer.Implementation
             if (filter == null)
                 throw new NullReferenceException("Не задан фильтр");
 
-            if (filter.HasPhotoOnly != null)
+            if (filter.AdvertId != null)
+                adverts = adverts.Where(x => x.Id == filter.AdvertId);
+
+            if (filter.UserId != null)
+                adverts = adverts.Where(x => x.AuthorId == filter.UserId);
+
+            if (filter.HasPhotoOnly != null && filter.HasPhotoOnly == true)
                 adverts = adverts.Where(x => x.Photos != null);
 
             if (!string.IsNullOrEmpty(filter.Header))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}%"));
 
-            if (filter.Category != null)
-                adverts = adverts.Where(x => x.CategoryId == filter.Category.Id);
+            if (filter.CategoryId != null)
+                adverts = adverts.Where(x => x.CategoryId == filter.CategoryId);
 
             if (!string.IsNullOrEmpty(filter.Description))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
@@ -94,10 +101,14 @@ namespace BusinessLogicLayer.Implementation
             if (filter.Price != null)
                 adverts = adverts.Where(x => x.Price > filter.Price.From && x.Price < filter.Price.To);
 
+            
+
             adverts.Take(filter.Size).Skip((filter.CurrentPage - 1) * filter.Size);
 
+            
+
             return new PagingResult<AdvertDto> {
-                Items = adverts.Select(x => _mapper.Map<AdvertDto>(x)).ToList(),
+                Items = _mapper.Map<List<AdvertDto>>(adverts),
                 TotalRows = adverts.Count()
 
             };

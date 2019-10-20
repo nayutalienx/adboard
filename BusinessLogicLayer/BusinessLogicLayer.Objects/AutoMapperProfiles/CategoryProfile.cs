@@ -10,6 +10,7 @@ namespace BusinessLogicLayer.Objects.AutoMapperProfiles
     {
         public CategoryProfile() {
             CreateMap<CategoryDto, DataAccessLayer.Models.Category>().ReverseMap();
+            CreateMap<NewCategoryDto, DataAccessLayer.Models.Category>().ReverseMap();
         }
     }
 }
