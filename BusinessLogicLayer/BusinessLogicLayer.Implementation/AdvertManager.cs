@@ -17,22 +17,18 @@ namespace BusinessLogicLayer.Implementation
     public class AdvertManager : IAdvertManager
     {
         private readonly IAdvertRepository _advertRepository;
-        private readonly ICategoryRepository _categoryRepository;
+        
         
         private readonly IMapper _mapper;
 
-        public AdvertManager(IAdvertRepository advertRepositor,ICategoryRepository categoryRepository, IMapper mapper)
+        public AdvertManager(IAdvertRepository advertRepositor, IMapper mapper)
         {
             _advertRepository = advertRepositor;
-            _categoryRepository = categoryRepository;
+           
             _mapper = mapper;
         }
 
-        public void AddCategory(NewCategoryDto dto)
-        {
-            _categoryRepository.Add(_mapper.Map<Category>(dto));
-            _categoryRepository.SaveChanges();
-        }
+        
 
         public void AddComment(NewCommentDto dto)
         {
@@ -126,10 +122,7 @@ namespace BusinessLogicLayer.Implementation
             return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().Where(ad => ad.Author.Id == user.Id).ToArray());
         }
 
-        public CategoryDto[] GetAllCategories()
-        {
-            return _mapper.Map<CategoryDto[]>(_categoryRepository.GetAll().ToArray());
-        }
+        
 
         public void Remove(RemoveAdvertDto dto)
         {

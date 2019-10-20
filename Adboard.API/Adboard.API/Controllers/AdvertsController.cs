@@ -39,16 +39,7 @@ namespace Adboard.API.Controllers
             var result = _advertManager.GetAll();
             return Ok(result);
         }
-        /// <summary>
-        /// Get all categories
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("categories")]
-        [ProducesResponseType(typeof(IEnumerable<CategoryDto>), statusCode: (int)HttpStatusCode.OK)]
-        public ActionResult GetAllCategories() {
-            var result = _advertManager.GetAllCategories();
-            return Ok(result);
-        }
+        
 
         /// <summary>
         /// Add advert
@@ -63,16 +54,20 @@ namespace Adboard.API.Controllers
             return NoContent();
         }
 
+
+
+        
+
         /// <summary>
-        /// Add category
+        /// Update advert
         /// </summary>
-        /// <param name="category"></param>
+        /// <param name="advert"></param>
         /// <returns></returns>
-        [HttpPost("categories")]
+        [HttpPut]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
-        public ActionResult AddCategory([FromBody] NewCategoryDto category) 
+        public ActionResult UpdateAdvert([FromBody] UpdateAdvertDto advert)
         {
-            _advertManager.AddCategory(category);
+            _advertManager.Update(advert);
             return NoContent();
         }
 
@@ -115,6 +110,19 @@ namespace Adboard.API.Controllers
         public ActionResult GetByFilter([FromBody] AdvertFilter filter) {
             var result = _advertManager.GetAdvertsByFilter(filter);
             return Ok(result.Items);
+        }
+
+        /// <summary>
+        /// Delete advert
+        /// </summary>
+        /// <param name="advert"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
+        public ActionResult DeleteAdvert([FromBody] RemoveAdvertDto advert)
+        {
+            _advertManager.Remove(advert);
+            return NoContent();
         }
     }
 }

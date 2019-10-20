@@ -24,6 +24,7 @@ namespace Infrastructure.DependencyInjection
 
             serviceCollection.AddTransient<IAdvertManager, AdvertManager>()
                 .AddTransient<IUserManager, UserManager>()
+                .AddTransient<ICategoryManager, CategoryManager>()
                 .AddTransient<IAdvertRepository, AdvertRepository>()
                 .AddTransient<IUserRepository, UserRepository>()
                 .AddTransient<ICategoryRepository, CategoryRepository>()
