@@ -1,0 +1,30 @@
+﻿@using IdentityServer.Objects;
+@model IEnumerable<UserViewModel>
+@{
+    ViewData["Title"] = "AdminPanel";
+}
+
+<h1>Users Panel</h1>
+
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Email</th>
+            <th scope="col">Username</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.Username</td>
+            <td><a class="btn btn-primary" href="~/Account/EditUser/@user.Id" role="button">Edit</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary" href="~/Account/CreateUser" role="button">Add new user</a>

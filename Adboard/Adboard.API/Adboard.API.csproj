@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\study\solar\master\Adboard.API\Adboard.API\Adboard.API.xml</DocumentationFile>
+    <DocumentationFile>D:\study\solar\master\Adboard\Adboard.API\Adboard.API.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
+    <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>
