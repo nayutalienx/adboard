@@ -2,7 +2,6 @@
 using BusinessLogicLayer.Objects.Category;
 using BusinessLogicLayer.Objects.Comment;
 using BusinessLogicLayer.Objects.Paging;
-using BusinessLogicLayer.Objects.User;
 using System;
 
 namespace BusinessLogicLayer.Abstraction

@@ -18,10 +18,7 @@ namespace DataAccessLayer.EntityFramework.Configurations
                 .HasForeignKey(comment => comment.AdvertId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne<User>(comment => comment.Author)
-                .WithMany(user => user.Comments)
-                .HasForeignKey(comment => comment.AuthorId)
-                .OnDelete(DeleteBehavior.Restrict);
+            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.Objects.Advert;
 using BusinessLogicLayer.Objects.Comment;
-using BusinessLogicLayer.Objects.User;
+
 
 namespace BusinessLogicLayer.Objects.AutoMapperProfiles
 {

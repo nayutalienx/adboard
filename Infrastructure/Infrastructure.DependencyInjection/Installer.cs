@@ -15,7 +15,6 @@ namespace Infrastructure.DependencyInjection
 
         public static IServiceCollection Install(this IServiceCollection serviceCollection) {
             var mapperConfiguration = new MapperConfiguration(config => {
-                config.AddProfile(new UserProfile());
                 config.AddProfile(new AdvertProfile());
                 config.AddProfile(new CommentProfile());
                 config.AddProfile(new CategoryProfile());
@@ -24,10 +23,8 @@ namespace Infrastructure.DependencyInjection
             });
 
             serviceCollection.AddTransient<IAdvertManager, AdvertManager>()
-                .AddTransient<IUserManager, UserManager>()
                 .AddTransient<ICategoryManager, CategoryManager>()
                 .AddTransient<IAdvertRepository, AdvertRepository>()
-                .AddTransient<IUserRepository, UserRepository>()
                 .AddTransient<ICategoryRepository, CategoryRepository>()
                 .AddTransient<IAddressRepository, AddressRepository>()
                 .AddTransient<ICommentRepository, CommentRepository>()

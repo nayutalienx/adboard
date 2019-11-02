@@ -15,7 +15,6 @@ namespace DataAccessLayer.EntityFramework
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new AdvertConfiguration());
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
             modelBuilder.ApplyConfiguration(new AddressConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
@@ -23,7 +22,6 @@ namespace DataAccessLayer.EntityFramework
              
         } 
           
-        DbSet<User> Users { get; set; }
         DbSet<Advert> Adverts { get; set; }
         DbSet<Comment> Comments { get; set; }
         DbSet<Category> Categories { get; set; }

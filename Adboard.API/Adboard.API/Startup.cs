@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Adboard.API
@@ -31,17 +32,54 @@ namespace Adboard.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = "http://localhost:5005";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "dashboard-api";
+                    
+                });
+           
             services.Install();  // dependency injection
 
             services.AddSwaggerGen(x =>
             {
-                x.SwaggerDoc("v1", new Info { Title = "Dashboard API", Version = "v1" });
+                x.SwaggerDoc("v1", new Info { Title = "Adboard API", Version = "v1" });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
                 if (File.Exists(xmlPath))
                     x.IncludeXmlComments(xmlPath);
+
+                x.AddSecurityDefinition("Bearer", new ApiKeyScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                x.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", new string[] { } },
+                    { "Basic", new string[]{ } }
+                });
+
+                //x.OperationFilter<SecurityRequirementsOperationFilter>(); to show access in swagger UI (may be the reason of not sending token)
+                
+            });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("dashboard-app", policy =>
+                {
+                    policy.WithOrigins("http://localhost:5004")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    
+                });
             });
         }
 
@@ -58,6 +96,8 @@ namespace Adboard.API
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
+            app.UseCors("dashboard-app");
             ConfigureSwagger(app);
 
             app.UseHttpsRedirection();

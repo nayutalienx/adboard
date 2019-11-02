@@ -7,24 +7,10 @@ namespace BusinessLogicLayer.Tests
 {
     public static class FakeData
     {
-        public static List<User> GetFakeUsers() {
-            return new List<User> {
-                new User
-                {
-                Id = 1,
-                Name = "Ivan",
-                Email = "mail",
-                Password = "password",
-                PhoneNumber = "74234"
-                },
-                new User
-                {
-                Id = 2,
-                Name = "Ivan1",
-                Email = "mail1",
-                Password = "password",
-                PhoneNumber = "74234"
-                }
+        public static List<string> GetFakeUsers() {
+            return new List<string> {
+                "id1",
+                "id2"
             };
         }
         public static List<Category> GetFakeCategories() {
@@ -53,16 +39,15 @@ namespace BusinessLogicLayer.Tests
 
             var users = GetFakeUsers();
 
-            User author = users[0];
-            User author1 = users[1];
+            string author = users[0];
+            string author1 = users[1];
 
 
             return new List<Advert>
             {
                 new Advert{
                     Id = 1,
-                    AuthorId = author.Id,
-                    Author = author,
+                    UserId = author,
                     Header = "Felix",
                     Description = "Cool cat",
                     CategoryId = category.Id,
@@ -82,24 +67,21 @@ namespace BusinessLogicLayer.Tests
                         new Comment {
                             Id = 1,
                             Text = "commenttext1",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 1,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 2,
                             Text = "commenttext2",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 1,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 3,
                             Text = "commenttext3",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 1,
                             CreatedDateTime = DateTime.Now
                         }
@@ -109,8 +91,7 @@ namespace BusinessLogicLayer.Tests
 
                 new Advert{
                     Id = 2,
-                    AuthorId = author1.Id,
-                    Author = author1,
+                    UserId = author1,
                     Header = "Felix2",
                     Description = "Cool cat2",
                     CategoryId = category.Id,
@@ -130,24 +111,21 @@ namespace BusinessLogicLayer.Tests
                         new Comment {
                             Id = 4,
                             Text = "commenttext1",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 2,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 5,
                             Text = "commenttext2",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 2,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 6,
                             Text = "commenttext3",
-                            AuthorId = author1.Id,
-                            Author = author1,
+                            UserId = author1,
                             AdvertId = 2,
                             CreatedDateTime = DateTime.Now
                         }
@@ -156,8 +134,7 @@ namespace BusinessLogicLayer.Tests
                 },
                 new Advert{
                     Id = 3,
-                    AuthorId = author1.Id,
-                    Author = author1,
+                    UserId = author1,
                     Header = "Felix3",
                     Description = "Cool cat3",
                     CategoryId = category.Id,
@@ -177,24 +154,21 @@ namespace BusinessLogicLayer.Tests
                         new Comment {
                             Id = 7,
                             Text = "commenttext1",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 3,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 8,
                             Text = "commenttext2",
-                            AuthorId = author.Id,
-                            Author = author,
+                            UserId = author,
                             AdvertId = 3,
                             CreatedDateTime = DateTime.Now
                         },
                         new Comment {
                             Id = 9,
                             Text = "commenttext3",
-                            AuthorId = author1.Id,
-                            Author = author1,
+                            UserId = author1,
                             AdvertId = 3,
                             CreatedDateTime = DateTime.Now
                         }

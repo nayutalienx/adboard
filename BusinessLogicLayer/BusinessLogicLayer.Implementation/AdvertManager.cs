@@ -4,7 +4,7 @@ using BusinessLogicLayer.Objects.Advert;
 using BusinessLogicLayer.Objects.Category;
 using BusinessLogicLayer.Objects.Comment;
 using BusinessLogicLayer.Objects.Paging;
-using BusinessLogicLayer.Objects.User;
+
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
@@ -34,8 +34,6 @@ namespace BusinessLogicLayer.Implementation
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            if (dto.AuthorId == -1)
-                throw new Exception($"{nameof(dto)} Гости не могут добавлять комментарии");
             if(string.IsNullOrEmpty(dto.Text))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
 
@@ -52,8 +50,6 @@ namespace BusinessLogicLayer.Implementation
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            if (dto.AuthorId == -1)
-                throw new Exception($"{nameof(dto)} Гости не могут добавлять объявления");
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
             var advert = _mapper.Map<Advert>(dto);
@@ -77,7 +73,7 @@ namespace BusinessLogicLayer.Implementation
                 adverts = adverts.Where(x => x.Id == filter.AdvertId);
 
             if (filter.UserId != null)
-                adverts = adverts.Where(x => x.AuthorId == filter.UserId);
+                adverts = adverts.Where(x => x.UserId.Equals(filter.UserId));
 
             if (filter.HasPhotoOnly != null && filter.HasPhotoOnly == true)
                 adverts = adverts.Where(x => x.Photos != null);
@@ -115,11 +111,9 @@ namespace BusinessLogicLayer.Implementation
             return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().ToArray());
         }
 
-        public AdvertDto[] GetAllByUser(UserDto user)
+        public AdvertDto[] GetAllByUserId(string userid)
         {
-            if (user.Id == -1)
-                throw new Exception($"{nameof(user)} У гостей не может быть объявлений");
-            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().Where(ad => ad.Author.Id == user.Id).ToArray());
+            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().Where(ad => ad.UserId.Equals(userid)).ToArray());
         }
 
         
@@ -129,15 +123,14 @@ namespace BusinessLogicLayer.Implementation
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
             
-            if (dto.UserId == -1)
-                throw new Exception($"{nameof(dto)} Гости не могут удалять объявления");
+            
             
             var _ad = _advertRepository.Get(dto.AdvertId);
             
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
             
-            if (_ad.Author.Id != dto.UserId)
+            if (!_ad.UserId.Equals(dto.UserId))
                 throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
             
             _advertRepository.Remove(_ad);
@@ -151,14 +144,12 @@ namespace BusinessLogicLayer.Implementation
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            if (dto.AuthorId == -1)
-                throw new Exception($"{nameof(dto)} Гости не могут обновлять объявления");
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
             var _ad = _advertRepository.Get(dto.Id);
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
-            if (_ad.Author.Id != dto.AuthorId)
+            if (!_ad.UserId.Equals(dto.UserId))
                 throw new Exception($"{nameof(dto)} Вы не имеете право изменять это объявление");
 
             _ad.Header = dto.Header;

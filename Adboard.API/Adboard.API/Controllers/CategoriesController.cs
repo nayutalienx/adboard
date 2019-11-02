@@ -5,7 +5,7 @@ using System.Net;
 
 using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Objects.Category;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -27,7 +27,8 @@ namespace Adboard.API.Controllers
         /// Get all categories
         /// </summary>
         /// <returns></returns>
-        [HttpGet()]
+        [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<CategoryDto>), statusCode: (int)HttpStatusCode.OK)]
         public ActionResult GetAllCategories()
         {
@@ -40,7 +41,8 @@ namespace Adboard.API.Controllers
         /// </summary>
         /// <param name="category"></param>
         /// <returns></returns>
-        [HttpPost()]
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult AddCategory([FromBody] NewCategoryDto category)
         {

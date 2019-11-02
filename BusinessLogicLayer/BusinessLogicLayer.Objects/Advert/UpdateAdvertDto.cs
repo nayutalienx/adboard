@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.Objects.Address;
 using BusinessLogicLayer.Objects.Category;
 using BusinessLogicLayer.Objects.Photo;
-using BusinessLogicLayer.Objects.User;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ namespace BusinessLogicLayer.Objects.Advert
 {
     public class UpdateAdvertDto
     {
-        public long AuthorId { get; set; }
+        public string UserId { get; set; }
         public long Id { get; set; }
         public string Header { get; set; }
         public string Description { get; set; }

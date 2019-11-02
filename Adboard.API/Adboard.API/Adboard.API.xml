@@ -65,5 +65,17 @@
             <param name="category"></param>
             <returns></returns>
         </member>
+        <member name="M:Dashboard.Api.Controllers.UserController.UserInfo">
+            <summary>
+            User info
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Dashboard.Api.Controllers.UserController.AdminInfo">
+            <summary>
+            Admin info
+            </summary>
+            <returns></returns>
+        </member>
     </members>
 </doc>

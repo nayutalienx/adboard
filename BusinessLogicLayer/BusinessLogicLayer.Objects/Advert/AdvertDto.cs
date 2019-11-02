@@ -2,7 +2,7 @@
 using BusinessLogicLayer.Objects.Category;
 using BusinessLogicLayer.Objects.Comment;
 using BusinessLogicLayer.Objects.Photo;
-using BusinessLogicLayer.Objects.User;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +18,7 @@ namespace BusinessLogicLayer.Objects.Advert
         public PhotoDto[] Photo { get; set; }
         public uint Price { get; set; }
         public DateTime CreatedDateTime { get; set; }
-        public UserDto Author { get; set; }
+        public string UserId { get; set; }
         public CommentDto[] Comments { get; set; }
         public AddressDto Location { get; set; }
     }

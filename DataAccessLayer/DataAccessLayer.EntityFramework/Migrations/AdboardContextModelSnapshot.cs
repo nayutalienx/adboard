@@ -56,8 +56,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long>("AuthorId");
-
                     b.Property<long>("CategoryId");
 
                     b.Property<DateTime>("CreatedDateTime");
@@ -69,9 +67,9 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
                     b.Property<long>("Price");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId");
 
-                    b.HasIndex("AuthorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
@@ -104,18 +102,16 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
                     b.Property<long>("AdvertId");
 
-                    b.Property<long>("AuthorId");
-
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<string>("Text")
                         .HasMaxLength(300);
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertId");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("Comments");
                 });
@@ -137,31 +133,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Role");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Address", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
@@ -172,11 +143,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany("Adverts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("DataAccessLayer.Models.Category", "Category")
                         .WithMany("Adverts")
                         .HasForeignKey("CategoryId")
@@ -197,11 +163,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("AdvertId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany("Comments")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Photo", b =>

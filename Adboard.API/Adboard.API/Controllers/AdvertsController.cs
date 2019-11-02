@@ -7,7 +7,7 @@ using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Objects.Advert;
 
 using BusinessLogicLayer.Objects.Comment;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -28,6 +28,7 @@ namespace Adboard.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(IEnumerable<AdvertDto>), statusCode: (int)HttpStatusCode.OK)]
         public ActionResult GetAllAdverts() {
             var result = _advertManager.GetAll();
@@ -41,6 +42,7 @@ namespace Adboard.API.Controllers
         /// <param name="advert"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult AddAdvert([FromBody] NewAdvertDto advert)
         {
@@ -58,6 +60,7 @@ namespace Adboard.API.Controllers
         /// <param name="advert"></param>
         /// <returns></returns>
         [HttpPut]
+        [Authorize]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult UpdateAdvert([FromBody] UpdateAdvertDto advert)
         {
@@ -71,6 +74,7 @@ namespace Adboard.API.Controllers
         /// <param name="comment"></param>
         /// <returns></returns>
         [HttpPost("comments")]
+        [Authorize]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult AddComment(NewCommentDto comment)
         {
@@ -84,6 +88,7 @@ namespace Adboard.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id:int}")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(AdvertDto), statusCode: (int) HttpStatusCode.OK)]
         public ActionResult Get(int id)
         {
@@ -100,6 +105,7 @@ namespace Adboard.API.Controllers
         /// <param name="filter"></param>
         /// <returns></returns>
         [HttpPost("filter")]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<AdvertDto>), statusCode: (int)HttpStatusCode.OK)]
         public ActionResult GetByFilter([FromBody] AdvertFilter filter) {
             var result = _advertManager.GetAdvertsByFilter(filter);
@@ -112,6 +118,7 @@ namespace Adboard.API.Controllers
         /// <param name="advert"></param>
         /// <returns></returns>
         [HttpDelete]
+        [Authorize]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
         public ActionResult DeleteAdvert([FromBody] RemoveAdvertDto advert)
         {

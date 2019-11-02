@@ -21,7 +21,6 @@ namespace BusinessLogicLayer.Tests
 
         public AdvertManagerTest() {
             MapperConfiguration mapperConfiguration = new MapperConfiguration(config => {
-                config.AddProfile(new UserProfile());
                 config.AddProfile(new AdvertProfile());
                 config.AddProfile(new CommentProfile());
                 config.AddProfile(new CategoryProfile());
@@ -91,13 +90,13 @@ namespace BusinessLogicLayer.Tests
         [Test]
         public void TestGetAdvertByUser() {
             // arrange
-            int id = 2;
+            string id = "id2";
             // act
-            AdvertDto[] advertDtos = _advertManager.GetAllByUser(new Objects.User.UserDto { Id = id });
+            AdvertDto[] advertDtos = _advertManager.GetAllByUserId(id);
 
             // assert
             foreach (var ad in advertDtos)
-                Assert.AreEqual(ad.Author.Id, id);
+                Assert.AreEqual(ad.UserId, id);
 
             Assert.AreEqual(advertDtos.Length, 2);
         }

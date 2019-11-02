@@ -11,8 +11,7 @@ namespace DataAccessLayer.Models
         public long CategoryId { get; set; }
         public virtual Category Category { get; set; }
         public DateTime CreatedDateTime { get; set; }
-        public long AuthorId { get; set; }
-        public virtual User Author { get; set; }
+        public string UserId { get; set; }
         public uint Price { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Photo> Photos { get; set; }
