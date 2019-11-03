@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.Objects.Address;
+﻿using Adboard.Contracts.DTOs.Address;
+using AutoMapper;
+
 using System;
 using System.Collections.Generic;
 using System.Text;

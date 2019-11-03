@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.Objects.Comment;
+﻿using Adboard.Contracts.DTOs.Comment;
+using AutoMapper;
+
 using System;
 using System.Collections.Generic;
 using System.Text;

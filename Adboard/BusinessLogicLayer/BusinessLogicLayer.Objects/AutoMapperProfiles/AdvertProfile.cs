@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.Objects.Advert;
-using BusinessLogicLayer.Objects.Comment;
+﻿using Adboard.Contracts.DTOs.Advert;
+using AutoMapper;
+
 
 
 namespace BusinessLogicLayer.Objects.AutoMapperProfiles

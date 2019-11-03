@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.Objects.Category;
+﻿using Adboard.Contracts.DTOs.Category;
+using AutoMapper;
+
 using System;
 using System.Collections.Generic;
 using System.Text;

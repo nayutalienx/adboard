@@ -1,7 +1,7 @@
-﻿using BusinessLogicLayer.Objects.Advert;
-using BusinessLogicLayer.Objects.Category;
-using BusinessLogicLayer.Objects.Comment;
-using BusinessLogicLayer.Objects.Paging;
+﻿
+using Adboard.Contracts.DTOs.Advert;
+using Adboard.Contracts.DTOs.Comment;
+using Adboard.Contracts.DTOs.Paging;
 using System;
 
 namespace BusinessLogicLayer.Abstraction

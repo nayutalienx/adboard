@@ -3,11 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-
+using Adboard.Contracts.DTOs.Advert;
+using Adboard.Contracts.DTOs.Comment;
 using BusinessLogicLayer.Abstraction;
-using BusinessLogicLayer.Objects.Advert;
 
-using BusinessLogicLayer.Objects.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,6 +1,7 @@
+using Adboard.Contracts.DTOs.Advert;
 using AutoMapper;
 using BusinessLogicLayer.Implementation;
-using BusinessLogicLayer.Objects.Advert;
+
 using BusinessLogicLayer.Objects.AutoMapperProfiles;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;

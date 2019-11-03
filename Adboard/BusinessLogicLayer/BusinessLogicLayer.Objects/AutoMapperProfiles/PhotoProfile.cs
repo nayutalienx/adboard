@@ -1,5 +1,6 @@
-﻿using AutoMapper;
-using BusinessLogicLayer.Objects.Photo;
+﻿using Adboard.Contracts.DTOs.Photo;
+using AutoMapper;
+
 using System;
 using System.Collections.Generic;
 using System.Text;

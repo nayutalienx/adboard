@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-
+using Adboard.Contracts.DTOs.Category;
 using BusinessLogicLayer.Abstraction;
-using BusinessLogicLayer.Objects.Category;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

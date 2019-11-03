@@ -1,6 +1,7 @@
-﻿using AutoMapper;
+﻿using Adboard.Contracts.DTOs.Category;
+using AutoMapper;
 using BusinessLogicLayer.Abstraction;
-using BusinessLogicLayer.Objects.Category;
+
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
 using System;

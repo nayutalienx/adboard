@@ -10,21 +10,21 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.AddAdvert(BusinessLogicLayer.Objects.Advert.NewAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.AddAdvert(Adboard.Contracts.DTOs.Advert.NewAdvertDto)">
             <summary>
             Add advert
             </summary>
             <param name="advert"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.UpdateAdvert(BusinessLogicLayer.Objects.Advert.UpdateAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.UpdateAdvert(Adboard.Contracts.DTOs.Advert.UpdateAdvertDto)">
             <summary>
             Update advert
             </summary>
             <param name="advert"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.AddComment(BusinessLogicLayer.Objects.Comment.NewCommentDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.AddComment(Adboard.Contracts.DTOs.Comment.NewCommentDto)">
             <summary>
             Add comment
             </summary>
@@ -38,14 +38,14 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.GetByFilter(BusinessLogicLayer.Objects.Advert.AdvertFilter)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.GetByFilter(Adboard.Contracts.DTOs.Advert.AdvertFilter)">
             <summary>
             Get adverts by filter
             </summary>
             <param name="filter"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.DeleteAdvert(BusinessLogicLayer.Objects.Advert.RemoveAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.DeleteAdvert(Adboard.Contracts.DTOs.Advert.RemoveAdvertDto)">
             <summary>
             Delete advert
             </summary>
@@ -58,7 +58,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.CategoriesController.AddCategory(BusinessLogicLayer.Objects.Category.NewCategoryDto)">
+        <member name="M:Adboard.API.Controllers.CategoriesController.AddCategory(Adboard.Contracts.DTOs.Category.NewCategoryDto)">
             <summary>
             Add category
             </summary>
