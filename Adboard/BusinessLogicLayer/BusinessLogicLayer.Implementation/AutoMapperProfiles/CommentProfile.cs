@@ -1,15 +1,15 @@
 ﻿using Adboard.Contracts.DTOs.Comment;
 using AutoMapper;
-
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLogicLayer.Objects.AutoMapperProfiles
+namespace BusinessLogicLayer.Implementation.AutoMapperProfiles
 {
     public class CommentProfile : Profile
     {
-        public CommentProfile() {
+        public CommentProfile()
+        {
             CreateMap<DataAccessLayer.Models.Comment, CommentDto>()
                 .ReverseMap();
 

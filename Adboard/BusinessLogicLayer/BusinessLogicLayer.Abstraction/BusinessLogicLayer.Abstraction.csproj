@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Adboard.Contracts\Adboard.Contracts.csproj" />
-    <ProjectReference Include="..\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj" />
   </ItemGroup>
 
 </Project>

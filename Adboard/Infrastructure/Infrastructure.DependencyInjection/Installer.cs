@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.Abstraction;
 using BusinessLogicLayer.Implementation;
-using BusinessLogicLayer.Objects.AutoMapperProfiles;
+using BusinessLogicLayer.Implementation.AutoMapperProfiles;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.EntityFramework;
 using DataAccessLayer.Repositories;

@@ -17,7 +17,6 @@
     <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Models\DataAccessLayer.Models.csproj" />
     <ProjectReference Include="..\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
     <ProjectReference Include="..\BusinessLogicLayer.Implementation\BusinessLogicLayer.Implementation.csproj" />
-    <ProjectReference Include="..\BusinessLogicLayer.Objects\BusinessLogicLayer.Objects.csproj" />
   </ItemGroup>
 
 </Project>

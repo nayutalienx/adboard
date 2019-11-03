@@ -1,9 +1,10 @@
 ﻿using Adboard.Contracts.DTOs.Advert;
 using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-
-
-namespace BusinessLogicLayer.Objects.AutoMapperProfiles
+namespace BusinessLogicLayer.Implementation.AutoMapperProfiles
 {
     public class AdvertProfile : Profile
     {
