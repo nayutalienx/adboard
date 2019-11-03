@@ -15,7 +15,7 @@ namespace Adboard.API.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : ApiController
     {
         private readonly ICategoryManager _categoryManager;
 
@@ -30,11 +30,9 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(IEnumerable<CategoryDto>), statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetAllCategoriesAsync()
+        public async Task<IActionResult> GetAllCategoriesAsync()
         {
-            var result = await _categoryManager.GetAllCategoriesAsync();
-            return Ok(result);
+            return ApiResult(await _categoryManager.GetAllCategoriesAsync());
         }
 
         /// <summary>
@@ -44,11 +42,9 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
-        public async Task<ActionResult> AddCategoryAsync([FromBody] NewCategoryDto category)
+        public async Task<IActionResult> AddCategoryAsync([FromBody] NewCategoryDto category)
         {
-            await _categoryManager.AddCategoryAsync(category);
-            return NoContent();
+            return ApiResult(await _categoryManager.AddCategoryAsync(category));
         }
     }
 }

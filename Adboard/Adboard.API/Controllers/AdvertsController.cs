@@ -17,7 +17,7 @@ namespace Adboard.API.Controllers
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class AdvertsController : ControllerBase
+    public class AdvertsController : ApiController
     {
         private readonly IAdvertManager _advertManager;
 
@@ -30,10 +30,8 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [ProducesResponseType(typeof(IEnumerable<AdvertDto>), statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetAllAdvertsAsync() {
-            var result = await _advertManager.GetAllAsync();
-            return Ok(result);
+        public async Task<IActionResult> GetAllAdvertsAsync() {
+            return ApiResult(await _advertManager.GetAllAsync());
         }
         
 
@@ -44,14 +42,12 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> AddAdvertAsync([FromBody] NewAdvertDto advert)
+        public async Task<IActionResult> AddAdvertAsync([FromBody] NewAdvertDto advert)
         {
             string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
             if (!advert.UserId.Equals(id))
                 throw new Exception($"{nameof(advert)} Access denied");
-            await _advertManager.CreateAsync(advert);
-            return Ok("Advert added.");
+            return ApiResult(await _advertManager.CreateAsync(advert));
         }
 
 
@@ -65,14 +61,12 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> UpdateAdvertAsync([FromBody] UpdateAdvertDto advert)
+        public async Task<IActionResult> UpdateAdvertAsync([FromBody] UpdateAdvertDto advert)
         {
             string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
             if (!advert.UserId.Equals(id))
                 throw new Exception($"{nameof(advert)} Access denied");
-            await _advertManager.UpdateAsync(advert);
-            return Ok("Updated.");
+            return ApiResult(await _advertManager.UpdateAsync(advert));
         }
 
         /// <summary>
@@ -82,11 +76,9 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost("comments")]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> AddCommentAsync(NewCommentDto comment)
+        public async Task<IActionResult> AddCommentAsync(NewCommentDto comment)
         {
-            await _advertManager.AddCommentAsync(comment);
-            return Ok("Comment added.");
+            return ApiResult(await _advertManager.AddCommentAsync(comment));
         }
 
         /// <summary>
@@ -96,14 +88,13 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpGet("{id:int}")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(AdvertDto), statusCode: (int) HttpStatusCode.OK)]
-        public async Task<ActionResult> GetAsync(int id)
+        public async Task<IActionResult> GetAsync(int id)
         {
             var ad = await _advertManager.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id }); ;
             if (ad.Items == null)
                 return NotFound();
 
-            return Ok(ad.Items);
+            return ApiResult(ad.Items);
         }
 
         /// <summary>
@@ -113,10 +104,8 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost("filter")]
         [AllowAnonymous]
-        [ProducesResponseType(typeof(IEnumerable<AdvertDto>), statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> GetByFilterAsync([FromBody] AdvertFilter filter) {
-            var result = await _advertManager.GetAdvertsByFilterAsync(filter);
-            return Ok(result.Items);
+        public async Task<IActionResult> GetByFilterAsync([FromBody] AdvertFilter filter) {
+            return ApiResult(await _advertManager.GetAdvertsByFilterAsync(filter));
         }
 
         /// <summary>
@@ -126,14 +115,13 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> DeleteAdvertAsync([FromBody] RemoveAdvertDto advert)
+        public async Task<IActionResult> DeleteAdvertAsync([FromBody] RemoveAdvertDto advert)
         {
             string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
             if (!advert.UserId.Equals(id))
                 throw new Exception($"{nameof(advert)} Access denied");
             await _advertManager.RemoveAsync(advert);
-            return Ok("Deleted.");
+            return ApiResult("Deleted.");
         }
     }
 }

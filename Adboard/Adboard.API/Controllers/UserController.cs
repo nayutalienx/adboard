@@ -1,4 +1,5 @@
-﻿using AdvertPlatform.WebApi.Results;
+﻿using Adboard.API.Controllers;
+using AdvertPlatform.WebApi.Results;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,22 +15,18 @@ namespace Dashboard.Api.Controllers
     [Route("api/v1/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class UserController : ControllerBase
+    public class UserController : ApiController
     {
-
-        protected ApiResult ApiResult(object @object)
-             => new ApiResult(@object);
 
         /// <summary>
         /// User info
         /// </summary>
         /// <returns></returns>
         [Authorize(Roles = "User")]
-        [ProducesResponseType(typeof(string), statusCode: (int)HttpStatusCode.OK)]
         [HttpGet]
         public async Task<IActionResult> UserInfo()
         {
-            return Ok("User") ;
+            return ApiResult("User");
         }
 
         /// <summary>
@@ -38,11 +35,10 @@ namespace Dashboard.Api.Controllers
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [Route("admin")]
-        [ProducesResponseType(typeof(string), statusCode: (int)HttpStatusCode.OK)]
         [HttpGet]
-        public IActionResult AdminInfo()
+        public async Task<IActionResult> AdminInfo()
         {
-            return Ok("Admin");
+            return ApiResult("Admin");
         }
 
         
