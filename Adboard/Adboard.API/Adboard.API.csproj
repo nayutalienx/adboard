@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Adboard.Contracts\Adboard.Contracts.csproj" />
     <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.DependencyInjection\Infrastructure.DependencyInjection.csproj" />
   </ItemGroup>

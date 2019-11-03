@@ -99,7 +99,7 @@ namespace Adboard.API
             app.UseAuthentication();
             app.UseCors("dashboard-app");
             ConfigureSwagger(app);
-
+            app.UseMiddleware<ExceptionHandler>();
             app.UseHttpsRedirection();
             app.UseMvc();
         }

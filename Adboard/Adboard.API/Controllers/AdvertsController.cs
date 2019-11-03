@@ -1,6 +1,7 @@
 ﻿
+using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using System.Net;
 
 using BusinessLogicLayer.Abstraction;
@@ -43,11 +44,14 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
         public ActionResult AddAdvert([FromBody] NewAdvertDto advert)
         {
+            string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
+            if (!advert.UserId.Equals(id))
+                throw new Exception($"{nameof(advert)} Access denied");
             _advertManager.Create(advert);
-            return NoContent();
+            return Ok("Advert added.");
         }
 
 
@@ -61,11 +65,14 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
         public ActionResult UpdateAdvert([FromBody] UpdateAdvertDto advert)
         {
+            string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
+            if (!advert.UserId.Equals(id))
+                throw new Exception($"{nameof(advert)} Access denied");
             _advertManager.Update(advert);
-            return NoContent();
+            return Ok("Updated.");
         }
 
         /// <summary>
@@ -75,11 +82,11 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpPost("comments")]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
         public ActionResult AddComment(NewCommentDto comment)
         {
             _advertManager.AddComment(comment);
-            return NoContent();
+            return Ok("Comment added.");
         }
 
         /// <summary>
@@ -119,11 +126,14 @@ namespace Adboard.API.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Authorize]
-        [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
+        [ProducesResponseType(statusCode: (int)HttpStatusCode.OK)]
         public ActionResult DeleteAdvert([FromBody] RemoveAdvertDto advert)
         {
+            string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
+            if (!advert.UserId.Equals(id))
+                throw new Exception($"{nameof(advert)} Access denied");
             _advertManager.Remove(advert);
-            return NoContent();
+            return Ok("Deleted.");
         }
     }
 }

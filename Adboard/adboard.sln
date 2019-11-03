@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adboard.UI", "Adboard.UI\Ad
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adboard.API", "Adboard.API\Adboard.API.csproj", "{19CDAE62-1FCC-450C-8D7A-F4F793A2ADCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adboard.Contracts", "Adboard.Contracts\Adboard.Contracts.csproj", "{3C22B135-C984-4742-8040-C4232EC9D736}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{19CDAE62-1FCC-450C-8D7A-F4F793A2ADCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19CDAE62-1FCC-450C-8D7A-F4F793A2ADCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19CDAE62-1FCC-450C-8D7A-F4F793A2ADCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C22B135-C984-4742-8040-C4232EC9D736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C22B135-C984-4742-8040-C4232EC9D736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C22B135-C984-4742-8040-C4232EC9D736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C22B135-C984-4742-8040-C4232EC9D736}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
