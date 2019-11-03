@@ -4,6 +4,7 @@ using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Repositories
 {
@@ -15,35 +16,38 @@ namespace DataAccessLayer.Repositories
             Context = context;
             Entity = Context.Set<T>();
         }
-        public void Add(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            Entity.Add(entity);
+            await Entity.AddAsync(entity);
+            return entity;
         }
 
-        public T Get(long id)
+        public async Task<T> GetAsync(long id)
         {
-            var e = Entity.Find(id);
+            var e = await Entity.FindAsync(id);
             return e;  
         }
 
-        public IQueryable<T> GetAll()
+        public async Task<IQueryable<T>> GetAllAsync()
         {
             return Entity;
         }
 
-        public void Remove(T entity)
+        public async Task RemoveAsync(T entity)
         {
             Entity.Remove(entity);
+            await Context.SaveChangesAsync();
         }
 
-        public void SaveChanges()
+        public async Task SaveChangesAsync()
         {
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             Entity.Update(entity);
+            return entity;
         }
     }
 }

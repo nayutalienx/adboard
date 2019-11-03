@@ -1,8 +1,7 @@
 using Adboard.Contracts.DTOs.Advert;
 using AutoMapper;
 using BusinessLogicLayer.Implementation;
-
-using BusinessLogicLayer.Objects.AutoMapperProfiles;
+using BusinessLogicLayer.Implementation.AutoMapperProfiles;
 using DataAccessLayer.Abstraction;
 using DataAccessLayer.Models;
 using Moq;
@@ -10,6 +9,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Tests
 {
@@ -46,16 +46,16 @@ namespace BusinessLogicLayer.Tests
 
             var advertsQueryable = FakeData.GetFakeAdverts().AsQueryable();
             var categoriesQueryable = FakeData.GetFakeCategories().AsQueryable();
-
-            _advertRepository.Setup(ad => ad.Get(advert_id)).Returns(advertsQueryable.FirstOrDefault(ad => ad.Id == advert_id));
-            _advertRepository.Setup(ad => ad.GetAll()).Returns(advertsQueryable);
-            _categoryRepository.Setup(cat => cat.GetAll()).Returns(categoriesQueryable);
+            // advertsQueryable.FirstOrDefault(ad => ad.Id == advert_id)
+            _advertRepository.Setup(ad => ad.GetAsync(advert_id)).Returns(Task.Delay(1).ContinueWith(t => advertsQueryable.FirstOrDefault(ad => ad.Id == advert_id)));
+            _advertRepository.Setup(ad => ad.GetAllAsync()).Returns(Task.Delay(1).ContinueWith(t => advertsQueryable));
+            _categoryRepository.Setup(cat => cat.GetAllAsync()).Returns(Task.Delay(1).ContinueWith(t => categoriesQueryable));
 
 
         }
 
         [Test]
-        public void TestAdvertFilters()
+        public async Task TestAdvertFiltersAsync()
         {
             // arrange
             var advertFilter = new AdvertFilter {
@@ -71,7 +71,7 @@ namespace BusinessLogicLayer.Tests
 
             // act
 
-            var result = _advertManager.GetAdvertsByFilter(advertFilter);
+            var result = await _advertManager.GetAdvertsByFilterAsync(advertFilter);
 
             // assert
 
@@ -79,45 +79,45 @@ namespace BusinessLogicLayer.Tests
         }
 
         [Test]
-        public void TestAdvertGetById() {
+        public async Task TestAdvertGetByIdAsync() {
             // arrange
             int testIndex = 1;
             // act
-            var advertDto = _advertManager.Get(testIndex);
+            var advertDto = await _advertManager.GetAsync(testIndex);
 
             // assert
             Assert.AreEqual("Felix", advertDto.Header);
         }
         [Test]
-        public void TestGetAdvertByUser() {
+        public async Task TestGetAdvertByUserAsync() {
             // arrange
             string id = "id2";
             // act
-            AdvertDto[] advertDtos = _advertManager.GetAllByUserId(id);
+            var advertDtos = await _advertManager.GetAllByUserIdAsync(id);
 
             // assert
             foreach (var ad in advertDtos)
                 Assert.AreEqual(ad.UserId, id);
 
-            Assert.AreEqual(advertDtos.Length, 2);
+            Assert.AreEqual(advertDtos.Count, 2);
         }
         [Test]
-        public void TestGetAll() {
+        public async Task TestGetAllAsync() {
             // arrange
             int length = 3;
             // act
-            var ads = _advertManager.GetAll();
+            var ads = await _advertManager.GetAllAsync();
             // assert
-            Assert.AreEqual(length, ads.Length);
+            Assert.AreEqual(length, ads.Count);
         }
         [Test]
-        public void TestGetAllCategories() {
+        public async Task TestGetAllCategoriesAsync() {
             // arrange 
             int length = 2;
             // act 
-            var cats = _categoryManager.GetAllCategories();
+            var cats = await _categoryManager.GetAllCategoriesAsync();
             // assert
-            Assert.AreEqual(length, cats.Length);
+            Assert.AreEqual(length, cats.Count);
         }
     }
 }

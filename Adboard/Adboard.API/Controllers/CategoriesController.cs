@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Adboard.Contracts.DTOs.Category;
 using BusinessLogicLayer.Abstraction;
 
@@ -30,9 +31,9 @@ namespace Adboard.API.Controllers
         [HttpGet]
         [AllowAnonymous]
         [ProducesResponseType(typeof(IEnumerable<CategoryDto>), statusCode: (int)HttpStatusCode.OK)]
-        public ActionResult GetAllCategories()
+        public async Task<ActionResult> GetAllCategoriesAsync()
         {
-            var result = _categoryManager.GetAllCategories();
+            var result = await _categoryManager.GetAllCategoriesAsync();
             return Ok(result);
         }
 
@@ -44,9 +45,9 @@ namespace Adboard.API.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [ProducesResponseType(statusCode: (int)HttpStatusCode.NoContent)]
-        public ActionResult AddCategory([FromBody] NewCategoryDto category)
+        public async Task<ActionResult> AddCategoryAsync([FromBody] NewCategoryDto category)
         {
-            _categoryManager.AddCategory(category);
+            await _categoryManager.AddCategoryAsync(category);
             return NoContent();
         }
     }

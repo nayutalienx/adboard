@@ -4,61 +4,61 @@
         <name>Adboard.API</name>
     </assembly>
     <members>
-        <member name="M:Adboard.API.Controllers.AdvertsController.GetAllAdverts">
+        <member name="M:Adboard.API.Controllers.AdvertsController.GetAllAdvertsAsync">
             <summary>
             Get all adverts
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.AddAdvert(Adboard.Contracts.DTOs.Advert.NewAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.AddAdvertAsync(Adboard.Contracts.DTOs.Advert.NewAdvertDto)">
             <summary>
             Add advert
             </summary>
             <param name="advert"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.UpdateAdvert(Adboard.Contracts.DTOs.Advert.UpdateAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.UpdateAdvertAsync(Adboard.Contracts.DTOs.Advert.UpdateAdvertDto)">
             <summary>
             Update advert
             </summary>
             <param name="advert"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.AddComment(Adboard.Contracts.DTOs.Comment.NewCommentDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.AddCommentAsync(Adboard.Contracts.DTOs.Comment.NewCommentDto)">
             <summary>
             Add comment
             </summary>
             <param name="comment"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.Get(System.Int32)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.GetAsync(System.Int32)">
             <summary>
             Get advert by id
             </summary>
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.GetByFilter(Adboard.Contracts.DTOs.Advert.AdvertFilter)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.GetByFilterAsync(Adboard.Contracts.DTOs.Advert.AdvertFilter)">
             <summary>
             Get adverts by filter
             </summary>
             <param name="filter"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.AdvertsController.DeleteAdvert(Adboard.Contracts.DTOs.Advert.RemoveAdvertDto)">
+        <member name="M:Adboard.API.Controllers.AdvertsController.DeleteAdvertAsync(Adboard.Contracts.DTOs.Advert.RemoveAdvertDto)">
             <summary>
             Delete advert
             </summary>
             <param name="advert"></param>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.CategoriesController.GetAllCategories">
+        <member name="M:Adboard.API.Controllers.CategoriesController.GetAllCategoriesAsync">
             <summary>
             Get all categories
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Adboard.API.Controllers.CategoriesController.AddCategory(Adboard.Contracts.DTOs.Category.NewCategoryDto)">
+        <member name="M:Adboard.API.Controllers.CategoriesController.AddCategoryAsync(Adboard.Contracts.DTOs.Category.NewCategoryDto)">
             <summary>
             Add category
             </summary>

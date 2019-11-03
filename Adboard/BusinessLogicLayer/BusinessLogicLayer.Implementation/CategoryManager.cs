@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Implementation
 {
@@ -21,15 +22,16 @@ namespace BusinessLogicLayer.Implementation
             _mapper = mapper;
         }
 
-        public void AddCategory(NewCategoryDto dto)
+        public async Task<CategoryDto> AddCategoryAsync(NewCategoryDto dto)
         {
-            _categoryRepository.Add(_mapper.Map<Category>(dto));
-            _categoryRepository.SaveChanges();
+            var result = await _categoryRepository.AddAsync(_mapper.Map<Category>(dto));
+            await _categoryRepository.SaveChangesAsync();
+            return _mapper.Map<CategoryDto>(result);
         }
 
-        public CategoryDto[] GetAllCategories()
+        public async Task<IReadOnlyCollection<CategoryDto>> GetAllCategoriesAsync()
         {
-            return _mapper.Map<CategoryDto[]>(_categoryRepository.GetAll().ToArray());
+            return _mapper.Map<IReadOnlyCollection<CategoryDto>>(await _categoryRepository.GetAllAsync());
         }
 
     }

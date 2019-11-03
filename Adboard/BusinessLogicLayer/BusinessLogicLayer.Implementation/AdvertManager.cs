@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BusinessLogicLayer.Implementation
 {
@@ -30,41 +31,45 @@ namespace BusinessLogicLayer.Implementation
 
         
 
-        public void AddComment(NewCommentDto dto)
+        public async Task<CommentDto> AddCommentAsync(NewCommentDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
             if(string.IsNullOrEmpty(dto.Text))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
 
-            var advert = _advertRepository.Get(dto.AdvertId);
+            var advert = await _advertRepository.GetAsync(dto.AdvertId);
             
             if(advert == null)
                 throw new Exception($"{nameof(advert)} Такого объявления не существует");
-            advert.Comments.Add(_mapper.Map<Comment>(dto));
-            // _advertRepository.Update(advert);
-            _advertRepository.SaveChanges();
+            var entity = _mapper.Map<Comment>(dto);
+            advert.Comments.Add(entity);
+            await _advertRepository.SaveChangesAsync();
+            return _mapper.Map<CommentDto>(entity);
         }
 
-        public void Create(NewAdvertDto dto)
+        public async Task<AdvertDto> CreateAsync(NewAdvertDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
+            
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
+            
             var advert = _mapper.Map<Advert>(dto);
-            _advertRepository.Add(advert);
-            _advertRepository.SaveChanges();
+            var result = await _advertRepository.AddAsync(advert);
+            await _advertRepository.SaveChangesAsync();
+            return _mapper.Map<AdvertDto>(result);
         }
 
-        public AdvertDto Get(long id)
+        public async Task<AdvertDto> GetAsync(long id)
         {
-            return _mapper.Map<AdvertDto>(_advertRepository.Get(id));
+            return _mapper.Map<AdvertDto>(await _advertRepository.GetAsync(id));
         }
 
-        public PagingResult<AdvertDto> GetAdvertsByFilter(AdvertFilter filter)
+        public async Task<PagingResult<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter)
         {
-            var adverts = _advertRepository.GetAll();
+            var adverts = await _advertRepository.GetAllAsync();
             
             if (filter == null)
                 throw new NullReferenceException("Не задан фильтр");
@@ -106,26 +111,27 @@ namespace BusinessLogicLayer.Implementation
             };
         }
 
-        public AdvertDto[] GetAll()
+        public async Task<IReadOnlyCollection<AdvertDto>> GetAllAsync()
         {
-            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().ToArray());
+            return _mapper.Map<IReadOnlyCollection<AdvertDto>>(await _advertRepository.GetAllAsync());
         }
 
-        public AdvertDto[] GetAllByUserId(string userid)
+        public async Task<IReadOnlyCollection<AdvertDto>> GetAllByUserIdAsync(string userid)
         {
-            return _mapper.Map<AdvertDto[]>(_advertRepository.GetAll().Where(ad => ad.UserId.Equals(userid)).ToArray());
+            var list = await _advertRepository.GetAllAsync();
+            return _mapper.Map<IReadOnlyCollection<AdvertDto>>(list.Where(ad => ad.UserId.Equals(userid)));
         }
 
         
 
-        public void Remove(RemoveAdvertDto dto)
+        public async Task RemoveAsync(RemoveAdvertDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
             
             
             
-            var _ad = _advertRepository.Get(dto.AdvertId);
+            var _ad = await _advertRepository.GetAsync(dto.AdvertId);
             
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
@@ -133,20 +139,20 @@ namespace BusinessLogicLayer.Implementation
             if (!_ad.UserId.Equals(dto.UserId))
                 throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
             
-            _advertRepository.Remove(_ad);
-            _advertRepository.SaveChanges();
+            await _advertRepository.RemoveAsync(_ad);
+            await _advertRepository.SaveChangesAsync();
 
         }
 
        
 
-        public void Update(UpdateAdvertDto dto)
+        public async Task<AdvertDto> UpdateAsync(UpdateAdvertDto dto)
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
-            var _ad = _advertRepository.Get(dto.Id);
+            var _ad = await _advertRepository.GetAsync(dto.Id);
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
             if (!_ad.UserId.Equals(dto.UserId))
@@ -162,7 +168,8 @@ namespace BusinessLogicLayer.Implementation
             _ad.Location.City = dto.Location.City;
             _ad.Location.Street = dto.Location.Street;
             _ad.Location.HouseNumber = dto.Location.HouseNumber; 
-            _advertRepository.SaveChanges();
+            await _advertRepository.SaveChangesAsync();
+            return _mapper.Map<AdvertDto>(_ad);
 
 
 

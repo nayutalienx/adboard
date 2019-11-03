@@ -3,22 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstraction
 {
     public interface IRepository<T> where T : BaseEntity
     {
-        IQueryable<T> GetAll();
+        Task<IQueryable<T>> GetAllAsync();
 
-        T Get(long id);
+        Task<T> GetAsync(long id);
 
-        void Add(T entity);
+        Task<T> AddAsync(T entity);
 
-        void Update(T entity);
+        Task<T> UpdateAsync(T entity);
 
-        void Remove(T entity);
+        Task RemoveAsync(T entity);
 
-        void SaveChanges();
+        Task SaveChangesAsync();
 
     }
 }
