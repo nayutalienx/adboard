@@ -14,7 +14,7 @@ namespace BusinessLogicLayer.Abstraction
         Task<IReadOnlyCollection<AdvertDto>> GetAllAsync();
         Task<AdvertDto> UpdateAsync(UpdateAdvertDto dto);
         Task RemoveAsync(RemoveAdvertDto dto);
-        Task<PagingResult<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter);
+        Task<IReadOnlyCollection<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter);
         Task<CommentDto> AddCommentAsync(NewCommentDto dto);
         Task<AdvertDto> GetAsync(long id);
         Task<IReadOnlyCollection<AdvertDto>> GetAllByUserIdAsync(string userid);

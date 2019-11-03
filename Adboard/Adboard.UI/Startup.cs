@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Adboard.UI.Clients;
+using Adboard.UI.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,25 +18,21 @@ namespace Adboard.UI
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+        private readonly ApiClientOptions _apiClientOptions;
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _apiClientOptions = _configuration.GetSection("ApiClient").Get<ApiClientOptions>();
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
 
-
-            });
-
-            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
+            services.AddHttpContextAccessor();
+            services.Configure<ApiClientOptions>(_configuration.GetSection("ApiClient"));
+            services.Configure<AdvertApiClientOptions>(_configuration.GetSection("AdvertApiClient"));
+            services.Configure<CategoryApiClientOptions>(_configuration.GetSection("CategoryApiClient"));
 
             services.AddAuthentication(options =>
             {
@@ -59,6 +58,13 @@ namespace Adboard.UI
                 options.Scope.Add("dashboard-api");
                 options.Scope.Add("role");
                 options.Scope.Add("offline_access");
+            });
+
+            services.AddHttpClient<IAdvertApiClient, AdvertApiClient>(options =>
+            {
+                options.Timeout = TimeSpan.FromMinutes(1);
+                options.BaseAddress = new Uri(_apiClientOptions.BaseUrl);
+                options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

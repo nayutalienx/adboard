@@ -91,10 +91,10 @@ namespace Adboard.API.Controllers
         public async Task<IActionResult> GetAsync(int id)
         {
             var ad = await _advertManager.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id }); ;
-            if (ad.Items == null)
+            if (ad == null)
                 return NotFound();
 
-            return ApiResult(ad.Items);
+            return ApiResult(ad);
         }
 
         /// <summary>

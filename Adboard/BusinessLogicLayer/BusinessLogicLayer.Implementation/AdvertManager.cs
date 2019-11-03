@@ -67,7 +67,7 @@ namespace BusinessLogicLayer.Implementation
             return _mapper.Map<AdvertDto>(await _advertRepository.GetAsync(id));
         }
 
-        public async Task<PagingResult<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter)
+        public async Task<IReadOnlyCollection<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter)
         {
             var adverts = await _advertRepository.GetAllAsync();
             
@@ -104,11 +104,7 @@ namespace BusinessLogicLayer.Implementation
 
             
 
-            return new PagingResult<AdvertDto> {
-                Items = _mapper.Map<List<AdvertDto>>(adverts),
-                TotalRows = adverts.Count()
-
-            };
+            return _mapper.Map<List<AdvertDto>>(adverts);
         }
 
         public async Task<IReadOnlyCollection<AdvertDto>> GetAllAsync()
