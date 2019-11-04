@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityModel;
 using IdentityServer.DataAccessLayer;
+using IdentityServer.Models;
 using IdentityServer.Objects;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -21,7 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityServer.Controllers
 {
     [AllowAnonymous]
-    public class AccountController : Controller
+    public class AccountController : ApiController
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -60,6 +61,10 @@ namespace IdentityServer.Controllers
         {
             return View(await BuildLoginViewModelAsync(returnUrl));
         }
+
+        
+
+
 
 
         [HttpGet]
@@ -127,6 +132,21 @@ namespace IdentityServer.Controllers
             await _identityContext.SaveChangesAsync(cancellationToken);
             return Ok("Deleted.");
         }
+
+
+        [HttpGet]
+        [Route("Account/{id}")]
+        public async Task<IActionResult> Info(string id, CancellationToken cancellationToken = default)
+        {
+            var result = await _userManager.FindByIdAsync(id);
+            return ApiResult(new UserInfoResult 
+            { 
+                Username = result.UserName,
+                PhoneNumber = result.PhoneNumber,
+                Email = result.Email
+            });
+        }
+
 
         [HttpGet]
         [Route("Account/EditUser/{id}")]

@@ -52,7 +52,7 @@ namespace IdentityServer
 
             app.UseStaticFiles();
             app.UseRouting();
-
+            app.UseMiddleware<ExceptionHandler>();
             app.UseIdentityServer();
             app.UseAuthorization();
             app.UseAuthentication();

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Adboard.UI.Clients;
+using Adboard.UI.Models.AutoMapperProfiles;
 using Adboard.UI.Options;
 
 using AutoMapper;
@@ -22,10 +23,12 @@ namespace Adboard.UI
     {
         private readonly IConfiguration _configuration;
         private readonly ApiClientOptions _apiClientOptions;
+        private readonly IdentityClientOptions _identityClientOptions;
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
             _apiClientOptions = _configuration.GetSection("ApiClient").Get<ApiClientOptions>();
+            _identityClientOptions = _configuration.GetSection("IdentityClient").Get<IdentityClientOptions>();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -35,6 +38,7 @@ namespace Adboard.UI
             services.Configure<ApiClientOptions>(_configuration.GetSection("ApiClient"));
             services.Configure<AdvertApiClientOptions>(_configuration.GetSection("AdvertApiClient"));
             services.Configure<CategoryApiClientOptions>(_configuration.GetSection("CategoryApiClient"));
+            services.Configure<IdentityClientOptions>(_configuration.GetSection("IdentityClient"));
 
             services.AddAuthentication(options =>
             {
@@ -76,10 +80,18 @@ namespace Adboard.UI
                 options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
 
+            services.AddHttpClient<IIdentityClient, IdentityClient>(options =>
+            {
+                options.Timeout = TimeSpan.FromMinutes(1);
+                options.BaseAddress = new Uri(_identityClientOptions.BaseUrl);
+                options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            });
 
-            //services.AddSingleton(new MapperConfiguration(config => {
-            //    config.AddProfile(new AdvertProfile());
-            //}).CreateMapper());
+
+            services.AddSingleton(new MapperConfiguration(config =>
+            {
+                config.AddProfile(new AdvertProfile());
+            }).CreateMapper());
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

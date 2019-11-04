@@ -18,26 +18,26 @@ namespace Adboard.UI.Clients
     }
     public class CategoryApiClient : ApiClient, ICategoryApiClient
     {
-        private readonly CategoryApiClientOptions _cateogoryOptions;
+        private readonly CategoryApiClientOptions _categoryOptions;
         public CategoryApiClient(
             HttpClient client,
             IHttpContextAccessor accessor,
             IOptions<CategoryApiClientOptions> categoryOptions
             ) : base(client, accessor)
         {
-            _cateogoryOptions = categoryOptions.Value;
+            _categoryOptions = categoryOptions.Value;
         }
 
         public Task<ApiResponse<CategoryDto>> AddCategoryAsync(NewCategoryDto category)
         {
             if (category == null)
                 throw new ArgumentNullException(nameof(category));
-            return PostAsync<NewCategoryDto, ApiResponse<CategoryDto>>(_cateogoryOptions.AddCategoryUrl, category);
+            return PostAsync<NewCategoryDto, ApiResponse<CategoryDto>>(_categoryOptions.AddCategoryUrl, category);
         }
 
         public Task<ApiResponse<IReadOnlyCollection<CategoryDto>>> GetCategoriesAsync()
         {
-            return GetAsync<ApiResponse<IReadOnlyCollection<CategoryDto>>>(_cateogoryOptions.GetCategoriesUrl);
+            return GetAsync<ApiResponse<IReadOnlyCollection<CategoryDto>>>(_categoryOptions.GetCategoriesUrl);
         }
     }
 }

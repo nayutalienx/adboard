@@ -17,7 +17,7 @@ namespace Dashboard.Api.Controllers
     [Produces("application/json")]
     public class UserController : ApiController
     {
-
+        
         /// <summary>
         /// User info
         /// </summary>
@@ -26,6 +26,7 @@ namespace Dashboard.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> UserInfo()
         {
+
             return ApiResult("User");
         }
 
