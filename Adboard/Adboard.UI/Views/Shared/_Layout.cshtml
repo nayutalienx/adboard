@@ -1,8 +1,13 @@
 ﻿
 
-@model Adboard.UI.Models.UserViewModel
 
 
+@{ 
+    string Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "";
+    string Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "";
+    bool IsAuthenticated = Context.User.Identity.IsAuthenticated;
+
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,11 +39,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
                         </li>
                         <li class="nav-item">
-                            @if (Model.IsAuthenticated)
+                            @if (IsAuthenticated)
                             {
-                            <a class="nav-link text-dark"> [Hello, @Model.Name] Role: @Model.Role</a>
+                                <a class="nav-link text-dark"> [Hello, @Name] Role: @Role</a>
+                                
                             }
                         </li>
+                        <li class="nav-item">
+                            @if (IsAuthenticated)
+                            {
+                            <a class="btn btn-primary" href="~/Advert" role="button">New advert</a>
+                            }
+                        </li>
+
                     </ul>
                 </div>
             </div>

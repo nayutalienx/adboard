@@ -6,6 +6,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Adboard.UI.Clients;
 using Adboard.UI.Options;
+
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,6 +68,19 @@ namespace Adboard.UI
                 options.BaseAddress = new Uri(_apiClientOptions.BaseUrl);
                 options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             });
+
+            services.AddHttpClient<ICategoryApiClient, CategoryApiClient>(options =>
+            {
+                options.Timeout = TimeSpan.FromMinutes(1);
+                options.BaseAddress = new Uri(_apiClientOptions.BaseUrl);
+                options.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            });
+
+
+            //services.AddSingleton(new MapperConfiguration(config => {
+            //    config.AddProfile(new AdvertProfile());
+            //}).CreateMapper());
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

@@ -1,0 +1,45 @@
+﻿@model Adboard.UI.Models.NewAdvertViewModel
+@using Adboard.Contracts.DTOs.Category
+@{
+    ViewData["Title"] = "AddAdvert";
+}
+
+<h1>New advert</h1>
+
+<form asp-route="AddAdvert" enctype="multipart/form-data">
+    <input type="hidden" asp-for="UserId"/>
+    <fieldset>
+        <div class="form-group">
+            <label asp-for="Header"></label>
+            <input class="form-control" placeholder="Header" asp-for="Header" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea class="form-control" placeholder="Description" asp-for="Description" autofocus> </textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price"></label>
+            <input class="form-control" placeholder="Price" asp-for="Price" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId">Category</label>
+            <select multiple class="form-control" id="CategoryId" name="CategoryId" asp-for="CategoryId">
+                @foreach (CategoryDto cat in ViewBag.Categories)
+                {
+                    @if (cat.ParentCategory != null)
+                    {
+                        <option value="@cat.Id">@cat.ParentCategory.Name -> @cat.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Photo"></label>
+            <input type="file" class="form-control-file" placeholder="Photo" asp-for="Photo" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" name="button" value="add">Add</button>
+
+        </div>
+    </fieldset>
+</form>

@@ -16,9 +16,13 @@ namespace Adboard.UI.Controllers
     public class HomeController : Controller
     {
         private readonly IAdvertApiClient _advertApiClient;
+        private readonly ICategoryApiClient _categoryApiClient;
 
-        public HomeController(IAdvertApiClient advertApiClient) =>
+        public HomeController(IAdvertApiClient advertApiClient, ICategoryApiClient categoryApiClient)
+        {
             _advertApiClient = advertApiClient;
+            _categoryApiClient = categoryApiClient;
+        }
         
         
         public async Task<IActionResult> Index()
@@ -27,24 +31,15 @@ namespace Adboard.UI.Controllers
             var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
             ViewBag.Adverts = response.Data;
 
-            return View(new UserViewModel 
-            { 
-                Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "",
-                Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "",              
-                IsAuthenticated = User.Identity.IsAuthenticated
-            });
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
+            return View();
         }
 
         [Authorize]
         public IActionResult Login()
         {
-            return View(new UserViewModel
-            {
-                Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "",
-                Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "",                
-                IsAuthenticated = User.Identity.IsAuthenticated
-            });
-
+            return View();
         }
 
        

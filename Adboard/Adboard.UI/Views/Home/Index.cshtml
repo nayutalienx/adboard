@@ -1,14 +1,62 @@
 ﻿@using Adboard.Contracts.DTOs.Advert
+@using Adboard.Contracts.DTOs.Category
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<h2>Categories:</h2>
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">root</th>
+            <th scope="col">child</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (CategoryDto cat in ViewBag.Categories)
+        {
+            <tr>
+                <td>
+                    @if (cat.ParentCategory != null)
+                    {
+                        <b>@Html.Raw(cat.ParentCategory.Name)</b>
+                    }
+                    else { 
+                        <b>---</b>
+                    }
+            </td>
+            <td>@cat.Name</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<h2>Adverts:</h2>
+<div class="container" style="display: flex">
+
+
+
+
+
+
+
+    
+
+    @foreach (AdvertDto advert in ViewBag.Adverts)
+    {
+
+        <div class="card" style="width: 18rem; margin:10px;">
+            <img class="card-img-top" src="~/lib/asp.jpg" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@advert.Header [@advert.Category.Name]</h5>
+                <p class="card-text">@advert.Description</p>
+                <a href="/Advert/@advert.Id" class="btn btn-primary">More</a>
+            </div>
+        </div>
+
+
+    }
 </div>
 
-
-@foreach (AdvertDto advert in ViewBag.Adverts) { 
-    <b>@advert.Header</b> 
-}

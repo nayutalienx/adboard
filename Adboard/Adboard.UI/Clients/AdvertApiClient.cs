@@ -14,24 +14,24 @@ namespace Adboard.UI.Clients
 {
     public interface IAdvertApiClient
     {
-        //Task<ApiResponse<AdvertDto>> UpdateAdvertAsync(UpdateAdvertDto advert);
+        Task<ApiResponse<AdvertDto>> UpdateAdvertAsync(UpdateAdvertDto advert);
         Task<ApiResponse<AdvertDto>> AddAdvertAsync(NewAdvertDto advert);
-        //Task<ApiResponse> RemoveAdvertAsync(RemoveAdvertDto advert);
-        //Task<ApiResponse<CommentDto>> AddCommentAsync(NewCommentDto comment);
+        Task<ApiResponse> RemoveAdvertAsync(RemoveAdvertDto advert);
+        Task<ApiResponse<CommentDto>> AddCommentAsync(NewCommentDto comment);
         Task<ApiResponse<IReadOnlyCollection<AdvertDto>>> GetAdvertsByFilterAsync(AdvertFilter filter);
     }
     public class AdvertApiClient : ApiClient, IAdvertApiClient
     {
         private readonly AdvertApiClientOptions _advertOptions;
-        private readonly CategoryApiClientOptions _cateogoryOptions;
+        
         public AdvertApiClient(
             HttpClient client,
             IHttpContextAccessor accessor,
-            IOptions<AdvertApiClientOptions> advertOptions,
-            IOptions<CategoryApiClientOptions> categoryOptions) : base(client, accessor)
+            IOptions<AdvertApiClientOptions> advertOptions
+            ) : base(client, accessor)
         {
             _advertOptions = advertOptions.Value;
-            _cateogoryOptions = categoryOptions.Value;
+            
         }
         public Task<ApiResponse<AdvertDto>> AddAdvertAsync(NewAdvertDto advert)
         {
@@ -40,11 +40,32 @@ namespace Adboard.UI.Clients
             return PostAsync<NewAdvertDto, ApiResponse<AdvertDto>>(_advertOptions.AddAdvertUrl, advert);
         }
 
+        public Task<ApiResponse<CommentDto>> AddCommentAsync(NewCommentDto comment)
+        {
+            if (comment == null)
+                throw new ArgumentNullException(nameof(comment));
+            return PostAsync<NewCommentDto, ApiResponse<CommentDto>>(_advertOptions.AddCommentUrl, comment);
+        }
+
         public Task<ApiResponse<IReadOnlyCollection<AdvertDto>>> GetAdvertsByFilterAsync(AdvertFilter filter)
         {
             if (filter == null)
                 throw new ArgumentNullException(nameof(filter));
             return PostAsync<AdvertFilter, ApiResponse<IReadOnlyCollection<AdvertDto>>>(_advertOptions.GetAdvertsByFilterUrl, filter);
+        }
+
+        public Task<ApiResponse> RemoveAdvertAsync(RemoveAdvertDto advert)
+        {
+            if (advert == null)
+                throw new ArgumentNullException(nameof(advert));
+            return DeleteAsync<RemoveAdvertDto, ApiResponse>(_advertOptions.DeleteAdvertUrl, advert);
+        }
+
+        public Task<ApiResponse<AdvertDto>> UpdateAdvertAsync(UpdateAdvertDto advert)
+        {
+            if (advert == null)
+                throw new ArgumentNullException(nameof(advert));
+            return PutAsync<UpdateAdvertDto, ApiResponse<AdvertDto>>(_advertOptions.UpdateAdvertUrl, advert);
         }
     }
 }

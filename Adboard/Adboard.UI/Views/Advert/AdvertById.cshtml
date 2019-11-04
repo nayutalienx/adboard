@@ -1,0 +1,62 @@
+﻿@using Adboard.Contracts.DTOs.Advert
+@using Adboard.Contracts.DTOs.Comment
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{ AdvertDto advert = ViewBag.Advert;}
+
+<h1>Advert props:</h1>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">Property</th>
+            <th scope="col">Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>ID</td>
+            <td>@advert.Id</td>
+        </tr>
+        <tr>
+            <td>Header</td>
+            <td>@advert.Header</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>@advert.Description</td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td>@advert.Category.Name</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td>@advert.Price</td>
+        </tr>
+        <tr>
+            <td>Created</td>
+            <td>@advert.CreatedDateTime.ToString()</td>
+        </tr>
+        <tr>
+            <td>Author id</td>
+            <td>@advert.UserId</td>
+        </tr>
+        <tr>
+            <td>Country</td>
+            <td>@advert.Location.Country</td>
+        </tr>
+    </tbody>
+</table>
+
+<h2>Comments:</h2>
+<ul class="list-group">
+
+    @foreach (CommentDto c in advert.Comments)
+    {
+        <li class="list-group-item">@c.UserId :@c.Text</li>
+    }
+</ul>

@@ -75,7 +75,7 @@ namespace BusinessLogicLayer.Tests
 
             // assert
 
-            Assert.AreEqual(1, result.TotalRows);
+            Assert.AreEqual(1, result.Count);
         }
 
         [Test]
