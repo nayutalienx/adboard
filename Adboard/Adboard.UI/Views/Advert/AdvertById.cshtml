@@ -9,123 +9,133 @@
 
 
 
+    <div class="d-flex">
 
-    <div class="card" style="width: 18rem;">
         @if (advert.Photo.Length > 0)
         {
-            <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Photo[0].Data)" alt="Card image cap">
+            @foreach (var photo in advert.Photo)
+            {
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(photo.Data)" alt="Card image cap">
+                    <div class="card-body">
+                    </div>
+                </div>
+            }
         }
         else
         {
-            <img class="card-img-top" src="~/lib/asp.jpg" alt="Card image cap">
+            <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="~/lib/asp.jpg" alt="Card image cap">
+                <div class="card-body">
+                </div>
+            </div>
         }
-        <div class="card-body">
-        </div>
+
     </div>
 
-
-<h1>Advert props:</h1>
-
+        <h1>Advert props:</h1>
 
 
 
-<div class="d-flex flex-row-reverse">
-    <div class="p-2"><a class="btn btn-primary" href="~/Advert/Edit/@advert.Id" role="button">Edit</a></div>
-</div>
+        @if (ViewBag.EditAccess)
+        {
+            <div class="d-flex flex-row-reverse">
+                <div class="p-2"><a class="btn btn-primary" href="~/Advert/Edit/@advert.Id" role="button">Edit</a></div>
+            </div>
+        }
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>@advert.Id</td>
+                </tr>
+                <tr>
+                    <td>Header</td>
+                    <td>@advert.Header</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>@advert.Description</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>@advert.Category.Name</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>@advert.Price</td>
+                </tr>
+                <tr>
+                    <td>Created</td>
+                    <td>@advert.CreatedDateTime.ToString()</td>
+                </tr>
+                <tr>
+                    <td>Author id</td>
+                    <td>@advert.UserId</td>
+                </tr>
+                <tr>
+                    <td>Author name</td>
+                    <td>@ViewBag.UserInfo.Username</td>
+                </tr>
+                <tr>
+                    <td>Author email</td>
+                    <td>@ViewBag.UserInfo.Email</td>
+                </tr>
+                <tr>
+                    <td>Author phone</td>
+                    <td>@ViewBag.UserInfo.PhoneNumber</td>
+                </tr>
+                <tr>
+                    <td>Country</td>
+                    <td>@advert.Location.Country</td>
+                </tr>
+                <tr>
+                    <td>Area</td>
+                    <td>@advert.Location.Area</td>
+                </tr>
+                <tr>
+                    <td>City</td>
+                    <td>@advert.Location.City</td>
+                </tr>
+                <tr>
+                    <td>Street</td>
+                    <td>@advert.Location.Street</td>
+                </tr>
+                <tr>
+                    <td>HouseNumber</td>
+                    <td>@advert.Location.HouseNumber</td>
+                </tr>
+            </tbody>
+        </table>
 
 
-<table class="table table-sm">
-    <thead>
-        <tr>
-            <th scope="col">Property</th>
-            <th scope="col">Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>ID</td>
-            <td>@advert.Id</td>
-        </tr>
-        <tr>
-            <td>Header</td>
-            <td>@advert.Header</td>
-        </tr>
-        <tr>
-            <td>Description</td>
-            <td>@advert.Description</td>
-        </tr>
-        <tr>
-            <td>Category</td>
-            <td>@advert.Category.Name</td>
-        </tr>
-        <tr>
-            <td>Price</td>
-            <td>@advert.Price</td>
-        </tr>
-        <tr>
-            <td>Created</td>
-            <td>@advert.CreatedDateTime.ToString()</td>
-        </tr>
-        <tr>
-            <td>Author id</td>
-            <td>@advert.UserId</td>
-        </tr>
-        <tr>
-            <td>Author name</td>
-            <td>@ViewBag.UserInfo.Username</td>
-        </tr>
-        <tr>
-            <td>Author email</td>
-            <td>@ViewBag.UserInfo.Email</td>
-        </tr>
-        <tr>
-            <td>Author phone</td>
-            <td>@ViewBag.UserInfo.PhoneNumber</td>
-        </tr>
-        <tr>
-            <td>Country</td>
-            <td>@advert.Location.Country</td>
-        </tr>
-        <tr>
-            <td>Area</td>
-            <td>@advert.Location.Area</td>
-        </tr>
-        <tr>
-            <td>City</td>
-            <td>@advert.Location.City</td>
-        </tr>
-        <tr>
-            <td>Street</td>
-            <td>@advert.Location.Street</td>
-        </tr>
-        <tr>
-            <td>HouseNumber</td>
-            <td>@advert.Location.HouseNumber</td>
-        </tr>
-    </tbody>
-</table>
 
+        <h2>Comments:</h2>
+        @if (Context.User.Identity.IsAuthenticated)
+        {
+            @model Adboard.Contracts.DTOs.Comment.NewCommentDto
+            <form method="post">
+                <input type="hidden" asp-for="UserId" />
+                <input type="hidden" asp-for="AdvertId" value="@advert.Id" />
+                <div class="form-group">
+                    <label asp-for="Text"></label>
+                    <textarea class="form-control" placeholder="Text" rows="3" asp-for="Text"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mb-2">Add comment</button>
+            </form>
+        }
 
+        <ul class="list-group">
 
-<h2>Comments:</h2>
-@if (Context.User.Identity.IsAuthenticated)
-{
-    @model Adboard.Contracts.DTOs.Comment.NewCommentDto
-<form method="post">
-    <input type="hidden" asp-for="UserId" />
-    <input type="hidden" asp-for="AdvertId" value="@advert.Id" />
-    <div class="form-group">
-        <label asp-for="Text"></label>
-        <textarea class="form-control" placeholder="Text" rows="3" asp-for="Text"></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary mb-2">Add comment</button>
-</form>
-}
-
-<ul class="list-group">
-
-    @foreach (CommentDto c in advert.Comments)
-    {
-        <li class="list-group-item">@ViewBag.CommentAuthors[c.UserId] :@c.Text [@c.CreatedDateTime]</li>
-    }
-</ul>
+            @foreach (CommentDto c in advert.Comments)
+            {
+                <li class="list-group-item">@ViewBag.CommentAuthors[c.UserId] :@c.Text [@c.CreatedDateTime]</li>
+            }
+        </ul>

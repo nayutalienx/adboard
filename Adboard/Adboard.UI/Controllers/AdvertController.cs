@@ -9,6 +9,7 @@ using Adboard.Contracts.DTOs.Photo;
 using Adboard.UI.Clients;
 using Adboard.UI.Models;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Adboard.UI.Controllers
@@ -32,15 +33,65 @@ namespace Adboard.UI.Controllers
             _identityClient = identityClient;
             _mapper = mapper;
         }
+
+        [Authorize]
         [Route("Edit/{id:long}")]
         public async Task<IActionResult> EditAdvert(long id) {
+            
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id, Size = 1, CurrentPage = 1 });
+            var ad = response.Data.FirstOrDefault();
+            ViewBag.Advert = ad;
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
+            
             return View();
+        }
+
+        [Authorize]
+        [Route("Edit/{id:long}")]
+        [HttpPost]
+        public async Task<IActionResult> EditAdvert(UpdateAdvertViewModel advert) {
+            if (string.IsNullOrEmpty(advert.Header) ||
+                advert.CategoryId == 0)
+                return View("Error", new ErrorViewModel { RequestId = "Enter all data" });
+            var dto = _mapper.Map<UpdateAdvertDto>(advert);
+            if (advert.Photo?.Count > 0)
+            {
+                List<PhotoDto> photoList = new List<PhotoDto>();
+                foreach (var photo in advert.Photo)
+                {
+                    byte[] p1 = null;
+                    using (var fs1 = photo.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
+                    {
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
+                    }
+                    photoList.Add( new PhotoDto { Data = p1 } );
+                }
+                dto.Photo = photoList.ToArray();
+            }
+            var response = await _advertApiClient.UpdateAdvertAsync(dto);
+            AdvertDto result = response.Data;
+            return Redirect($"~/Advert/{result.Id}");
+        }
+
+        [Authorize]
+        [Route("Delete/{id:long}")]
+        [HttpGet]
+        public async Task<IActionResult> DeleteAdvert(long id) {
+            await _advertApiClient.RemoveAdvertAsync(new RemoveAdvertDto 
+            { 
+                AdvertId = id,
+                UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value
+        });
+            return Redirect("~/");
         }
 
         [Route("{id:long}")]
         public async Task<IActionResult> AdvertById(long id)
         {
-            var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id, Size = 1 });
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id, Size = 1, CurrentPage = 1 });
             var ad = response.Data.FirstOrDefault();
             ViewBag.Advert = ad;
             var author = await _identityClient.GetUserInfoAsync(ad.UserId);
@@ -59,9 +110,19 @@ namespace Adboard.UI.Controllers
                 ViewBag.CommentAuthors = id_name;
             }
 
+            if (User.Identity.IsAuthenticated)
+            {
+                string usid = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value;
+                string role = User.Claims.FirstOrDefault(c => c.Type.Contains("role")).Value;
+                ViewBag.EditAccess = (usid.Equals(ad.UserId) || role.Equals("Admin"));
+            }
+            else
+                ViewBag.EditAccess = false;
+
             return View();
         }
 
+        [Authorize]
         [Route("")]
         [HttpGet]
         public async Task<IActionResult> AddAdvert() {
@@ -70,6 +131,7 @@ namespace Adboard.UI.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("")]
         [HttpPost]
         public async Task<IActionResult> AddAdvert(NewAdvertViewModel advert)
@@ -81,15 +143,21 @@ namespace Adboard.UI.Controllers
                     return View("Error",new ErrorViewModel { RequestId = "Enter all data"});
 
             var dto = _mapper.Map<NewAdvertDto>(advert);
-            if (advert.Photo?.Length > 0) {
-                byte[] p1 = null;
-                using (var fs1 = advert.Photo.OpenReadStream())
-                using (var ms1 = new MemoryStream())
+            if (advert.Photo?.Count > 0)
+            {
+                List<PhotoDto> photoList = new List<PhotoDto>();
+                foreach (var photo in advert.Photo)
                 {
-                    fs1.CopyTo(ms1);
-                    p1 = ms1.ToArray();
+                    byte[] p1 = null;
+                    using (var fs1 = photo.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
+                    {
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
+                    }
+                    photoList.Add(new PhotoDto { Data = p1 });
                 }
-                dto.Photo = new PhotoDto[] { new PhotoDto { Data = p1 } };
+                dto.Photo = photoList.ToArray();
             }
             var response = await _advertApiClient.AddAdvertAsync(dto);
             AdvertDto result = response.Data;

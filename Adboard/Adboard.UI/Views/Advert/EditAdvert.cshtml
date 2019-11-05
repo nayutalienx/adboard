@@ -1,7 +1,91 @@
-﻿
+﻿@using Adboard.Contracts.DTOs.Category
+@using Adboard.Contracts.DTOs.Advert
+@model Adboard.UI.Models.UpdateAdvertViewModel
+
 @{
     ViewData["Title"] = "EditAdvert";
 }
 
+@{ AdvertDto advert = ViewBag.Advert;}
+
 <h1>EditAdvert</h1>
 
+<div class="d-flex flex-row-reverse">
+    <div class="p-2"><a class="btn btn-danger" href="~/Advert/Delete/@advert.Id" role="button">Delete</a></div>
+</div>
+
+<form asp-route="AddAdvert" enctype="multipart/form-data">
+    <input type="hidden" value="@advert.UserId" asp-for="UserId" />
+    <fieldset>
+        <div class="form-group">
+            <label asp-for="Header"></label>
+            <input class="form-control" placeholder="Header" value="@advert.Header" asp-for="Header" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea class="form-control" placeholder="New Description" asp-for="Description" autofocus></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Price"></label>
+            <input class="form-control" placeholder="Price" asp-for="Price" value="@advert.Price" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="CategoryId">Category</label>
+            <select multiple class="form-control" id="CategoryId" name="CategoryId" asp-for="CategoryId">
+                @foreach (CategoryDto cat in ViewBag.Categories)
+                {
+                    @if (cat.ParentCategory != null)
+                    {
+                        if (cat.Id == advert.Category.Id)
+                        {
+                            <option value="@cat.Id" selected>@cat.ParentCategory.Name -> @cat.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.Id">@cat.ParentCategory.Name -> @cat.Name</option>
+                        }
+                    }
+                    else
+                    {
+                        if (cat.Id == advert.Category.Id)
+                        {
+                            <option value="@cat.Id" selected>@cat.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Country"></label>
+            <input class="form-control" placeholder="Country" value="@advert.Location.Country" asp-for="Country" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="Area"></label>
+            <input class="form-control" placeholder="Area" value="@advert.Location.Area" asp-for="Area" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="City"></label>
+            <input class="form-control" placeholder="City" value="@advert.Location.City" asp-for="City" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="Street"></label>
+            <input class="form-control" placeholder="Street" value="@advert.Location.Street" asp-for="Street" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="HouseNumber"></label>
+            <input class="form-control" placeholder="HouseNumber" value="@advert.Location.HouseNumber" asp-for="HouseNumber" autofocus>
+        </div>
+        <div class="form-group">
+            <label asp-for="Photo"></label>
+            <input type="file" multiple class="form-control-file" placeholder="New Photo" asp-for="Photo" autocomplete="off">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" name="button" value="update">Update</button>
+
+        </div>
+    </fieldset>
+</form>

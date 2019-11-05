@@ -28,6 +28,7 @@ namespace Infrastructure.DependencyInjection
                 .AddTransient<ICategoryRepository, CategoryRepository>()
                 .AddTransient<IAddressRepository, AddressRepository>()
                 .AddTransient<ICommentRepository, CommentRepository>()
+                .AddTransient<IPhotoRepository, PhotoRepository>()
                 .AddDbContext<AdboardContext>(ServiceLifetime.Transient)
                 .AddSingleton(mapperConfiguration.CreateMapper());
             return serviceCollection;

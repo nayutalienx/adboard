@@ -21,7 +21,8 @@ namespace BusinessLogicLayer.Implementation.AutoMapperProfiles
             CreateMap<RemoveAdvertDto, DataAccessLayer.Models.Advert>()
                 .ForMember(dest => dest.Id, option => option.MapFrom(source => source.AdvertId));
 
-            CreateMap<UpdateAdvertDto, DataAccessLayer.Models.Advert>();
+            CreateMap<UpdateAdvertDto, DataAccessLayer.Models.Advert>()
+                .ForMember(dest => dest.Photos, option => option.MapFrom(source => source.Photo));
         }
     }
 }

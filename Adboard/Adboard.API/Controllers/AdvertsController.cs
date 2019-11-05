@@ -64,7 +64,9 @@ namespace Adboard.API.Controllers
         public async Task<IActionResult> UpdateAdvertAsync([FromBody] UpdateAdvertDto advert)
         {
             string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
-            if (!advert.UserId.Equals(id))
+            string role = User.Claims.Where(x => x.Type.Contains("role")).FirstOrDefault().Value;
+
+            if (!advert.UserId.Equals(id) && !role.Equals("Admin"))
                 throw new Exception($"{nameof(advert)} Access denied");
             return ApiResult(await _advertManager.UpdateAsync(advert));
         }
@@ -105,6 +107,8 @@ namespace Adboard.API.Controllers
         [HttpPost("filter")]
         [AllowAnonymous]
         public async Task<IActionResult> GetByFilterAsync([FromBody] AdvertFilter filter) {
+            if(filter.CurrentPage < 1)
+                throw new Exception($"{nameof(filter)} Page must be more than 0");
             return ApiResult(await _advertManager.GetAdvertsByFilterAsync(filter));
         }
 
@@ -117,8 +121,9 @@ namespace Adboard.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteAdvertAsync([FromBody] RemoveAdvertDto advert)
         {
+            string role = User.Claims.Where(x => x.Type.Contains("role")).FirstOrDefault().Value;
             string id = User.Claims.Where(x => x.Type.Equals("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")).FirstOrDefault().Value;
-            if (!advert.UserId.Equals(id))
+            if (!advert.UserId.Equals(id) && !role.Equals("Admin"))
                 throw new Exception($"{nameof(advert)} Access denied");
             await _advertManager.RemoveAsync(advert);
             return ApiResult("Deleted.");

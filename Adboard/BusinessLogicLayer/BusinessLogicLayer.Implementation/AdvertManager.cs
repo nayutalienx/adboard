@@ -18,14 +18,15 @@ namespace BusinessLogicLayer.Implementation
     public class AdvertManager : IAdvertManager
     {
         private readonly IAdvertRepository _advertRepository;
+        private readonly IPhotoRepository _photoRepository;
         
         
         private readonly IMapper _mapper;
 
-        public AdvertManager(IAdvertRepository advertRepositor, IMapper mapper)
+        public AdvertManager(IAdvertRepository advertRepositor, IPhotoRepository photoRepository, IMapper mapper)
         {
             _advertRepository = advertRepositor;
-           
+            _photoRepository = photoRepository;
             _mapper = mapper;
         }
 
@@ -81,7 +82,7 @@ namespace BusinessLogicLayer.Implementation
                 adverts = adverts.Where(x => x.UserId.Equals(filter.UserId));
 
             if (filter.HasPhotoOnly != null && filter.HasPhotoOnly == true)
-                adverts = adverts.Where(x => x.Photos != null);
+                adverts = adverts.Where(x => x.Photos.Count > 0);
 
             if (!string.IsNullOrEmpty(filter.Header))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}%"));
@@ -98,10 +99,8 @@ namespace BusinessLogicLayer.Implementation
             if (filter.Price != null)
                 adverts = adverts.Where(x => x.Price > filter.Price.From && x.Price < filter.Price.To);
 
-            
 
-            adverts.Take(filter.Size).Skip((filter.CurrentPage - 1) * filter.Size);
-
+            adverts = adverts.Skip((filter.CurrentPage - 1) * filter.Size).Take(filter.Size);
 
             return _mapper.Map<List<AdvertDto>>(adverts);
         }
@@ -130,9 +129,7 @@ namespace BusinessLogicLayer.Implementation
             
             if (_ad == null)
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
-            
-            if (!_ad.UserId.Equals(dto.UserId))
-                throw new Exception($"{nameof(dto)} Вы не имеете право удалять это объявление");
+           
             
             await _advertRepository.RemoveAsync(_ad);
             await _advertRepository.SaveChangesAsync();
@@ -145,7 +142,7 @@ namespace BusinessLogicLayer.Implementation
         {
             if (dto == null)
                 throw new ArgumentNullException(nameof(dto));
-            if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
+            if (string.IsNullOrWhiteSpace(dto.Header))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
             var _ad = await _advertRepository.GetAsync(dto.Id);
             if (_ad == null)
@@ -154,20 +151,46 @@ namespace BusinessLogicLayer.Implementation
                 throw new Exception($"{nameof(dto)} Вы не имеете право изменять это объявление");
 
             _ad.Header = dto.Header;
-            _ad.Description = dto.Description;
-            _ad.CategoryId = dto.CategoryId;
+            if(dto.Description != null)
+                _ad.Description = dto.Description;
+
+            if(dto.CategoryId != 0)
+                _ad.CategoryId = dto.CategoryId;
             _ad.Price = dto.Price;
 
             _ad.Location.Country = dto.Location.Country;
             _ad.Location.Area = dto.Location.Area;
             _ad.Location.City = dto.Location.City;
             _ad.Location.Street = dto.Location.Street;
-            _ad.Location.HouseNumber = dto.Location.HouseNumber; 
+            _ad.Location.HouseNumber = dto.Location.HouseNumber;
+
+            ICollection<Photo> photos = new List<Photo>();
+
+            if (dto.Photo?.Length > 0) {
+
+                if (_ad.Photos?.Count > 0) { 
+                    foreach(Photo ph in _ad.Photos)
+                        photos.Add(new Photo
+                        {
+                            Id = ph.Id,
+                            Advert = ph.Advert,
+                            AdvertId = ph.AdvertId,
+                            Data = ph.Data
+                        });
+                }
+                _ad.Photos = _mapper.Map<ICollection<Photo>>(dto.Photo);
+                await _advertRepository.UpdateAsync(_ad);
+            }
+                
             await _advertRepository.SaveChangesAsync();
+            try
+            {
+                foreach (Photo ph in photos)
+                    await _photoRepository.RemoveAsync(ph);
+                await _photoRepository.SaveChangesAsync();
+            }
+            catch (Exception ex) { }
             return _mapper.Map<AdvertDto>(_ad);
-
-
-
         }
     }
 }
