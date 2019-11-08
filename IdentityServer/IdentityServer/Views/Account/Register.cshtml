@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+@using IdentityServer.Objects;
+
+
+@model RegisterViewModel
+
+
+
+<h1>Register</h1>
+
+<form asp-action="RegisterRequest" method="post">
+
+
+        <fieldset>
+
+            <div class="form-group">
+                <input type="hidden" asp-for="ReturnUrl" value="@Model.ReturnUrl" />
+                <label asp-for="Username"></label>
+                <input type="text" required class="form-control is-invalid" placeholder="Username" asp-for="Username" autofocus>
+                @if (Model?.UsernameError != null)
+                {
+                    <div class="invalid-feedback">
+                        @Model.UsernameError
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input class="form-control" placeholder="Email" asp-for="Email" autofocus required>
+                @if (Model?.EmailError != null)
+                {
+                    <div class="invalid-feedback">
+                        @Model.EmailError
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input class="form-control" type="password" required placeholder="Password" asp-for="Password" autofocus>
+                @if (Model?.PasswordError != null)
+                {
+                    <div class="invalid-feedback">
+                        @Model.PasswordError
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber"></label>
+                <input class="form-control" placeholder="Phone" asp-for="PhoneNumber" required autofocus>
+                @if (Model?.PhoneNumberError != null)
+                {
+                    <div class="invalid-feedback">
+                        @Model.PhoneNumberError
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-primary" name="button" value="register">Register</button>
+
+            </div>
+
+        </fieldset>
+
+
+</form>

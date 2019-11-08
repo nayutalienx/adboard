@@ -10,5 +10,12 @@ namespace IdentityServer.Objects
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string PhoneNumber { get; set; }
+        public string UsernameError { get; set; }
+        public string EmailError { get; set; }
+        public string PasswordError { get; set; }
+        public string PhoneNumberError { get; set; }
+        public string ReturnUrl { get; set; }
+
     }
 }

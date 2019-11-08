@@ -11,11 +11,13 @@ namespace IdentityServer.Objects
         public string Password { get; set; }
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
+        public string Button { get; set; }
     }
 
     public class LoginViewModel : LoginDto
     {
         public bool AllowRememberLogin { get; set; } = true;
         public bool EnableLocalLogin { get; set; } = true;
+        public string MessageFromRegistration { get; set; }
     }
 }

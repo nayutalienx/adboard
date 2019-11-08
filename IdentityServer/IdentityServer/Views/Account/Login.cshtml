@@ -9,6 +9,12 @@
 
         @if (Model.EnableLocalLogin)
         {
+            if(Model.MessageFromRegistration != null){ 
+        <div class="alert alert-success" role="alert">
+            @Model.MessageFromRegistration
+        </div>
+            }
+
             <div class="col-sm-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -41,7 +47,12 @@
                                     <button class="btn btn-primary" name="button" value="login">Login</button>
                                     <button class="btn btn-default" name="button" value="cancel">Cancel</button>
                                 </div>
-                            </fieldset>
+                                 </fieldset>
+                        </form>
+
+                        <form asp-action="Register" method="post">
+                            <input type="hidden" asp-for="ReturnUrl" />
+                            <button class="btn btn-default" name="regbutton" value="reg">Register</button>
                         </form>
                     </div>
                 </div>

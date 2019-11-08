@@ -62,7 +62,53 @@ namespace IdentityServer.Controllers
             return View(await BuildLoginViewModelAsync(returnUrl));
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> Register(LoginViewModel model) {
+            return View(new RegisterViewModel { ReturnUrl = model.ReturnUrl});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegisterRequest(RegisterViewModel user, string button, CancellationToken cancellationToken = default)
+        {
+            if (!button.Equals("register"))
+                return View();
+
+
+            if (string.IsNullOrEmpty(user.Email) || string.IsNullOrWhiteSpace(user.Email))
+                user.EmailError = "Enter email!";
+
+            if (string.IsNullOrEmpty(user.Password) || string.IsNullOrWhiteSpace(user.Password))
+                user.PasswordError = "Enter password!";
+
+            if (string.IsNullOrEmpty(user.Username) || string.IsNullOrWhiteSpace(user.Username))
+                user.UsernameError = "Enter username!";
+
+            if (string.IsNullOrEmpty(user.PhoneNumber) || string.IsNullOrWhiteSpace(user.PhoneNumber))
+                user.PhoneNumberError = "Enter phone!";
+
+            var user_email = await _userManager.FindByEmailAsync(user.Email);
+
+            if (user_email != null)
+                user.EmailError = "User with such email already exists";
+
+            if (user.EmailError == null && user.PasswordError == null && user.UsernameError == null && user.PhoneNumberError == null)
+            {
+                await _userManager.CreateAsync(_mapper.Map<IdentityUser>(user), user.Password);
+                await _identityContext.SaveChangesAsync(cancellationToken);
+                await _userManager.AddToRoleAsync(await _userManager.FindByEmailAsync(user.Email), "User");
+                return Redirect(user.ReturnUrl+"registration");
+            }
+            else
+            {
+                return View(user);
+            }
+
+
+
+
+        }
+
+
 
 
 
@@ -182,9 +228,13 @@ namespace IdentityServer.Controllers
             return Ok("Edited!");
         }
 
+        // to login 
         [HttpPost]
         public async Task<IActionResult> Login(LoginDto model, string button)
         {
+            if (model?.Button != null)
+                button = model.Button;
+
             // проверяем, находимся ли мы в контексте запроса на авторизацию
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
@@ -256,9 +306,10 @@ namespace IdentityServer.Controllers
             return View("LoggedOut", vm);
         }
 
-
+        // to print view
         private async Task<LoginViewModel> BuildLoginViewModelAsync(string returnUrl)
         {
+            string reg = (returnUrl.Contains("registration")) ? "registration was successful" : null;
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
             if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
             {
@@ -269,6 +320,7 @@ namespace IdentityServer.Controllers
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
                     Username = context?.LoginHint,
+                    MessageFromRegistration = reg
                 };
 
 
@@ -290,7 +342,8 @@ namespace IdentityServer.Controllers
                 AllowRememberLogin = true,
                 EnableLocalLogin = allowLocal,
                 ReturnUrl = returnUrl,
-                Username = context?.LoginHint
+                Username = context?.LoginHint,
+                MessageFromRegistration = reg
             };
         }
 
