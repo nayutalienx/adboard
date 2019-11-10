@@ -14,7 +14,7 @@ namespace Adboard.Contracts.DTOs.Advert
         public Range<uint> Price { get; set; }
         public string UserId { get; set; }
         public long? AdvertId { get; set; }
-
+        public string Region { get; set; }
         public Range<DateTime> CreatedDateTime { get; set; }
 
     }

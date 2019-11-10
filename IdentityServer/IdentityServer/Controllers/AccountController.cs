@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -33,6 +34,7 @@ namespace IdentityServer.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IdentityContext _identityContext;
+        private readonly IRepository<PhotoCaptcha> _photoRepository;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
@@ -43,7 +45,8 @@ namespace IdentityServer.Controllers
             SignInManager<IdentityUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IMapper mapper,
-            IdentityContext identityContext)
+            IdentityContext identityContext,
+            IRepository<PhotoCaptcha> photoRepository)
         {
             _interaction = interaction;
             _clientStore = clientStore;
@@ -54,7 +57,10 @@ namespace IdentityServer.Controllers
             _roleManager = roleManager;
             _mapper = mapper;
             _identityContext = identityContext;
+            _photoRepository = photoRepository;
         }
+
+       
 
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
@@ -64,14 +70,17 @@ namespace IdentityServer.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Register(LoginViewModel model) {
-            return View(new RegisterViewModel { ReturnUrl = model.ReturnUrl});
+            var data = await _photoRepository.GetAllAsync();
+            IReadOnlyCollection<PhotoCaptcha> photo = data.ToList();
+            PhotoCaptcha p = photo.First();
+            return View(new RegisterViewModel { ReturnUrl = model.ReturnUrl, CaptchaId = p.Id, Captcha = new PhotoCaptcha { Data = p.Data } });
         }
 
         [HttpPost]
         public async Task<IActionResult> RegisterRequest(RegisterViewModel user, string button, CancellationToken cancellationToken = default)
         {
             if (!button.Equals("register"))
-                return View();
+                return View("Register");
 
 
             if (string.IsNullOrEmpty(user.Email) || string.IsNullOrWhiteSpace(user.Email))
@@ -86,12 +95,19 @@ namespace IdentityServer.Controllers
             if (string.IsNullOrEmpty(user.PhoneNumber) || string.IsNullOrWhiteSpace(user.PhoneNumber))
                 user.PhoneNumberError = "Enter phone!";
 
+            PhotoCaptcha capPhoto = await _photoRepository.GetAsync(user.CaptchaId);
+
+            if (!capPhoto.Answer.Equals(user.CaptchaAnswer))
+                user.CaptchaError = "Captcha was wrong!";
+
+            user.Captcha = capPhoto;
+
             var user_email = await _userManager.FindByEmailAsync(user.Email);
 
             if (user_email != null)
                 user.EmailError = "User with such email already exists";
 
-            if (user.EmailError == null && user.PasswordError == null && user.UsernameError == null && user.PhoneNumberError == null)
+            if (user.CaptchaError == null && user.EmailError == null && user.PasswordError == null && user.UsernameError == null && user.PhoneNumberError == null)
             {
                 await _userManager.CreateAsync(_mapper.Map<IdentityUser>(user), user.Password);
                 await _identityContext.SaveChangesAsync(cancellationToken);
@@ -100,7 +116,7 @@ namespace IdentityServer.Controllers
             }
             else
             {
-                return View(user);
+                return View("Register",user);
             }
 
 
@@ -122,6 +138,36 @@ namespace IdentityServer.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> CaptchaPanel() 
+        {
+            if (!User.IsInRole("Admin"))
+                return Ok("Access denied!");
+            else {
+                var data = await _photoRepository.GetAllAsync();
+                IReadOnlyCollection<PhotoCaptcha> photo = data.ToList();
+                ViewBag.Photo = photo;
+                return View();
+            }
+                
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CaptchaPanel(CaptchaModelView model)
+        {
+            byte[] p1 = null;
+            using (var fs1 = model.Photo.OpenReadStream())
+            using (var ms1 = new MemoryStream())
+            {
+                fs1.CopyTo(ms1);
+                p1 = ms1.ToArray();
+            }
+
+            await _photoRepository.AddAsync(new PhotoCaptcha { Data = p1, Answer = model.Answer});
+            await _photoRepository.SaveChangesAsync();
+            return Ok("Captcha added.");
+        }
+
+       [HttpGet]
         public IActionResult RolePanel() {
             if (User.IsInRole("Admin"))
                 return View(_mapper.Map<List<RoleViewModel>>(_roleManager.Roles.ToList()));

@@ -102,8 +102,12 @@ namespace BusinessLogicLayer.Implementation
                 adverts = adverts.Where(x => EF.Functions.Like(x.Header, $"%{filter.Header}%"));
 
             if (filter.CategoryId != null)
-                adverts = adverts.Where(x => x.CategoryId == filter.CategoryId);
+                adverts = adverts.Where(x => x.CategoryId == filter.CategoryId || x.Category.ParentCategory.Id == filter.CategoryId);
 
+            if (filter.Region != null)
+                adverts = adverts.Where(x => EF.Functions.Like(x.Location.Country, $"%{filter.Region}%") || EF.Functions.Like(x.Location.Area, $"%{filter.Region}%") ||
+                EF.Functions.Like(x.Location.City, $"%{filter.Region}%") || EF.Functions.Like(x.Location.Street, $"%{filter.Region}%"));
+                
             if (!string.IsNullOrEmpty(filter.Description))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
 
@@ -118,6 +122,8 @@ namespace BusinessLogicLayer.Implementation
 
             return _mapper.Map<List<AdvertDto>>(adverts);
         }
+
+
 
         public async Task<IReadOnlyCollection<AdvertDto>> GetAllAsync()
         {

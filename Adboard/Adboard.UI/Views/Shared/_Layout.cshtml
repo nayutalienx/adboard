@@ -3,7 +3,7 @@
 @using Adboard.Contracts.DTOs.Category;
 
 @{ 
-    
+
     string Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "";
     string Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "";
     bool IsAuthenticated = Context.User.Identity.IsAuthenticated;
@@ -37,10 +37,17 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link text-dark" href="#">Transport</a>
-                        <a class="nav-item nav-link text-dark" href="#">Animals</a>
-                        <a class="nav-item nav-link text-dark" href="#">Services</a>
-                        <a class="nav-item nav-link text-dark" href="#">Electronic</a>
+
+                        @{ 
+                            IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
+
+                        }
+
+                        @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
+                        { 
+                        <a class="nav-item nav-link text-dark" href="~/Advert/Filter?category=@cat.Id">@cat.Name</a>
+                        }
+                       
                         <a class="nav-item nav-link text-dark" href="#">More categories..</a>
                     </div>
                 </div>
@@ -95,12 +102,7 @@
                     <input type="text" class="form-control" id="exampleFormControlInput1" name="query" placeholder="Search">
                 </div>
                 <div class="pb-2 pl-1 flex-sm-grow-0">
-                    <select class="custom-select" name="region">
-                        <option selected>Region</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
+                    <input type="text" class="form-control" name="region" placeholder="Region" name="region"></input>
                 </div>
                 <div class="pl-1 pb-2">
                     <button class="btn btn-primary text-white" type="submit">Find</button>

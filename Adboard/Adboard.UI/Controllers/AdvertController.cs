@@ -229,7 +229,7 @@ namespace Adboard.UI.Controllers
         }
         [Route("Filter")]
         [HttpGet]
-        public async Task<IActionResult> Filter([FromQuery] int category = default, [FromQuery]int region = default, [FromQuery] string query = default, [FromQuery]string in_header = "false", [FromQuery] string with_photo = "false") 
+        public async Task<IActionResult> Filter([FromQuery] int category = default, [FromQuery]string region = default, [FromQuery] string query = default, [FromQuery]string in_header = "false", [FromQuery] string with_photo = "false") 
         {
             var cats = await _categoryApiClient.GetCategoriesAsync();
             IReadOnlyCollection<CategoryDto> cat_data = cats.Data;
@@ -239,6 +239,7 @@ namespace Adboard.UI.Controllers
                 CategoryId = (category == 0) ? (long?)null : category,
                 Header = query,
                 HasPhotoOnly = bool.Parse(with_photo),
+                Region = region,
                 Size = 10
             };
             if (in_header.Equals("false"))
@@ -349,7 +350,24 @@ namespace Adboard.UI.Controllers
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
             comment.UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value;
-            await _advertApiClient.AddCommentAsync(comment);
+            
+
+
+            ApiResponse<CommentDto> response = null;
+            try
+            {
+                response = await _advertApiClient.AddCommentAsync(comment);
+            }
+            catch (ApplicationException ex)
+            {
+                if (ex.Message.Equals("401"))
+                    return Redirect($"~/Home/Logout");
+                else
+                    return View("Error", new ErrorViewModel { RequestId = ex.Message });
+            }
+
+
+
             return Redirect($"{comment.AdvertId}");
         }
 

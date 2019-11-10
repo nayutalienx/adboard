@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.DataAccessLayer
 {
-    public class PhotoCaptcha : BaseEntity
+    public class BaseEntity
     {
-        public byte[] Data { get; set; }
-        public string Answer { get; set; }
+        public long Id { get; set; }
     }
 }

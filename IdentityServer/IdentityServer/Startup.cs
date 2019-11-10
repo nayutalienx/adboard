@@ -36,6 +36,7 @@ namespace IdentityServer
                 config.AddProfile(new RoleProfile());
             });
             services.AddSingleton(mapperConfig.CreateMapper());
+            services.AddTransient<IRepository<PhotoCaptcha>, Repository<PhotoCaptcha>>();
             services.AddControllersWithViews();
             services.AddIdentity(_connectionString);
             services.AddIdentityServer(_connectionString);

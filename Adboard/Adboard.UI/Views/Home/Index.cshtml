@@ -36,7 +36,9 @@
                 {
                     <h6>@advert.Category.Name</h6>
                 }
-                <h6 class="ml-auto text-success">@advert.Price rub</h6>
+
+               
+                <h6 class="ml-auto text-success">@string.Format("{0:C0}", advert.Price)</h6>
             </div>
             
 

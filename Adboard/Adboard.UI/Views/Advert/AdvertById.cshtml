@@ -78,7 +78,7 @@
 
                 <div class="d-flex">
                     <h3 class="card-title">@advert.Header</h3>
-                    <h3 class="ml-auto">@advert.CreatedDateTime.ToShortDateString()</h3>
+                    <h5 class="ml-auto" style="color: dimgray;">@advert.CreatedDateTime.ToShortDateString()</h5>
                 </div>
 
                 <div class="d-flex">
@@ -90,7 +90,7 @@
                     {
                         <h5>@advert.Category.Name</h5>
                     }
-                    <h5 class="align-self-end text-success ml-auto">@advert.Price rub</h5>
+                <h5 class="align-self-end text-success ml-auto">@string.Format("{0:C0}", advert.Price)</h5>
                 </div>
 
                 <hr>
@@ -109,7 +109,7 @@
                     <p class="text-break text-justify m-0">
                         @advert.Location.Country, @advert.Location.Area, @advert.Location.City, @advert.Location.Street, @advert.Location.HouseNumber
                     </p>
-                    <button type="button" class="ml-auto" id="userInfo" style="border: none; background: none;" data-toggle="popover" title="@author.Username [@author.PhoneNumber]" data-content="@author.Email"><img src="~/lib/help.png" width="20px" height="20px"> </button>
+                    <button type="button" class="ml-auto" id="userInfo" style="border: none; background: none;" data-toggle="popover" title="@author.Username" data-content="[@author.Email] [@author.PhoneNumber]"><img src="~/lib/help.png" width="20px" height="20px"> </button>
                 </div>
 
                

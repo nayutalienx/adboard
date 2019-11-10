@@ -18,6 +18,7 @@ namespace Adboard.UI.Models
         public DateTime? CreatedDateTimeFrom { get; set; }
         public DateTime? CreatedDateTimeTo { get; set; }
         public int Size { get; set; }
+        public string Region { get; set; }
 
     }
 }

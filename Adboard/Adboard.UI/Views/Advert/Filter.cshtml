@@ -9,29 +9,29 @@
 <form asp-route="Filter" method="post" class="mt-3 border p-2 rounded-lg">
     @model Adboard.UI.Models.FilterAdvertViewModel
     <div class="form-row">
-        <div class="col-md-4 mb-3">
-            <label asp-for="Header" for="validationDefault01">Header</label>
+        <div class="col-md-4 mb-1">
+            <label asp-for="Header" class="mb-0" for="validationDefault01">Header</label>
             <input asp-for="Header" value="@Model.Header" type="text" class="form-control" id="validationDefault01" placeholder="Header">
         </div>
-        <div class="col-md-4 mb-3">
-            <label asp-for="Description" for="validationDefault02">Description</label>
+        <div class="col-md-4 mb-1">
+            <label asp-for="Description" class="mb-0" for="validationDefault02">Description</label>
             <input asp-for="Description" type="text" class="form-control" id="validationDefault02" placeholder="Description" value="@Model.Description">
         </div>
-        <div class="col-md-2 mb-3">
-            <label asp-for="CreatedDateTimeFrom" for="validationDefault02">DateFrom</label>
+        <div class="col-md-2 mb-1">
+            <label asp-for="CreatedDateTimeFrom" class="mb-0" for="validationDefault02">DateFrom</label>
             <input asp-for="CreatedDateTimeFrom" value="@Model.CreatedDateTimeFrom" type="date" class="form-control" id="validationDefault02" placeholder="from">
 
         </div>
-        <div class="col-md-2 mb3">
-            <label asp-for="CreatedDateTimeTo" for="validationDefault02">DateTo</label>
+        <div class="col-md-2 mb-1">
+            <label asp-for="CreatedDateTimeTo" class="mb-0" for="validationDefault02">DateTo</label>
             <input asp-for="CreatedDateTimeTo" value="@Model.CreatedDateTimeTo" type="date" class="form-control" id="validationDefault02" placeholder="to">
 
 
         </div>
     </div>
     <div class="form-row">
-        <div class="col-md-4 mb3">
-            <label asp-for="CategoryId">Category</label>
+        <div class="col-md-4 mb-3">
+            <label asp-for="CategoryId" class="mb-0">Category</label>
             <select asp-for="CategoryId" multiple class="form-control" id="CategoryId" name="CategoryId">
                 @foreach (CategoryDto cat in ViewBag.Categories)
                 {
@@ -62,17 +62,25 @@
             </select>
         </div>
         <div class="col-md-2 mb-3">
-            <label asp-for="PriceFrom" for="validationDefault02">PriceFrom</label>
+            <label asp-for="PriceFrom" class="mb-0" for="validationDefault02">PriceFrom</label>
             <input asp-for="PriceFrom" value="@Model.PriceFrom" type="text" class="form-control" id="validationDefault02" placeholder="from">
+
+
+            
+            <label asp-for="Region" class="mb-0" for="validationDefault02">Region</label>
+            <input asp-for="Region" value="@Model.Region" type="text" class="form-control" id="validationDefault02" placeholder="Region">
+
+
+
         </div>
-        <div class="col-md-2 mb3">
-            <label asp-for="PriceTo" for="validationDefault02">PriceTo</label>
+        <div class="col-md-2 mb-3">
+            <label asp-for="PriceTo" class="mb-0" for="validationDefault02">PriceTo</label>
             <input asp-for="PriceTo" value="@Model.PriceTo" type="text" class="form-control" id="validationDefault02" placeholder="to">
 
 
         </div>
         <div class="col-md-4">
-            <label asp-for="Size" for="validationDefault02">Amount on page</label>
+            <label asp-for="Size" class="mb-0" for="validationDefault02">Amount on page</label>
             <select asp-for="Size" type="text" class="form-control" id="validationDefault02" placeholder="Amount">
 
 
@@ -104,10 +112,16 @@
                     With photo only
                 </label>
 
+
+
             </div>
+
+            
+
+
         </div>
     </div>
-    <br>
+
     <div class="d-flex">
 
 
@@ -147,7 +161,7 @@
             {
                 <h6>@advert.Category.Name</h6>
             }
-            <h6 class="ml-auto text-success">@advert.Price rub</h6>
+        <h6 class="ml-auto text-success">@string.Format("{0:C0}", advert.Price)</h6>
         </div>
 
 
