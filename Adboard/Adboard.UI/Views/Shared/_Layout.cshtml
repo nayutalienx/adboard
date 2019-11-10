@@ -24,47 +24,54 @@
     <header
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
-                <div class="container d-flex flex-row pl-0 pr-0">
+            <div class="container d-flex flex-row pl-0 pr-0">
 
 
-                    <div class="collapse navbar-collapse p-0 align-self-end" id="navbarText">
-                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                            <img src="~/lib/sale.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                            Adboard
-                        </a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="navbar-nav">
-                            <a class="nav-item nav-link text-dark" href="#">Transport</a>
-                            <a class="nav-item nav-link text-dark" href="#">Animals</a>
-                            <a class="nav-item nav-link text-dark" href="#">Services</a>
-                            <a class="nav-item nav-link text-dark" href="#">Electronic</a>
-                            <a class="nav-item nav-link text-dark" href="#">More categories..</a>
-                        </div>
+
+                <div class="collapse navbar-collapse p-0 align-self-end" id="navbarText">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/lib/sale.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        Adboard
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link text-dark" href="#">Transport</a>
+                        <a class="nav-item nav-link text-dark" href="#">Animals</a>
+                        <a class="nav-item nav-link text-dark" href="#">Services</a>
+                        <a class="nav-item nav-link text-dark" href="#">Electronic</a>
+                        <a class="nav-item nav-link text-dark" href="#">More categories..</a>
                     </div>
-                    <div class="d-flex flex-column align-self-center ml-auto">
-                        @if (IsAuthenticated)
-                        {
+                </div>
+                <div class="d-flex flex-column align-self-center ml-auto">
+                    @if (IsAuthenticated)
+                    {
                         <div class="d-flex flex-row">
                             <a class="p1" asp-controller="Home" asp-action="Login">
                                 @Name
                             </a>
-                            
+
                             <a class="p-1" asp-area="" asp-controller="Home" asp-action="Logout">
                                 <img src="~/lib/logout.png" width="15" height="15" class="d-inline-block align-top" alt="">
                             </a>
                         </div>
-                            
 
-                        }
-                        else
-                        {
-                            <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Login or register</a>
-                        }
-                        <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">New advert</a>
-                    </div>
+
+                    }
+                    else
+                    {
+                        <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Login or register</a>
+                    }
+                    <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">New advert</a>
                 </div>
+
+            </div>
+
+
+
+
+
         </nav>
   </header>
     <div class="border-bottom box-shadow">
@@ -134,7 +141,8 @@
             &copy; 2019 - Adboard.Ui
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)

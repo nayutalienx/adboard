@@ -56,6 +56,9 @@ namespace BusinessLogicLayer.Implementation
             
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
+
+            if (dto.Description.Length > 650)
+                throw new Exception($"{nameof(dto)} Описание не более 650 символов");
             
             var advert = _mapper.Map<Advert>(dto);
             var result = await _advertRepository.AddAsync(advert);
@@ -149,6 +152,8 @@ namespace BusinessLogicLayer.Implementation
                 throw new Exception($"{nameof(dto)} Такого объявления не существует");
             if (!_ad.UserId.Equals(dto.UserId))
                 throw new Exception($"{nameof(dto)} Вы не имеете право изменять это объявление");
+            if (dto.Description?.Length > 650)
+                throw new Exception($"{nameof(dto)} Описание не более 650 символов");
 
             _ad.Header = dto.Header;
             if(dto.Description != null)

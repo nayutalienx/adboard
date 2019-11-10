@@ -46,6 +46,8 @@ namespace Adboard.UI.Controllers
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
 
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             return View();
         }
 
@@ -73,7 +75,14 @@ namespace Adboard.UI.Controllers
                 }
                 dto.Photo = photoList.ToArray();
             }
+
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            IReadOnlyCollection<CategoryDto> _cats = cats.Data;
+            ViewBag.Categories = _cats;
+
             var response = await _advertApiClient.UpdateAdvertAsync(dto);
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             AdvertDto result = response.Data;
             return Redirect($"~/Advert/{result.Id}");
         }
@@ -94,6 +103,7 @@ namespace Adboard.UI.Controllers
         public async Task<IActionResult> AdvertById(long id)
         {
             var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id, Size = 1, CurrentPage = 1 });
+            
             var ad = response.Data.FirstOrDefault();
             ViewBag.Advert = ad;
             var author = await _identityClient.GetUserInfoAsync(ad.UserId);
@@ -124,6 +134,8 @@ namespace Adboard.UI.Controllers
             else
                 ViewBag.EditAccess = false;
 
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             return View();
         }
 
@@ -165,6 +177,8 @@ namespace Adboard.UI.Controllers
                 dto.Photo = photoList.ToArray();
             }
             var response = await _advertApiClient.AddAdvertAsync(dto);
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             AdvertDto result = response.Data;
             return Redirect($"Advert/{result.Id}");
         }
@@ -218,11 +232,14 @@ namespace Adboard.UI.Controllers
             }
 
             var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+            
             IReadOnlyCollection<AdvertDto> _ads = response.Data;
             ViewBag.Adverts = _ads;
             ViewBag.CurrentPage = p;
             ViewBag.Size = filter.Size;
 
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             return View(_filter);
         }
 
@@ -266,12 +283,15 @@ namespace Adboard.UI.Controllers
             }
 
             var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+            
             ViewBag.Adverts = response.Data;
 
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
             ViewBag.CurrentPage = p;
             ViewBag.Size = filter.Size;
+            if (response.HasErrors)
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             return View(viewFilter);
         }
 

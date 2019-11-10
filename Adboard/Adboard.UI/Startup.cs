@@ -57,7 +57,7 @@ namespace Adboard.UI
                 options.ClientId = "dashboard-app";
                 options.ClientSecret = "dashboard-app";
                 options.ResponseType = "code";
-
+                
                 options.SaveTokens = true;
                 
 

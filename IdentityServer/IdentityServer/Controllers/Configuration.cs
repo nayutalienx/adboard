@@ -26,6 +26,7 @@ namespace IdentityServer.Controllers
                     ClientSecrets = { new IdentityServer4.Models.Secret("dashboard-app".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
                     AllowAccessTokensViaBrowser = true,
+                    AbsoluteRefreshTokenLifetime = default,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     RequireConsent = false,
                     RedirectUris = { "http://localhost:5004/signin-oidc" },
