@@ -1,8 +1,9 @@
 ﻿
 
-
+@using Adboard.Contracts.DTOs.Category;
 
 @{ 
+    
     string Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "";
     string Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "";
     bool IsAuthenticated = Context.User.Identity.IsAuthenticated;
@@ -19,43 +20,109 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container d-flex">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Adboard.Ui</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Logout">Logout</a>
-                        </li>
-                        <li class="nav-item">
-                            @if (IsAuthenticated)
-                            {
-                                <a class="nav-link text-dark"> [Hello, @Name] Role: @Role</a>
-                                
-                            }
-                        </li>
-                        <li class="nav-item ml-auto p2">
-                            
-                            <a class="btn btn-primary" href="~/Advert" role="button">New advert</a>
-                            
-                        </li>
 
-                    </ul>
+    <header
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+                <div class="container d-flex flex-row pl-0 pr-0">
+
+
+                    <div class="collapse navbar-collapse p-0 align-self-end" id="navbarText">
+                        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                            <img src="~/lib/sale.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                            Adboard
+                        </a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="navbar-nav">
+                            <a class="nav-item nav-link text-dark" href="#">Transport</a>
+                            <a class="nav-item nav-link text-dark" href="#">Animals</a>
+                            <a class="nav-item nav-link text-dark" href="#">Services</a>
+                            <a class="nav-item nav-link text-dark" href="#">Electronic</a>
+                            <a class="nav-item nav-link text-dark" href="#">More categories..</a>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-self-center ml-auto">
+                        @if (IsAuthenticated)
+                        {
+                        <div class="d-flex flex-row">
+                            <a class="p1" asp-controller="Home" asp-action="Login">
+                                @Name
+                            </a>
+                            
+                            <a class="p-1" asp-area="" asp-controller="Home" asp-action="Logout">
+                                <img src="~/lib/logout.png" width="15" height="15" class="d-inline-block align-top" alt="">
+                            </a>
+                        </div>
+                            
+
+                        }
+                        else
+                        {
+                            <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Login or register</a>
+                        }
+                        <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">New advert</a>
+                    </div>
+                </div>
+        </nav>
+  </header>
+    <div class="border-bottom box-shadow">
+        <form method="get" asp-controller="Advert" asp-action="Filter">
+            <div class="container d-flex flex-row pt-1 pl-0 pr-0">
+                <div class="pb-2 flex-sm-grow-0">
+                    <select class="custom-select" name="category">
+                        <option selected value="0">Category</option>
+                        @foreach (CategoryDto cat in ViewBag.Categories)
+                        {
+                            if (cat.ParentCategory == null)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+
+                        }
+
+                    </select>
+                </div>
+                <div class="pb-2 pl-1 flex-fill">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="query" placeholder="Search">
+                </div>
+                <div class="pb-2 pl-1 flex-sm-grow-0">
+                    <select class="custom-select" name="region">
+                        <option selected>Region</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="pl-1 pb-2">
+                    <button class="btn btn-primary text-white" type="submit">Find</button>
                 </div>
             </div>
-        </nav>
-    </header>
+
+            <div class="container d-flex flex-row pl-0">
+                <div class="pb-2 pl-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" name="in_header" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Only in header
+                        </label>
+                    </div>
+                </div>
+                <div class="pb-2 pl-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" name="with_photo" id="defaultCheck2">
+                        <label class="form-check-label" for="defaultCheck2">
+                            Only with photo
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

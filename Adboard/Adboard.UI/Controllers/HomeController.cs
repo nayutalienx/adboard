@@ -30,83 +30,52 @@ namespace Adboard.UI.Controllers
         }
 
         [HttpGet]
-        [Route("{page?}")]
-        public async Task<IActionResult> Index(int? page)
+        [Route("")]
+        public async Task<IActionResult> Index()
         {
-            int p;
-            if (page.HasValue && page.Value > 0)
-                p = page.Value;
-            else
-                p = 1;
-            AdvertFilter filter = new AdvertFilter { CurrentPage = p, Size = 3 };
+            
+            AdvertFilter filter = new AdvertFilter { CurrentPage = 1, Size = 6 };
             var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
             ViewBag.Adverts = response.Data;
 
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
-            ViewBag.Size = 3;
-            ViewBag.CurrentPage = p;
+            ViewBag.Size = 6;
+            ViewBag.CurrentPage = 1;
             return View();
         }
 
-        [Route("{page?}")]
+        [Route("")]
         [HttpPost]
         public async Task<IActionResult> Index(FilterAdvertViewModel viewFilter, int? page)
         {
-            int p;
-            if (page.HasValue && page.Value > 0)
-                p = page.Value;
-            else
-                p = 1;
             AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
-            filter.CurrentPage = p;
-            if (viewFilter.CreatedDateTimeTo.HasValue) 
-            {
-                var range = new Range<DateTime> 
-                { 
-                    To = viewFilter.CreatedDateTimeTo.Value
-                };
-
-                if (viewFilter.CreatedDateTimeFrom.HasValue)
-                    range.From = viewFilter.CreatedDateTimeFrom.Value;
-                else
-                    range.From = DateTime.Now;
-                filter.CreatedDateTime = range;
-            }
-
-            if (viewFilter.PriceTo.HasValue)
-            {
-                var range = new Range<uint>
-                {
-                    To = viewFilter.PriceTo.Value
-                };
-
-                if (viewFilter.PriceFrom.HasValue)
-                    range.From = viewFilter.PriceFrom.Value;
-                else
-                    range.From = UInt32.MaxValue;
-                filter.Price = range;
-            }
+            filter.CurrentPage = 1;
+            
 
             var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
             ViewBag.Adverts = response.Data;
 
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
-            ViewBag.CurrentPage = p;
+            ViewBag.CurrentPage = 1;
             ViewBag.Size = filter.Size;
             return View();
         }
 
         [Authorize]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
             return View();
         }
 
        
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
             return SignOut("Cookies", "oidc");
         }
     }

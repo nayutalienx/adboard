@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Adboard.Contracts.DTOs.Advert;
+using Adboard.Contracts.DTOs.Category;
 using Adboard.Contracts.DTOs.Comment;
+using Adboard.Contracts.DTOs.Paging;
 using Adboard.Contracts.DTOs.Photo;
 using Adboard.UI.Clients;
 using Adboard.UI.Models;
@@ -24,7 +26,7 @@ namespace Adboard.UI.Controllers
         private readonly IMapper _mapper;
 
         public AdvertController(
-            IAdvertApiClient advertApiClient, 
+            IAdvertApiClient advertApiClient,
             ICategoryApiClient categoryApiClient,
             IIdentityClient identityClient,
             IMapper mapper) {
@@ -37,13 +39,13 @@ namespace Adboard.UI.Controllers
         [Authorize]
         [Route("Edit/{id:long}")]
         public async Task<IActionResult> EditAdvert(long id) {
-            
+
             var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = id, Size = 1, CurrentPage = 1 });
             var ad = response.Data.FirstOrDefault();
             ViewBag.Advert = ad;
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
-            
+
             return View();
         }
 
@@ -67,7 +69,7 @@ namespace Adboard.UI.Controllers
                         fs1.CopyTo(ms1);
                         p1 = ms1.ToArray();
                     }
-                    photoList.Add( new PhotoDto { Data = p1 } );
+                    photoList.Add(new PhotoDto { Data = p1 });
                 }
                 dto.Photo = photoList.ToArray();
             }
@@ -80,11 +82,11 @@ namespace Adboard.UI.Controllers
         [Route("Delete/{id:long}")]
         [HttpGet]
         public async Task<IActionResult> DeleteAdvert(long id) {
-            await _advertApiClient.RemoveAdvertAsync(new RemoveAdvertDto 
-            { 
+            await _advertApiClient.RemoveAdvertAsync(new RemoveAdvertDto
+            {
                 AdvertId = id,
                 UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value
-        });
+            });
             return Redirect("~/");
         }
 
@@ -96,6 +98,9 @@ namespace Adboard.UI.Controllers
             ViewBag.Advert = ad;
             var author = await _identityClient.GetUserInfoAsync(ad.UserId);
             ViewBag.UserInfo = author.Data;
+
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
 
             if (ad.Comments.Length > 0) {
                 IDictionary<string, string> id_name = new Dictionary<string, string>();
@@ -140,7 +145,7 @@ namespace Adboard.UI.Controllers
             if (string.IsNullOrEmpty(advert.Header) ||
                 string.IsNullOrEmpty(advert.Description) ||
                 advert.CategoryId == 0)
-                    return View("Error",new ErrorViewModel { RequestId = "Enter all data"});
+                return View("Error", new ErrorViewModel { RequestId = "Enter all data" });
 
             var dto = _mapper.Map<NewAdvertDto>(advert);
             if (advert.Photo?.Count > 0)
@@ -163,13 +168,121 @@ namespace Adboard.UI.Controllers
             AdvertDto result = response.Data;
             return Redirect($"Advert/{result.Id}");
         }
+        [Route("Filter")]
+        [HttpGet]
+        public async Task<IActionResult> Filter([FromQuery] int category = default, [FromQuery]int region = default, [FromQuery] string query = default, [FromQuery]string in_header = "false", [FromQuery] string with_photo = "false") 
+        {
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            IReadOnlyCollection<CategoryDto> cat_data = cats.Data;
+            ViewBag.Categories = cat_data;
+            var _filter = new FilterAdvertViewModel
+            {
+                CategoryId = (category == 0) ? (long?)null : category,
+                Header = query,
+                HasPhotoOnly = bool.Parse(with_photo),
+                Size = 10
+            };
+            if (in_header.Equals("false"))
+                _filter.Description = query;
+
+            var viewFilter = _filter;
+            int p = 1;
+            AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
+            filter.CurrentPage = p;
+            if (viewFilter.CreatedDateTimeTo.HasValue)
+            {
+                var range = new Range<DateTime>
+                {
+                    To = viewFilter.CreatedDateTimeTo.Value
+                };
+
+                if (viewFilter.CreatedDateTimeFrom.HasValue)
+                    range.From = viewFilter.CreatedDateTimeFrom.Value;
+                else
+                    range.From = DateTime.Now;
+                filter.CreatedDateTime = range;
+            }
+
+            if (viewFilter.PriceTo.HasValue)
+            {
+                var range = new Range<uint>
+                {
+                    To = viewFilter.PriceTo.Value
+                };
+
+                if (viewFilter.PriceFrom.HasValue)
+                    range.From = viewFilter.PriceFrom.Value;
+                else
+                    range.From = UInt32.MaxValue;
+                filter.Price = range;
+            }
+
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+            IReadOnlyCollection<AdvertDto> _ads = response.Data;
+            ViewBag.Adverts = _ads;
+            ViewBag.CurrentPage = p;
+            ViewBag.Size = filter.Size;
+
+            return View(_filter);
+        }
+
+        [Route("Filter/{page?}")]
+        [HttpPost]
+        public async Task<IActionResult> Filter(FilterAdvertViewModel viewFilter, int? page)
+        {
+            int p;
+            if (page.HasValue && page.Value > 0)
+                p = page.Value;
+            else
+                p = 1;
+            AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
+            filter.CurrentPage = p;
+            if (viewFilter.CreatedDateTimeTo.HasValue)
+            {
+                var range = new Range<DateTime>
+                {
+                    To = viewFilter.CreatedDateTimeTo.Value
+                };
+
+                if (viewFilter.CreatedDateTimeFrom.HasValue)
+                    range.From = viewFilter.CreatedDateTimeFrom.Value;
+                else
+                    range.From = DateTime.Now;
+                filter.CreatedDateTime = range;
+            }
+
+            if (viewFilter.PriceTo.HasValue)
+            {
+                var range = new Range<uint>
+                {
+                    To = viewFilter.PriceTo.Value
+                };
+
+                if (viewFilter.PriceFrom.HasValue)
+                    range.From = viewFilter.PriceFrom.Value;
+                else
+                    range.From = UInt32.MaxValue;
+                filter.Price = range;
+            }
+
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+            ViewBag.Adverts = response.Data;
+
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
+            ViewBag.CurrentPage = p;
+            ViewBag.Size = filter.Size;
+            return View(viewFilter);
+        }
+
 
         [Route("{id:long}")]
         [HttpPost]
         public async Task<IActionResult> AdvertById(NewCommentDto comment) {
             if (comment.Text == null)
                 return View("Error", new ErrorViewModel { RequestId = "Enter text" });
-
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
             comment.UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value;
             await _advertApiClient.AddCommentAsync(comment);
             return Redirect($"{comment.AdvertId}");
