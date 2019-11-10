@@ -35,6 +35,8 @@ namespace Adboard.UI.Clients
 
                 using (var response = await _client.SendAsync(message))
                 {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        throw new ApplicationException("401");
                     // Добавить корректный тип исключения и расширить сообщение об ошибке.
                     if (response.StatusCode != HttpStatusCode.OK)
                         throw new ApplicationException("Возникла ошибка при выполнении запроса.");
@@ -59,6 +61,8 @@ namespace Adboard.UI.Clients
 
                 using (var response = await _client.SendAsync(message))
                 {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        throw new ApplicationException("401");
                     // Добавить корректный тип исключения и расширить сообщение об ошибке.
                     if (response.StatusCode != HttpStatusCode.OK)
                         throw new ApplicationException("Возникла ошибка при выполнении запроса.");
@@ -83,6 +87,8 @@ namespace Adboard.UI.Clients
 
                 using (var response = await _client.SendAsync(message))
                 {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        throw new ApplicationException("401");
                     // Добавить корректный тип исключения и расширить сообщение об ошибке.
                     if (response.StatusCode != HttpStatusCode.OK)
                         throw new ApplicationException("Возникла ошибка при выполнении запроса.");
@@ -106,6 +112,8 @@ namespace Adboard.UI.Clients
 
                 using (var response = await _client.SendAsync(message))
                 {
+                    if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        throw new ApplicationException("401");
                     // Добавить корректный тип исключения и расширить сообщение об ошибке.
                     if (response.StatusCode != HttpStatusCode.OK)
                         throw new ApplicationException("Возникла ошибка при выполнении запроса.");

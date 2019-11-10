@@ -112,16 +112,7 @@
                     <button type="button" class="ml-auto" id="userInfo" style="border: none; background: none;" data-toggle="popover" title="@author.Username [@author.PhoneNumber]" data-content="@author.Email"><img src="~/lib/help.png" width="20px" height="20px"> </button>
                 </div>
 
-                @*<p class="text-break text-justify">
-
-                    src="~/lib/logout.png"
-                @author.Username @author.Email @author.PhoneNumber
-
-        <a href="mailto:@author.Email">@author.Email</a>
-
-
-
-            </p>*@
+               
 
 
 
@@ -148,16 +139,6 @@
                 {
                     @foreach (CommentDto c in advert.Comments.Reverse())
                     {
-
-
-                        @*<div class="media">
-                    <div class="media-body">
-                        <h5 class="mt-0">@ViewBag.CommentAuthors[c.UserId] [@c.CreatedDateTime]</h5>
-                        @c.Text
-                    </div>
-                </div>*@
-
-
 
                         <div class="d-flex">
                             <h5>@ViewBag.CommentAuthors[c.UserId]</h5>

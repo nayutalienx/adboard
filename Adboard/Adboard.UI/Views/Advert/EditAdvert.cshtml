@@ -19,11 +19,11 @@
     <fieldset>
         <div class="form-group">
             <label asp-for="Header"></label>
-            <input class="form-control" placeholder="Header" value="@advert.Header" asp-for="Header" autofocus>
+            <input class="form-control" maxlength="29" placeholder="Header(Max 30 symbols)" value="@advert.Header" asp-for="Header" autofocus>
         </div>
         <div class="form-group">
             <label asp-for="Description"></label>
-            <textarea class="form-control" placeholder="New Description" asp-for="Description" autofocus></textarea>
+            <textarea class="form-control" maxlength="649" placeholder="New Description(Max 650 symbols)" asp-for="Description" autofocus></textarea>
         </div>
         <div class="form-group">
             <label asp-for="Price"></label>

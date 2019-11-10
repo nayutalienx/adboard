@@ -57,12 +57,23 @@ namespace BusinessLogicLayer.Implementation
             if (string.IsNullOrWhiteSpace(dto.Header) || string.IsNullOrWhiteSpace(dto.Description))
                 throw new Exception($"{nameof(dto)} Заполните все данные");
 
+            if (dto.Header.Length > 30)
+                throw new Exception($"{nameof(dto)} Заголовок не более 30 символов");
+
             if (dto.Description.Length > 650)
                 throw new Exception($"{nameof(dto)} Описание не более 650 символов");
             
             var advert = _mapper.Map<Advert>(dto);
             var result = await _advertRepository.AddAsync(advert);
-            await _advertRepository.SaveChangesAsync();
+            try
+            {
+                await _advertRepository.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                string mes = ex.Message;
+                throw new Exception(ex.Message);
+            }
             return _mapper.Map<AdvertDto>(result);
         }
 

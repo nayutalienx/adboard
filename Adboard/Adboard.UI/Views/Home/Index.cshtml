@@ -21,27 +21,27 @@
             {
                 <img class="card-img-top thumb-post" style="object-fit: cover" height="286" src="~/lib/asp.jpg" alt="Card image cap">
             }
-            <div class="card-body p-2">
-                <div class="d-flex">
-                    <h5 class="card-title">@advert.Header</h5>
-                    <h5 class="ml-auto">@advert.CreatedDateTime.ToShortDateString()</h5>
-                </div>
-                
-                <div class="d-flex">
-                    @if (advert.Category.ParentCategory?.Name != null)
-                    {
-                        <h6>@advert.Category.ParentCategory.Name, @advert.Category.Name</h6>
-                    }
-                    else
-                    {
-                        <h6>@advert.Category.Name</h6>
-                    }
-                </div>
-                <div class="d-flex">
-                    <h6 class="align-self-end text-success">@advert.Price rub</h6>
-                    <a href="/Advert/@advert.Id" class="btn btn-primary ml-auto">More</a>
-                </div>  
+        <div class="card-body p-2 d-flex flex-column">
+            <div class="d-flex">
+                <h5 class="card-title"><a href="/Advert/@advert.Id" style="color: #0091d9;">@advert.Header</a></h5>
+                <h6 class="ml-auto" style="color: dimgray;">@advert.CreatedDateTime.ToShortDateString()</h6>
             </div>
+
+            <div class="d-flex mt-auto">
+                @if (advert.Category.ParentCategory?.Name != null)
+                {
+                    <h6>@advert.Category.ParentCategory.Name, @advert.Category.Name</h6>
+                }
+                else
+                {
+                    <h6>@advert.Category.Name</h6>
+                }
+                <h6 class="ml-auto text-success">@advert.Price rub</h6>
+            </div>
+            
+
+            
+        </div>
         </div>
     }
 </div>

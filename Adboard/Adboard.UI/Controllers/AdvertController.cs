@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Adboard.Contracts;
 using Adboard.Contracts.DTOs.Advert;
 using Adboard.Contracts.DTOs.Category;
 using Adboard.Contracts.DTOs.Comment;
@@ -79,8 +80,18 @@ namespace Adboard.UI.Controllers
             var cats = await _categoryApiClient.GetCategoriesAsync();
             IReadOnlyCollection<CategoryDto> _cats = cats.Data;
             ViewBag.Categories = _cats;
+            ApiResponse<AdvertDto> response = null;
+            try
+            {
+                response = await _advertApiClient.UpdateAdvertAsync(dto);
+            }
+            catch (ApplicationException ex) {
+                if (ex.Message.Equals("401"))
+                    return Redirect($"~/Home/Logout");
+                else
+                    return View("Error", new ErrorViewModel{ RequestId = ex.Message });
+            }
 
-            var response = await _advertApiClient.UpdateAdvertAsync(dto);
             if (response.HasErrors)
                 return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             AdvertDto result = response.Data;
@@ -91,14 +102,30 @@ namespace Adboard.UI.Controllers
         [Route("Delete/{id:long}")]
         [HttpGet]
         public async Task<IActionResult> DeleteAdvert(long id) {
-            await _advertApiClient.RemoveAdvertAsync(new RemoveAdvertDto
+            
+
+            ApiResponse response = null;
+            try
             {
-                AdvertId = id,
-                UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value
-            });
+                response = await _advertApiClient.RemoveAdvertAsync(new RemoveAdvertDto
+                {
+                    AdvertId = id,
+                    UserId = User.Claims.FirstOrDefault(c => c.Type.Contains("nameidentifier")).Value
+                });
+            }
+            catch (ApplicationException ex)
+            {
+                if (ex.Message.Equals("401"))
+                    return Redirect($"~/Home/Logout");
+                else
+                    return View("Error", new ErrorViewModel { RequestId = ex.Message });
+            }
+
+
             return Redirect("~/");
         }
 
+        
         [Route("{id:long}")]
         public async Task<IActionResult> AdvertById(long id)
         {
@@ -176,9 +203,27 @@ namespace Adboard.UI.Controllers
                 }
                 dto.Photo = photoList.ToArray();
             }
-            var response = await _advertApiClient.AddAdvertAsync(dto);
+ 
+
+
+            ApiResponse<AdvertDto> response = null;
+            try
+            {
+                response = await _advertApiClient.AddAdvertAsync(dto);
+            }
+            catch (ApplicationException ex)
+            {
+                if (ex.Message.Equals("401"))
+                    return Redirect($"~/Home/Logout");
+                else
+                    return View("Error", new ErrorViewModel { RequestId = ex.Message });
+            }
+
+
+
+
             if (response.HasErrors)
-                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
+                return Ok(response.Errors.FirstOrDefault());
             AdvertDto result = response.Data;
             return Redirect($"Advert/{result.Id}");
         }
