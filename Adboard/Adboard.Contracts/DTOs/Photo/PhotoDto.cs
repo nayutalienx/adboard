@@ -6,6 +6,7 @@ namespace Adboard.Contracts.DTOs.Photo
 {
     public class PhotoDto
     {
+        public long Id { get; set; }
         public byte[] Data { get; set; }
     }
 }

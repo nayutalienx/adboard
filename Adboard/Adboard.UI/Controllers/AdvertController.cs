@@ -371,6 +371,14 @@ namespace Adboard.UI.Controllers
             return Redirect($"{comment.AdvertId}");
         }
 
+        [Route("PhotoModal")]
+        [HttpGet]
+        public async Task<IActionResult> PhotoModal([FromQuery] int advert_id, [FromQuery] int photo_id) {
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(new AdvertFilter { AdvertId = advert_id, Size = 1, CurrentPage = 1 });
+            AdvertDto ad = response.Data.FirstOrDefault();
+            ViewBag.PhotoData = ad.Photo.Where(p => p.Id == photo_id).FirstOrDefault().Data;
+            return PartialView();
+        }
         
 
     }
