@@ -65,7 +65,8 @@ namespace IdentityServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
-            return View(await BuildLoginViewModelAsync(returnUrl));
+            //partial
+            return PartialView(await BuildLoginViewModelAsync(returnUrl));
         }
 
         [HttpPost]
@@ -73,7 +74,7 @@ namespace IdentityServer.Controllers
             var data = await _photoRepository.GetAllAsync();
             IReadOnlyCollection<PhotoCaptcha> photo = data.ToList();
             PhotoCaptcha p = photo.First();
-            return View(new RegisterViewModel { ReturnUrl = model.ReturnUrl, CaptchaId = p.Id, Captcha = new PhotoCaptcha { Data = p.Data } });
+            return PartialView(new RegisterViewModel { ReturnUrl = model.ReturnUrl, CaptchaId = p.Id, Captcha = new PhotoCaptcha { Data = p.Data } });
         }
 
         [HttpPost]
@@ -116,7 +117,7 @@ namespace IdentityServer.Controllers
             }
             else
             {
-                return View("Register",user);
+                return PartialView("Register",user);
             }
 
 
@@ -335,7 +336,7 @@ namespace IdentityServer.Controllers
                 return await Logout(vm);
             }
 
-            return View(vm);
+            return PartialView(vm);
         }
 
         [HttpPost]
@@ -349,7 +350,7 @@ namespace IdentityServer.Controllers
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
             }
 
-            return View("LoggedOut", vm);
+            return PartialView("LoggedOut", vm);
         }
 
         // to print view

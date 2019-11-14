@@ -8,10 +8,10 @@
 
 @{ AdvertDto advert = ViewBag.Advert;}
 
-<h1>EditAdvert</h1>
 
-<div class="d-flex flex-row-reverse">
-    <div class="p-2"><a class="btn btn-danger" href="~/Advert/Delete/@advert.Id" role="button">Delete</a></div>
+
+<div class="d-flex flex-row-reverse pt-2">
+    <div class="p-0"><a class="btn btn-danger" href="~/Advert/Delete/@advert.Id" role="button">Delete</a></div>
 </div>
 
 <form asp-route="AddAdvert" enctype="multipart/form-data">
@@ -84,7 +84,9 @@
             <input type="file" multiple class="form-control-file" placeholder="New Photo" asp-for="Photo" autocomplete="off">
         </div>
         <div class="form-group">
-            <button class="btn btn-primary" name="button" value="update">Update</button>
+            <div class="row d-flex flex-row-reverse mr-0">
+                <button class="btn btn-primary" name="button" value="update">Update</button>
+            </div>
 
         </div>
     </fieldset>

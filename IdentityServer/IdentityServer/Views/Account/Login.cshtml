@@ -1,62 +1,73 @@
 ﻿@model IdentityServer.Objects.LoginViewModel
 
-<div class="login-page">
-    <div class="page-header">
-        <h1>Login</h1>
-    </div>
 
-    <div class="row">
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
 
-        @if (Model.EnableLocalLogin)
-        {
-            if(Model.MessageFromRegistration != null){ 
-        <div class="alert alert-success" role="alert">
-            @Model.MessageFromRegistration
-        </div>
+    <title>Signin Template for Bootstrap</title>
+
+    
+
+    <!-- Bootstrap core CSS -->
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/css/signin.css" rel="stylesheet">
+</head>
+
+<body class="text-center">
+    @if (Model.EnableLocalLogin)
+    {
+    <div class="form-signin">
+        <form  asp-route="Login">
+            @if (Model.MessageFromRegistration != null)
+            {
+                <div class="alert alert-success" role="alert">
+                    @Model.MessageFromRegistration
+                </div>
             }
 
-            <div class="col-sm-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Local Login</h3>
-                    </div>
-                    <div class="panel-body">
-
-                        <form asp-route="Login">
-                            <input type="hidden" asp-for="ReturnUrl" />
-
-                            <fieldset>
-                                <div class="form-group">
-                                    <label asp-for="Username"></label>
-                                    <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
-                                </div>
-                                <div class="form-group">
-                                    <label asp-for="Password"></label>
-                                    <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
-                                </div>
-                                @if (Model.AllowRememberLogin)
-                                {
-                                    <div class="form-group login-remember">
-                                        <label asp-for="RememberLogin">
-                                            <input asp-for="RememberLogin">
-                                            <strong>Remember My Login</strong>
-                                        </label>
-                                    </div>
-                                }
-                                <div class="form-group">
-                                    <button class="btn btn-primary" name="button" value="login">Login</button>
-                                    <button class="btn btn-default" name="button" value="cancel">Cancel</button>
-                                </div>
-                                 </fieldset>
-                        </form>
-
-                        <form asp-action="Register" method="post">
-                            <input type="hidden" asp-for="ReturnUrl" />
-                            <button class="btn btn-default" name="regbutton" value="reg">Register</button>
-                        </form>
-                    </div>
+            <input type="hidden" asp-for="ReturnUrl" />
+            <img class="mb-4" src="~/sale.png" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="inputEmail" asp-for="Username" class="sr-only">Username</label>
+            <input type="text" asp-for="Username" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
+            <label for="inputPassword" asp-for="Password" class="sr-only">Password</label>
+            <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            @if (Model.AllowRememberLogin)
+            {
+                <div class="checkbox mb-3">
+                    <label asp-for="RememberLogin">
+                        <input type="checkbox" asp-for="RememberLogin"> Remember me
+                    </label>
                 </div>
-            </div>
-        }
+            }
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="button" value="login">Sign in</button>
+
+
+
+
+
+        </form>
+        <div style="margin-top: 10px;">
+            <form asp-action="Register" method="post">
+                <input type="hidden" asp-for="ReturnUrl" />
+                <button class="btn btn-default" name="regbutton" value="reg">Register</button>
+            </form>
+        </div>
     </div>
-</div>
+    }
+
+
+
+
+
+
+</body>
+</html>
