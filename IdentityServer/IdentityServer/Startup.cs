@@ -40,11 +40,23 @@ namespace IdentityServer
             services.AddControllersWithViews();
             services.AddIdentity(_connectionString);
             services.AddIdentityServer(_connectionString);
-            services.AddAuthentication().AddGoogle(options =>
+            services.AddAuthentication()
+                .AddGoogle(options =>
             {
                 options.ClientId = "373625078064-qi3ah5b94smnpu7fp719ep1apsc7lqqk.apps.googleusercontent.com";
                 options.ClientSecret = "E_-jKDm5MPQqlIS9eZBMGNmB";
-            });
+            })
+                .AddFacebook(options =>
+                {
+                    options.AppId = "1698412483628061";
+                    options.AppSecret = "2e2d873fef6f70e0c580fa245b1bf06e";
+                })
+                .AddVkontakte(options =>
+                {
+                    options.ClientId = "7211183";
+                    options.ClientSecret = "1BeWX0qbwH3QsQ8oMOLa";
+                });
+           
         }
 
         

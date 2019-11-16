@@ -58,11 +58,11 @@
         <div style="margin-top: 10px;" >
             <form asp-action="Register" class="d-flex" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
-                <button class="btn btn-default" name="regbutton" value="reg">Register</button>
+                <button class="btn btn-default btn-sm" name="regbutton" value="reg">Register</button>
                 @foreach (var provider in Model.VisibleExternalProviders)
                 {
 
-                    <a class="btn btn-default pl-2"
+                    <a class="btn btn-default pl-2 btn-sm"
                        asp-controller="External"
                        asp-action="Challenge"
                        asp-route-provider="@provider.AuthenticationScheme"

@@ -150,7 +150,10 @@ namespace Adboard.UI.Controllers
 
                     var commentAuthor = await _identityClient.GetUserInfoAsync(comment.UserId);
                     var commentAuthorData = commentAuthor.Data;
-                    id_name.Add(comment.UserId, commentAuthorData.Email);
+                    if(commentAuthorData != null)
+                        id_name.Add(comment.UserId, commentAuthorData.Email);
+                    else
+                        id_name.Add(comment.UserId, "User deleted");
                 }
                 ViewBag.CommentAuthors = id_name;
             }

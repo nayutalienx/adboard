@@ -17,6 +17,7 @@ namespace BusinessLogicLayer.Tests
     {
         private readonly Mock<IAdvertRepository> _advertRepository;
         private readonly Mock<ICategoryRepository> _categoryRepository;
+        private readonly Mock<IPhotoRepository> _photoRepository;
         private readonly CategoryManager _categoryManager;
         private readonly AdvertManager _advertManager;
 
@@ -33,8 +34,8 @@ namespace BusinessLogicLayer.Tests
 
             _advertRepository = new Mock<IAdvertRepository>();
             _categoryRepository = new Mock<ICategoryRepository>();
-
-            _advertManager = new AdvertManager(_advertRepository.Object, mapper);
+            _photoRepository = new Mock<IPhotoRepository>();
+            _advertManager = new AdvertManager(_advertRepository.Object, _photoRepository.Object,mapper);
             _categoryManager = new CategoryManager(_categoryRepository.Object, mapper);
 
         

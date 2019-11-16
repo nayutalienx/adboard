@@ -207,7 +207,7 @@ namespace IdentityServer.Controllers
         {
             // create a list of claims that we want to transfer into our store
             var filtered = new List<Claim>();
-
+            string first = null, last = null; 
             // user's display name
             var name = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value ??
                 claims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value;
@@ -217,9 +217,9 @@ namespace IdentityServer.Controllers
             }
             else
             {
-                var first = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName)?.Value ??
+                first = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName)?.Value ??
                     claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName)?.Value;
-                var last = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName)?.Value ??
+                last = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName)?.Value ??
                     claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname)?.Value;
                 if (first != null && last != null)
                 {
@@ -250,11 +250,15 @@ namespace IdentityServer.Controllers
             };
 
 
+            //vkontakte email
+            if (user.Email == null)
+                user.Email = first + " " + last;
+
 
             var identityResult = await _userManager.CreateAsync(user);
 
-            // addrole
-            await _userManager.AddToRoleAsync(await _userManager.FindByEmailAsync(user.Email), "User");
+            // addrole // change
+            await _userManager.AddToRoleAsync(await _userManager.FindByNameAsync(user.UserName), "User");
 
             if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
 
