@@ -134,7 +134,10 @@ namespace Adboard.UI.Controllers
             var ad = response.Data.FirstOrDefault();
             ViewBag.Advert = ad;
             var author = await _identityClient.GetUserInfoAsync(ad.UserId);
-            ViewBag.UserInfo = author.Data;
+            var author_dto = author.Data;
+            if (author_dto.Username.Length > 30)
+                author_dto.Username = "";
+            ViewBag.UserInfo = author_dto;
 
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
@@ -147,7 +150,7 @@ namespace Adboard.UI.Controllers
 
                     var commentAuthor = await _identityClient.GetUserInfoAsync(comment.UserId);
                     var commentAuthorData = commentAuthor.Data;
-                    id_name.Add(comment.UserId, commentAuthorData.Username);
+                    id_name.Add(comment.UserId, commentAuthorData.Email);
                 }
                 ViewBag.CommentAuthors = id_name;
             }

@@ -55,11 +55,24 @@
 
 
         </form>
-        <div style="margin-top: 10px;">
-            <form asp-action="Register" method="post">
+        <div style="margin-top: 10px;" >
+            <form asp-action="Register" class="d-flex" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
                 <button class="btn btn-default" name="regbutton" value="reg">Register</button>
+                @foreach (var provider in Model.VisibleExternalProviders)
+                {
+
+                    <a class="btn btn-default pl-2"
+                       asp-controller="External"
+                       asp-action="Challenge"
+                       asp-route-provider="@provider.AuthenticationScheme"
+                       asp-route-returnUrl="@Model.ReturnUrl">
+                        @provider.DisplayName
+                    </a>
+
+                }
             </form>
+            
         </div>
     </div>
     }

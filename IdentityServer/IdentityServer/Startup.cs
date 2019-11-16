@@ -40,7 +40,11 @@ namespace IdentityServer
             services.AddControllersWithViews();
             services.AddIdentity(_connectionString);
             services.AddIdentityServer(_connectionString);
-            
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = "373625078064-qi3ah5b94smnpu7fp719ep1apsc7lqqk.apps.googleusercontent.com";
+                options.ClientSecret = "E_-jKDm5MPQqlIS9eZBMGNmB";
+            });
         }
 
         

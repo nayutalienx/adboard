@@ -367,12 +367,27 @@ namespace IdentityServer.Controllers
                     EnableLocalLogin = local,
                     ReturnUrl = returnUrl,
                     Username = context?.LoginHint,
-                    MessageFromRegistration = reg
+                    MessageFromRegistration = reg,
+                    ExternalProviders = new ExternalProvider[] { new ExternalProvider { AuthenticationScheme = context.IdP } }
+
                 };
 
 
                 return vm;
             }
+
+            var schemes = await _schemeProvider.GetAllSchemesAsync();
+
+            var providers = schemes
+                .Where(x => x.DisplayName != null ||
+                            (x.Name.Equals(AccountOptions.WindowsAuthenticationSchemeName, StringComparison.OrdinalIgnoreCase))
+                )
+                .Select(x => new ExternalProvider
+                {
+                    DisplayName = x.DisplayName,
+                    AuthenticationScheme = x.Name
+                }).ToList();
+
 
             var allowLocal = true;
             if (context?.ClientId != null)
@@ -381,6 +396,10 @@ namespace IdentityServer.Controllers
                 if (client != null)
                 {
                     allowLocal = client.EnableLocalLogin;
+                    if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
+                    {
+                        providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+                    }
                 }
             }
 
@@ -390,7 +409,8 @@ namespace IdentityServer.Controllers
                 EnableLocalLogin = allowLocal,
                 ReturnUrl = returnUrl,
                 Username = context?.LoginHint,
-                MessageFromRegistration = reg
+                MessageFromRegistration = reg,
+                ExternalProviders = providers.ToArray()
             };
         }
 
