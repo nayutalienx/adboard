@@ -1,10 +1,9 @@
 ﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.EntityFramework.Migrations
 {
-    public partial class category_tree : Migration
+    public partial class init2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +12,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(maxLength: 30, nullable: true),
                     ParentCategoryId = table.Column<long>(nullable: true)
                 },
@@ -29,44 +28,21 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 30, nullable: true),
-                    PhoneNumber = table.Column<string>(maxLength: 25, nullable: true),
-                    Email = table.Column<string>(maxLength: 50, nullable: true),
-                    Password = table.Column<string>(maxLength: 32, nullable: true),
-                    Role = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Adverts",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Header = table.Column<string>(maxLength: 30, nullable: true),
                     Description = table.Column<string>(nullable: true),
                     CategoryId = table.Column<long>(nullable: false),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
-                    AuthorId = table.Column<long>(nullable: false),
-                    Price = table.Column<long>(nullable: false)
+                    UserId = table.Column<string>(nullable: true),
+                    Price = table.Column<uint>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Adverts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Adverts_Users_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Adverts_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -80,7 +56,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Country = table.Column<string>(maxLength: 30, nullable: true),
                     Area = table.Column<string>(maxLength: 30, nullable: true),
                     City = table.Column<string>(maxLength: 30, nullable: true),
@@ -104,10 +80,10 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
                     Text = table.Column<string>(maxLength: 300, nullable: true),
-                    AuthorId = table.Column<long>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     AdvertId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -119,12 +95,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         principalTable: "Adverts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Comments_Users_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,7 +102,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("Sqlite:Autoincrement", true),
                     Data = table.Column<byte[]>(nullable: true),
                     AdvertId = table.Column<long>(nullable: false)
                 },
@@ -154,11 +124,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adverts_AuthorId",
-                table: "Adverts",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Adverts_CategoryId",
                 table: "Adverts",
                 column: "CategoryId");
@@ -172,11 +137,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 name: "IX_Comments_AdvertId",
                 table: "Comments",
                 column: "AdvertId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Comments_AuthorId",
-                table: "Comments",
-                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Photos_AdvertId",
@@ -197,9 +157,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             migrationBuilder.DropTable(
                 name: "Adverts");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Categories");

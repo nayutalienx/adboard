@@ -120,7 +120,7 @@ namespace BusinessLogicLayer.Implementation
 
             adverts = adverts.Skip((filter.CurrentPage - 1) * filter.Size).Take(filter.Size);
 
-            return _mapper.Map<List<AdvertDto>>(adverts);
+            return _mapper.Map<List<AdvertDto>>(adverts.ToArray());
         }
 
 

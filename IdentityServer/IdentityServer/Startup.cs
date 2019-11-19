@@ -84,7 +84,7 @@ namespace IdentityServer
     static class ServiceCollectionExtensions {
         public static IServiceCollection AddIdentity(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
@@ -108,11 +108,11 @@ namespace IdentityServer
                 .AddAspNetIdentity<IdentityUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                     options.EnableTokenCleanup = true;
                 });
             builder.AddDeveloperSigningCredential();

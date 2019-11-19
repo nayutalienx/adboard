@@ -24,11 +24,13 @@ namespace Adboard.UI
         private readonly IConfiguration _configuration;
         private readonly ApiClientOptions _apiClientOptions;
         private readonly IdentityClientOptions _identityClientOptions;
+        private readonly OpenIdConnectOptions _openIdConnectOptions;
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
             _apiClientOptions = _configuration.GetSection("ApiClient").Get<ApiClientOptions>();
             _identityClientOptions = _configuration.GetSection("IdentityClient").Get<IdentityClientOptions>();
+            _openIdConnectOptions = _configuration.GetSection("OpenIdConnect").Get<OpenIdConnectOptions>();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -39,6 +41,7 @@ namespace Adboard.UI
             services.Configure<AdvertApiClientOptions>(_configuration.GetSection("AdvertApiClient"));
             services.Configure<CategoryApiClientOptions>(_configuration.GetSection("CategoryApiClient"));
             services.Configure<IdentityClientOptions>(_configuration.GetSection("IdentityClient"));
+            services.Configure<OpenIdConnectOptions>(_configuration.GetSection("OpenIdConnect"));
 
             services.AddAuthentication(options =>
             {
@@ -51,12 +54,12 @@ namespace Adboard.UI
             })
             .AddOpenIdConnect("oidc", options =>
             {
-                options.Authority = "http://localhost:5005";
+                options.Authority = _openIdConnectOptions.Authority;
                 options.RequireHttpsMetadata = false;
                 
-                options.ClientId = "dashboard-app";
-                options.ClientSecret = "dashboard-app";
-                options.ResponseType = "code";
+                options.ClientId = _openIdConnectOptions.ClientId;
+                options.ClientSecret = _openIdConnectOptions.ClientSecret;
+                options.ResponseType = _openIdConnectOptions.ResponseType;
                 
                 options.SaveTokens = true;
                 

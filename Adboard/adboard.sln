@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adboard.API", "Adboard.API\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adboard.Contracts", "Adboard.Contracts\Adboard.Contracts.csproj", "{3C22B135-C984-4742-8040-C4232EC9D736}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FF6E770C-F196-4A90-B119-525FA34AEC63}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{3C22B135-C984-4742-8040-C4232EC9D736}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C22B135-C984-4742-8040-C4232EC9D736}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C22B135-C984-4742-8040-C4232EC9D736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF6E770C-F196-4A90-B119-525FA34AEC63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6E770C-F196-4A90-B119-525FA34AEC63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6E770C-F196-4A90-B119-525FA34AEC63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6E770C-F196-4A90-B119-525FA34AEC63}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

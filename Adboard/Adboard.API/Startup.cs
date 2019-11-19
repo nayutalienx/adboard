@@ -4,11 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Adboard.API.Options;
+using DataAccessLayer.EntityFramework;
 using Infrastructure.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -20,9 +23,13 @@ namespace Adboard.API
 {
     public class Startup
     {
+        private readonly JwtBearerOptions _jwtBearerOptions;
+        private readonly UiOptions _uiOptions;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _jwtBearerOptions = configuration.GetSection("JwtBearer").Get<JwtBearerOptions>();
+            _uiOptions = configuration.GetSection("UiOptions").Get<UiOptions>();
         }
 
         public IConfiguration Configuration { get; }
@@ -35,13 +42,14 @@ namespace Adboard.API
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://localhost:5005";
+                    options.Authority = _jwtBearerOptions.Authority;
                     options.RequireHttpsMetadata = false;
-                    options.Audience = "dashboard-api";
+                    options.Audience = _jwtBearerOptions.Audience;
                     
                 });
            
             services.Install();  // dependency injection
+            services.AddDbContext<AdboardContext>(options => options.UseSqlite(Configuration.GetConnectionString("ConnectionSqlite")));
 
             services.AddSwaggerGen(x =>
             {
@@ -73,9 +81,9 @@ namespace Adboard.API
 
             services.AddCors(options =>
             {
-                options.AddPolicy("dashboard-app", policy =>
+                options.AddPolicy(_uiOptions.Name, policy =>
                 {
-                    policy.WithOrigins("http://localhost:5004")
+                    policy.WithOrigins(_uiOptions.Url)
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                     
@@ -97,7 +105,7 @@ namespace Adboard.API
             }
 
             app.UseAuthentication();
-            app.UseCors("dashboard-app");
+            app.UseCors(_uiOptions.Name);
             ConfigureSwagger(app);
             app.UseMiddleware<ExceptionHandler>();
             app.UseHttpsRedirection();
@@ -108,7 +116,7 @@ namespace Adboard.API
         {
             Options.SwaggerOptions swaggerOptions = new Options.SwaggerOptions();
 
-            Configuration.GetSection(nameof(SwaggerOptions)).Bind(swaggerOptions);
+            Configuration.GetSection("SwaggerOptions").Bind(swaggerOptions);
 
             app.UseSwagger(option => option.RouteTemplate = swaggerOptions.JsonRoute);
             app.UseSwaggerUI(option => option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description));

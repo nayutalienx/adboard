@@ -29,7 +29,7 @@ namespace Infrastructure.DependencyInjection
                 .AddTransient<IAddressRepository, AddressRepository>()
                 .AddTransient<ICommentRepository, CommentRepository>()
                 .AddTransient<IPhotoRepository, PhotoRepository>()
-                .AddDbContext<AdboardContext>(ServiceLifetime.Transient)
+                //.AddDbContext<AdboardContext>(ServiceLifetime.Transient)
                 .AddSingleton(mapperConfiguration.CreateMapper());
             return serviceCollection;
 

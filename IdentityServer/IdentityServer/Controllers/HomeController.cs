@@ -38,7 +38,11 @@ namespace IdentityServer.Controllers
             _roleManager = roleManager;
         }
 
-        public IActionResult Index() => View();
+        public IActionResult Index() 
+        {
+
+            return View(); 
+        }
 
         public async Task<IActionResult> InitializeDatabase(CancellationToken cancellationToken = default)
         {

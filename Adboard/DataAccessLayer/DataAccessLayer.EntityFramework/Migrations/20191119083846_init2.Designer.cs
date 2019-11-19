@@ -3,29 +3,25 @@ using System;
 using DataAccessLayer.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataAccessLayer.EntityFramework.Migrations
 {
     [DbContext(typeof(AdboardContext))]
-    [Migration("20191019191110_category_tree")]
-    partial class category_tree
+    [Migration("20191119083846_init2")]
+    partial class init2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079");
 
             modelBuilder.Entity("DataAccessLayer.Models.Address", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<long>("AdvertId");
 
@@ -55,10 +51,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("AuthorId");
+                        .ValueGeneratedOnAdd();
 
                     b.Property<long>("CategoryId");
 
@@ -69,11 +62,11 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.Property<string>("Header")
                         .HasMaxLength(30);
 
-                    b.Property<long>("Price");
+                    b.Property<uint>("Price");
+
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryId");
 
@@ -83,8 +76,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Category", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name")
                         .HasMaxLength(30);
@@ -101,23 +93,20 @@ namespace DataAccessLayer.EntityFramework.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Comment", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<long>("AdvertId");
-
-                    b.Property<long>("AuthorId");
 
                     b.Property<DateTime>("CreatedDateTime");
 
                     b.Property<string>("Text")
                         .HasMaxLength(300);
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertId");
-
-                    b.HasIndex("AuthorId");
 
                     b.ToTable("Comments");
                 });
@@ -125,8 +114,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
             modelBuilder.Entity("DataAccessLayer.Models.Photo", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .ValueGeneratedOnAdd();
 
                     b.Property<long>("AdvertId");
 
@@ -139,31 +127,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                     b.ToTable("Photos");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.User", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(50);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(32);
-
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(25);
-
-                    b.Property<string>("Role");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
-                });
-
             modelBuilder.Entity("DataAccessLayer.Models.Address", b =>
                 {
                     b.HasOne("DataAccessLayer.Models.Advert", "Advert")
@@ -174,11 +137,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
 
             modelBuilder.Entity("DataAccessLayer.Models.Advert", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany("Adverts")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("DataAccessLayer.Models.Category", "Category")
                         .WithMany("Adverts")
                         .HasForeignKey("CategoryId")
@@ -199,11 +157,6 @@ namespace DataAccessLayer.EntityFramework.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("AdvertId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("DataAccessLayer.Models.User", "Author")
-                        .WithMany("Comments")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("DataAccessLayer.Models.Photo", b =>
