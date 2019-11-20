@@ -235,24 +235,62 @@ namespace Adboard.UI.Controllers
         }
         [Route("Filter")]
         [HttpGet]
-        public async Task<IActionResult> Filter([FromQuery] int category = default, [FromQuery]string region = default, [FromQuery] string query = default, [FromQuery]string in_header = "false", [FromQuery] string with_photo = "false") 
+        public async Task<IActionResult> Filter(
+            [FromQuery] string Header = default,
+            [FromQuery] string Description = default,
+            [FromQuery] int CategoryId = default,
+            [FromQuery] string HasPhotoOnly = "false",
+            [FromQuery] uint? PriceFrom = null,
+            [FromQuery] uint? PriceTo = null,
+            [FromQuery] string UserId = default,
+            [FromQuery] long? AdvertId = null,
+            [FromQuery] DateTime? CreatedDateTimeFrom = null,
+            [FromQuery] DateTime? CreatedDateTimeTo = null,
+            [FromQuery]string Region = default,
+            [FromQuery] int Size = 6,
+            [FromQuery]string in_header = "true",
+            [FromQuery]int page = 1
+            ) 
         {
+            ViewData["Header"] = Header;
+            ViewData["Description"] = Description;
+            ViewData["CategoryId"] = CategoryId;
+            ViewData["HasPhotoOnly"] = HasPhotoOnly;
+            ViewData["PriceFrom"] = PriceFrom;
+            ViewData["PriceTo"] = PriceTo;
+            ViewData["UserId"] = UserId;
+            ViewData["AdvertId"] = AdvertId;
+            ViewData["CreatedDateTimeFrom"] = CreatedDateTimeFrom;
+            ViewData["CreatedDateTimeTo"] = CreatedDateTimeTo;
+            ViewData["Region"] = Region;
+            ViewData["Size"] = Size;
+            ViewData["in_header"] = in_header;
+            ViewData["page"] = page;
+
             var cats = await _categoryApiClient.GetCategoriesAsync();
             IReadOnlyCollection<CategoryDto> cat_data = cats.Data;
             ViewBag.Categories = cat_data;
             var _filter = new FilterAdvertViewModel
             {
-                CategoryId = (category == 0) ? (long?)null : category,
-                Header = query,
-                HasPhotoOnly = bool.Parse(with_photo),
-                Region = region,
-                Size = 10
+                Header = Header,
+                Description = Description,
+                CategoryId = (CategoryId == 0) ? (long?)null : CategoryId,
+                HasPhotoOnly = bool.Parse(HasPhotoOnly),
+                PriceFrom = PriceFrom,
+                PriceTo = PriceTo,
+                UserId = UserId,
+                AdvertId = AdvertId,
+                CreatedDateTimeFrom = CreatedDateTimeFrom,
+                CreatedDateTimeTo = CreatedDateTimeTo,
+                Region = Region,
+                Size = Size
+                
             };
             if (in_header.Equals("false"))
-                _filter.Description = query;
+                _filter.Description = Header;
 
             var viewFilter = _filter;
-            int p = 1;
+            int p = page;
             AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
             filter.CurrentPage = p;
             if (viewFilter.CreatedDateTimeTo.HasValue)
@@ -293,58 +331,6 @@ namespace Adboard.UI.Controllers
             if (response.HasErrors)
                 return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
             return View(_filter);
-        }
-
-        [Route("Filter/{page?}")]
-        [HttpPost]
-        public async Task<IActionResult> Filter(FilterAdvertViewModel viewFilter, int? page)
-        {
-            int p;
-            if (page.HasValue && page.Value > 0)
-                p = page.Value;
-            else
-                p = 1;
-            AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
-            filter.CurrentPage = p;
-            if (viewFilter.CreatedDateTimeTo.HasValue)
-            {
-                var range = new Range<DateTime>
-                {
-                    To = viewFilter.CreatedDateTimeTo.Value
-                };
-
-                if (viewFilter.CreatedDateTimeFrom.HasValue)
-                    range.From = viewFilter.CreatedDateTimeFrom.Value;
-                else
-                    range.From = DateTime.Now;
-                filter.CreatedDateTime = range;
-            }
-
-            if (viewFilter.PriceTo.HasValue)
-            {
-                var range = new Range<uint>
-                {
-                    To = viewFilter.PriceTo.Value
-                };
-
-                if (viewFilter.PriceFrom.HasValue)
-                    range.From = viewFilter.PriceFrom.Value;
-                else
-                    range.From = UInt32.MaxValue;
-                filter.Price = range;
-            }
-
-            var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
-            
-            ViewBag.Adverts = response.Data;
-
-            var cats = await _categoryApiClient.GetCategoriesAsync();
-            ViewBag.Categories = cats.Data;
-            ViewBag.CurrentPage = p;
-            ViewBag.Size = filter.Size;
-            if (response.HasErrors)
-                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
-            return View(viewFilter);
         }
 
 

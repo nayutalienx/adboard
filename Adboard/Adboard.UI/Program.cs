@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 
 namespace Adboard.UI
 {
@@ -14,6 +15,9 @@ namespace Adboard.UI
     {
         public static void Main(string[] args)
         {
+            
+
+            CultureInfo.CurrentCulture = new CultureInfo("ru-RU");
             CreateWebHostBuilder(args).Build().Run();
         }
 

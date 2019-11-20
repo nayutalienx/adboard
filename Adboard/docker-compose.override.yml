@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  adboard.api:
+  adboard.ui:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:

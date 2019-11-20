@@ -6,7 +6,7 @@
 @using Adboard.Contracts.DTOs.Category
 @using Adboard.Contracts.DTOs.Advert
 
-<form asp-route="Filter" method="post" class="mt-3 border p-2 rounded-lg">
+<form asp-route="Filter" method="get" class="mt-3 border p-2 rounded-lg">
     @model Adboard.UI.Models.FilterAdvertViewModel
     <div class="form-row">
         <div class="col-md-4 mb-1">
@@ -84,15 +84,15 @@
             <select asp-for="Size" type="text" class="form-control" id="validationDefault02" placeholder="Amount">
 
 
-                @if (Model.Size == 10)
+                @if (Model.Size == 6)
                 {
-                    <option selected value="10">10</option>
-                    <option value="20">20</option>
+                    <option selected value="6">6</option>
+                    <option value="12">12</option>
                 }
                 else
                 {
-                    <option value="10">10</option>
-                    <option selected value="20">20</option>
+                    <option value="6">6</option>
+                    <option selected value="12">12</option>
                 }
 
             </select>
@@ -180,22 +180,55 @@
 }
 
 <nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="~/1">First</a></li>
+    <ul class="pagination justify-content-center">
+        
         @if (currentPage > 1)
         {
             if (ViewBag.Adverts.Count == ViewBag.Size)
             {
                 @for (int i = currentPage - 1; i < currentPage + 2; i++)
                 {
-                    <li class="page-item"><a class="page-link" href="~/@i">@i</a></li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Filter" 
+                           asp-route-Header="@ViewData["Header"]"
+                           asp-route-Description="@ViewData["Description"]"
+                           asp-route-CategoryId="@ViewData["CategoryId"]"
+                           asp-route-HasPhotoOnly="@ViewData["HasPhotoOnly"]"
+                           asp-route-PriceFrom="@ViewData["PriceFrom"]"
+                           asp-route-PriceTo="@ViewData["PriceTo"]"
+                           asp-route-UserId="@ViewData["UserId"]"
+                           asp-route-AdvertId="@ViewData["AdvertId"]"
+                           asp-route-CreatedDateTimeFrom="@ViewData["CreatedDateTimeFrom"]"
+                           asp-route-CreatedDateTimeTo="@ViewData["CreatedDateTimeTo"]"
+                           asp-route-Region="@ViewData["Region"]"
+                           asp-route-Size="@ViewData["Size"]"
+                           asp-route-in_header="@ViewData["in_header"]"
+                           asp-route-page="@i"
+                           >@i</a>
+                    </li>
                 }
             }
             else
             {
                 @for (int i = currentPage - 1; i < currentPage + 1; i++)
                 {
-                    <li class="page-item"><a class="page-link" href="~/@i">@i</a></li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Filter"
+                           asp-route-Header="@ViewData["Header"]"
+                           asp-route-Description="@ViewData["Description"]"
+                           asp-route-CategoryId="@ViewData["CategoryId"]"
+                           asp-route-HasPhotoOnly="@ViewData["HasPhotoOnly"]"
+                           asp-route-PriceFrom="@ViewData["PriceFrom"]"
+                           asp-route-PriceTo="@ViewData["PriceTo"]"
+                           asp-route-UserId="@ViewData["UserId"]"
+                           asp-route-AdvertId="@ViewData["AdvertId"]"
+                           asp-route-CreatedDateTimeFrom="@ViewData["CreatedDateTimeFrom"]"
+                           asp-route-CreatedDateTimeTo="@ViewData["CreatedDateTimeTo"]"
+                           asp-route-Region="@ViewData["Region"]"
+                           asp-route-Size="@ViewData["Size"]"
+                           asp-route-in_header="@ViewData["in_header"]"
+                           asp-route-page="@i">@i</a>
+                    </li>
                 }
             }
         }
@@ -205,12 +238,44 @@
             {
                 @for (int i = currentPage; i < currentPage + 2; i++)
                 {
-                    <li class="page-item"><a class="page-link" href="~/@i">@i</a></li>
+                    <li class="page-item">
+                        <a class="page-link" asp-action="Filter"
+                           asp-route-Header="@ViewData["Header"]"
+                           asp-route-Description="@ViewData["Description"]"
+                           asp-route-CategoryId="@ViewData["CategoryId"]"
+                           asp-route-HasPhotoOnly="@ViewData["HasPhotoOnly"]"
+                           asp-route-PriceFrom="@ViewData["PriceFrom"]"
+                           asp-route-PriceTo="@ViewData["PriceTo"]"
+                           asp-route-UserId="@ViewData["UserId"]"
+                           asp-route-AdvertId="@ViewData["AdvertId"]"
+                           asp-route-CreatedDateTimeFrom="@ViewData["CreatedDateTimeFrom"]"
+                           asp-route-CreatedDateTimeTo="@ViewData["CreatedDateTimeTo"]"
+                           asp-route-Region="@ViewData["Region"]"
+                           asp-route-Size="@ViewData["Size"]"
+                           asp-route-in_header="@ViewData["in_header"]"
+                           asp-route-page="@i">@i</a>
+                    </li>
                 }
             }
             else
             {
-                <li class="page-item"><a class="page-link" href="~/1">1</a></li>
+                <li class="page-item">
+                    <a class="page-link" asp-action="Filter"
+                       asp-route-Header="@ViewData["Header"]"
+                       asp-route-Description="@ViewData["Description"]"
+                       asp-route-CategoryId="@ViewData["CategoryId"]"
+                       asp-route-HasPhotoOnly="@ViewData["HasPhotoOnly"]"
+                       asp-route-PriceFrom="@ViewData["PriceFrom"]"
+                       asp-route-PriceTo="@ViewData["PriceTo"]"
+                       asp-route-UserId="@ViewData["UserId"]"
+                       asp-route-AdvertId="@ViewData["AdvertId"]"
+                       asp-route-CreatedDateTimeFrom="@ViewData["CreatedDateTimeFrom"]"
+                       asp-route-CreatedDateTimeTo="@ViewData["CreatedDateTimeTo"]"
+                       asp-route-Region="@ViewData["Region"]"
+                       asp-route-Size="@ViewData["Size"]"
+                       asp-route-in_header="@ViewData["in_header"]"
+                       asp-route-page="1">1</a>
+                </li>
             }
         }
     </ul>
