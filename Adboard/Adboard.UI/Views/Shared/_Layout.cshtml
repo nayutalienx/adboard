@@ -45,7 +45,7 @@
 
                         @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
                         { 
-                        <a class="nav-item nav-link text-dark" href="~/Advert/Filter?category=@cat.Id">@cat.Name</a>
+                        <a class="nav-item nav-link text-dark" href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
                         }
                        
                         <a class="nav-item nav-link text-dark" href="#">More categories..</a>
