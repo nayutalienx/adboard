@@ -13,6 +13,7 @@ namespace Adboard.UI.Clients
 {
     public interface IIdentityClient {
         Task<ApiResponse<UserDto>> GetUserInfoAsync(string id);
+        Task<ApiResponse<UserDto>> UpdateUserInfoAsync(UserDto user);
     }
     public class IdentityClient : ApiClient, IIdentityClient
     {
@@ -32,6 +33,13 @@ namespace Adboard.UI.Clients
             if (id == null)
                 throw new ArgumentNullException(nameof(id));
             return GetAsync<ApiResponse<UserDto>>($"{_identityOptions.UserInfoByIdUrl}/{id}");
+        }
+
+        public Task<ApiResponse<UserDto>> UpdateUserInfoAsync(UserDto user)
+        {
+            if (user.Id == null)
+                throw new ArgumentNullException(nameof(user.Id));
+            return PostAsync<UserDto, ApiResponse<UserDto>>(_identityOptions.UpdateUserInfoUrl, user);
         }
     }
 }

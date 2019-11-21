@@ -20,13 +20,16 @@ namespace Adboard.UI.Controllers
         private readonly IAdvertApiClient _advertApiClient;
         private readonly ICategoryApiClient _categoryApiClient;
         private readonly IMapper _mapper;
+        private readonly IIdentityClient _identityClient;
 
         public HomeController(IAdvertApiClient advertApiClient, ICategoryApiClient categoryApiClient,
+            IIdentityClient identityClient,
             IMapper mapper)
         {
             _mapper = mapper;
             _advertApiClient = advertApiClient;
             _categoryApiClient = categoryApiClient;
+            _identityClient = identityClient;
         }
 
         [HttpGet]
@@ -40,7 +43,7 @@ namespace Adboard.UI.Controllers
 
             var cats = await _categoryApiClient.GetCategoriesAsync();
             ViewBag.Categories = cats.Data;
-            ViewBag.Size = 6;
+            ViewBag.Size = 30;
             ViewBag.CurrentPage = 1;
             return View();
         }
@@ -67,8 +70,58 @@ namespace Adboard.UI.Controllers
         public async Task<IActionResult> Login()
         {
             var cats = await _categoryApiClient.GetCategoriesAsync();
+            string userId = User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value;
+            ViewBag.Role = User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value;
+
+
+            var user = await _identityClient.GetUserInfoAsync(userId);
+            var user_dto = user.Data;
+
+            LoginViewModel model = new LoginViewModel {
+                NameEmail = user_dto.Email,
+                Phone = user_dto.PhoneNumber ?? ""
+            };
+
+           
+
+
+            AdvertFilter filter = new AdvertFilter { CurrentPage = 1, Size = 20, UserId = userId };
+            var response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+            ViewBag.Adverts = response.Data;
+            
             ViewBag.Categories = cats.Data;
-            return View();
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model) {
+            var response = await _identityClient.UpdateUserInfoAsync(new UserDto 
+            { 
+                Id = User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value,
+                Email = model.NameEmail ?? "",
+                Username = model.NameEmail ?? "",
+                PhoneNumber = model.Phone ?? ""
+        });
+            if (!response.HasErrors)
+            {
+                ViewBag.Role = User.Claims.FirstOrDefault(x => x.Type.Contains("role")).Value;
+                AdvertFilter filter = new AdvertFilter 
+                { 
+                    CurrentPage = 1, Size = 20, UserId = User.Claims.FirstOrDefault(x => x.Type.Contains("nameidentifier")).Value
+                };
+                var advert_response = await _advertApiClient.GetAdvertsByFilterAsync(filter);
+                ViewBag.Adverts = advert_response.Data;
+                ViewBag.EditSuccess = true;
+                var cats = await _categoryApiClient.GetCategoriesAsync();
+                ViewBag.Categories = cats.Data;
+                model.NameEmail = (model.NameEmail == null) ? "" : model.NameEmail;
+                model.Phone = (model.Phone == null) ? "" : model.Phone;
+                return View(model);
+            } else 
+            {
+                return View("Error", new ErrorViewModel { RequestId = response.Errors.FirstOrDefault() });
+            }
         }
 
        

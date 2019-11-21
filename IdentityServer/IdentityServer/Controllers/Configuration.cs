@@ -29,8 +29,8 @@ namespace IdentityServer.Controllers
                     AbsoluteRefreshTokenLifetime = default,
                     AlwaysIncludeUserClaimsInIdToken = true,
                     RequireConsent = false,
-                    RedirectUris = { "http://37.140.199.62:82/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://37.140.199.62:82/signout-callback-oidc" },
+                    RedirectUris = { "http://localhost:5004/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5004/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

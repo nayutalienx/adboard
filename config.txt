@@ -1,0 +1,66 @@
+API:
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "SwaggerOptions": {
+    "JsonRoute": "swagger/{documentName}/swagger.json",
+    "Description": "Adboard API",
+    "UIEndpoint": "v1/swagger.json"
+  },
+  "JwtBearer": {
+    "Authority": "http://37.140.199.62:80",
+    "Audience": "dashboard-api"
+  },
+  "UiOptions": {
+    "Url": "http://37.140.199.62:82",
+    "Name": "dashboard-app"
+  },
+  "ConnectionStrings": {
+    "ConnectionSqlite": "Filename=AdvertService.db;"
+  }
+}
+
+UI:
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ApiClient": {
+    "BaseUrl": "http://37.140.199.62:81"
+  },
+  "AdvertApiClient": {
+    "UpdateAdvertUrl": "api/v1/Adverts",
+    "AddAdvertUrl": "api/v1/Adverts",
+    "DeleteAdvertUrl": "api/v1/Adverts",
+    "AddCommentUrl": "api/v1/Adverts/comments",
+    "GetAdvertsByFilterUrl": "api/v1/Adverts/filter"
+  },
+  "CategoryApiClient": {
+    "GetCategoriesUrl": "api/v1/Categories",
+    "AddCategoryUrl": "api/v1/Categories"
+  },
+  "IdentityClient": {
+    "BaseUrl": "http://37.140.199.62:80",
+    "UserInfoByTokenUrl": "connect/userinfo",
+    "UserInfoByIdUrl": "Account"
+  },
+  "OpenIdConnect": {
+    "Authority": "http://37.140.199.62:80",
+    "ClientId": "dashboard-app",
+    "ClientSecret": "dashboard-app",
+    "ResponseType": "code"
+  }
+}
+
+IdentityServer:
+
+ RedirectUris = { "http://37.140.199.62:82/signin-oidc" },
+ PostLogoutRedirectUris = { "http://37.140.199.62:82/signout-callback-oidc" },

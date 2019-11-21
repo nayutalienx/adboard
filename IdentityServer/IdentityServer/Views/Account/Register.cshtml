@@ -90,8 +90,8 @@
 
                 <img class="card-img-top thumb-post" style="object-fit: cover; margin-bottom: 15px;" width="100" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Captcha.Data)" alt="Card image cap">
                 <div class="form-group">
-                    <label for="inputCaptcha" asp-for="CaptchaAnswer" class="sr-only">Phone</label>
-                    <input type="text" asp-for="CaptchaAnswer" id="inputCaptcha" class="form-control is-invalid" placeholder="Phone" required autofocus>
+                    <label for="inputCaptcha" asp-for="CaptchaAnswer" class="sr-only">Captcha answer</label>
+                    <input type="text" asp-for="CaptchaAnswer" id="inputCaptcha" class="form-control is-invalid" placeholder="Captcha answer" required autofocus>
                     @if (Model?.CaptchaError != null)
                     {
                         <div class="invalid-feedback">

@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>586ec444-decb-4d55-a3f3-c5e018f9c3d2</ProjectGuid>
+    <ProjectGuid>24e144b8-de38-4d3d-9d6f-108293fff10e</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>adboard.ui</DockerServiceName>

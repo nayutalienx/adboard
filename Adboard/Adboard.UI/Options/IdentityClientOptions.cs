@@ -10,6 +10,7 @@ namespace Adboard.UI.Options
         public string BaseUrl { get; set; }
         public string UserInfoByTokenUrl { get; set; }
         public string UserInfoByIdUrl { get; set; }
+        public string UpdateUserInfoUrl { get; set; }
 
     }
 }

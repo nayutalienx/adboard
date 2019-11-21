@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using IdentityModel;
+using IdentityServer.Contracts;
 using IdentityServer.DataAccessLayer;
 using IdentityServer.Models;
 using IdentityServer.Objects;
@@ -264,6 +265,7 @@ namespace IdentityServer.Controllers
                 model.PasswordHash = hash_password;
             }
             model.UserName = user.Username;
+            model.PhoneNumber = user.PhoneNumber;
             await _userManager.UpdateAsync(model);
             if (user.UserRoles != null)
             {
@@ -273,6 +275,23 @@ namespace IdentityServer.Controllers
             await _identityContext.SaveChangesAsync(cancellationToken);
 
             return Ok("Edited!");
+        }
+
+        [HttpPost]
+        [Route("Account/ExternalEdit")]
+        public async Task<IActionResult> ExternalEdit([FromBody]UserDto user, CancellationToken cancellationToken = default) {
+
+            var model = await _userManager.FindByIdAsync(user.Id);
+            model.Email = user.Email;
+            model.PhoneNumber = user.PhoneNumber;
+            await _userManager.UpdateAsync(model);
+            await _identityContext.SaveChangesAsync(cancellationToken);
+            return ApiResult(new UserInfoResult
+            {
+                Username = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Email = user.Email
+            });
         }
 
         // to login 
