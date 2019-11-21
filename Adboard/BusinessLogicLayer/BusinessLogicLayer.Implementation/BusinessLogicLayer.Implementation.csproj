@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Abstraction\DataAccessLayer.Abstraction.csproj" />
+    <ProjectReference Include="..\..\DataAccessLayer\DataAccessLayer.Models\DataAccessLayer.Models.csproj" />
+    <ProjectReference Include="..\BusinessLogicLayer.Abstraction\BusinessLogicLayer.Abstraction.csproj" />
+  </ItemGroup>
+
+</Project>

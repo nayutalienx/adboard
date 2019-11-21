@@ -1,0 +1,237 @@
+﻿@using Adboard.Contracts.DTOs.Advert
+@using Adboard.Contracts.DTOs.Comment
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{ AdvertDto advert = ViewBag.Advert;}
+
+
+
+
+
+
+
+
+
+<div class="container mt-3 pl-0 pr-0">
+
+
+
+    @if (ViewBag.EditAccess)
+    {
+        <div class="row d-flex flex-row-reverse">
+            <div class="p-2"><a class="btn btn-primary" href="~/Advert/Edit/@advert.Id" role="button">Edit</a></div>
+        </div>
+    }
+
+
+
+    <div class="row">
+        <div class="col pl-0 pr-0">
+
+
+
+
+            <div id="carouselExampleControls" class="carousel slide ml-0 mr-0" style="height: 560px; margin: 0 auto;" data-ride="carousel">
+                <div class="carousel-inner">
+
+                    @if (advert.Photo.Length > 0)
+                    {
+                        <div class="carousel-item active">
+                            <a href="~/Advert/PhotoModal?advert_id=@advert.Id&photo_id=@advert.Photo.First().Id" class="photo">
+                                <img style="object-fit: cover" height="560px" src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Photo.First().Data)" class="d-block w-100 rounded" alt="...">
+                            </a>
+                        </div>
+                        @foreach (var photo in advert.Photo.Skip(1))
+                        {
+                <div class="carousel-item">
+                    <a href="~/Advert/PhotoModal?advert_id=@advert.Id&photo_id=@photo.Id" class="photo">
+                        <img style="object-fit: cover" height="560px" src="data:image/jpeg;base64,@Convert.ToBase64String(photo.Data)" class="d-block w-100 rounded" alt="...">
+                    </a>
+                </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="carousel-item active">
+                            <img style="object-fit: cover" height="560px" src="~/lib/asp.jpg" class="d-block w-100 rounded" alt="...">
+                        </div>
+                    }
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+
+
+
+
+        </div>
+
+
+        <div class="col-5">
+
+
+
+            <div class="d-flex">
+                <h3 class="card-title">@advert.Header</h3>
+                <h5 class="ml-auto" style="color: dimgray;">@advert.CreatedDateTime.ToShortDateString()</h5>
+            </div>
+
+            <div class="d-flex">
+                @if (advert.Category.ParentCategory?.Name != null)
+                {
+                    <h5>@advert.Category.ParentCategory.Name, @advert.Category.Name</h5>
+                }
+                else
+                {
+                    <h5>@advert.Category.Name</h5>
+                }
+                <h5 class="align-self-end text-success ml-auto">@string.Format("{0:C0}", advert.Price)</h5>
+            </div>
+
+            <hr>
+
+            <p class="text-break text-justify">
+                @advert.Description
+            </p>
+
+            <hr />
+
+            @{
+                UserDto author = ViewBag.UserInfo;
+            }
+
+            <div class="d-flex justify-content-around p-0">
+                <p class="text-break text-justify m-0">
+                    @advert.Location.Country, @advert.Location.Area, @advert.Location.City, @advert.Location.Street, @advert.Location.HouseNumber
+                </p>
+                <button type="button" class="ml-auto" id="userInfo" style="border: none; background: none;" data-toggle="popover" title="@author.Email" data-content="@author.PhoneNumber"><img src="~/lib/help.png" width="20px" height="20px"> </button>
+            </div>
+
+
+
+
+
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<div id="modDialog" class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" id="dialogContent" role="document"></div>
+</div>
+
+
+        <div class="mt-2">
+
+
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Comments</a>
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Add comment</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active p-2" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    @if (advert.Comments.Length > 0)
+                    {
+                        @foreach (CommentDto c in advert.Comments.Reverse())
+                        {
+
+                            <div class="d-flex">
+                                <h5>@ViewBag.CommentAuthors[c.UserId]</h5>
+                                <h5 class="ml-auto">@c.CreatedDateTime.ToShortDateString()</h5>
+                            </div>
+                            <p class="text-break text-justify">
+                                @c.Text
+                            </p>
+                            <hr>
+
+
+
+
+
+
+
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary" role="alert">
+                            No comments.
+                        </div>
+                    }
+                </div>
+                <div class="tab-pane fade p-2" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    @if (Context.User.Identity.IsAuthenticated)
+                    {
+                        @model Adboard.Contracts.DTOs.Comment.NewCommentDto
+                        <form method="post">
+                            <input type="hidden" asp-for="UserId" />
+                            <input type="hidden" asp-for="AdvertId" value="@advert.Id" />
+                            <div class="form-group">
+                                <textarea class="form-control" placeholder="Text" rows="3" asp-for="Text"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Add comment</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-primary" role="alert">
+                            Sign in please.
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+
+        @section scripts{
+            <script type="text/javascript">
+
+
+
+                $(document).ready(function () {
+                    $('.carousel').carousel();
+
+                    $(function () {
+                        $('[data-toggle="popover"]').popover()
+                    });
+
+
+                    $.ajaxSetup({ cache: false });
+                    $(".photo").click(function (e) {
+
+                        e.preventDefault();
+                        $.get(this.href, function (data) {
+                            $('#dialogContent').html(data);
+                            $('#modDialog').modal('show');
+                        });
+                    });
+
+
+                });
+
+            </script>
+        }

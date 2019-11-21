@@ -1,0 +1,152 @@
+﻿
+
+@using Adboard.Contracts.DTOs.Category;
+
+@{ 
+
+    string Name = User.Claims?.Where(x => x.Type.Equals("name")).FirstOrDefault()?.Value ?? "";
+    string Role = User.Claims?.Where(x => x.Type.Contains("role")).FirstOrDefault()?.Value ?? "";
+    bool IsAuthenticated = Context.User.Identity.IsAuthenticated;
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Adboard.Ui</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <header
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
+            <div class="container d-flex flex-row pl-0 pr-0">
+
+
+
+                <div class="collapse navbar-collapse p-0 align-self-end" id="navbarText">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/lib/sale.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                        Adboard
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-nav">
+
+                        @{ 
+                            IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
+
+                        }
+
+                        @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
+                        { 
+                        <a class="nav-item nav-link text-dark" href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
+                        }
+                       
+                        <a class="nav-item nav-link text-dark" href="#">More categories..</a>
+                    </div>
+                </div>
+                <div class="d-flex flex-column align-self-center ml-auto">
+                    @if (IsAuthenticated)
+                    {
+                        <div class="d-flex flex-row">
+                            <a class="p1" asp-controller="Home" asp-action="Login">
+                                @Name
+                            </a>
+
+                            <a class="p-1 ml-auto" asp-area="" asp-controller="Home" asp-action="Logout">
+                                <img src="~/lib/logout.png" width="15" height="15" class="d-inline-block align-top" alt="">
+                            </a>
+                        </div>
+
+
+                    }
+                    else
+                    {
+                        <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Login or register</a>
+                    }
+                    <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">New advert</a>
+                </div>
+
+            </div>
+
+
+
+
+
+        </nav>
+  </header>
+    <div class="border-bottom box-shadow">
+        <form method="get" asp-controller="Advert" asp-action="Filter">
+            <div class="container d-flex flex-row pt-1 pl-0 pr-0">
+                <div class="pb-2 flex-sm-grow-0">
+                    <select class="custom-select" name="CategoryId">
+                        <option selected value="0">Category</option>
+                        @foreach (CategoryDto cat in ViewBag.Categories)
+                        {
+                            if (cat.ParentCategory == null)
+                            {
+                                <option value="@cat.Id">@cat.Name</option>
+                            }
+
+                        }
+
+                    </select>
+                </div>
+                <div class="pb-2 pl-1 flex-fill">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="Header" placeholder="Search">
+                </div>
+                <div class="pb-2 pl-1 flex-sm-grow-0">
+                    <input type="text" class="form-control" name="region" placeholder="Region" name="Region"></input>
+                </div>
+                <div class="pl-1 pb-2">
+                    <button class="btn btn-primary text-white" type="submit">Find</button>
+                </div>
+            </div>
+
+            <div class="container d-flex flex-row pl-0">
+                <div class="pb-2 pl-1">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" name="in_header" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Only in header
+                        </label>
+                    </div>
+                </div>
+                <div class="pb-2 pl-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="true" name="HasPhotoOnly" id="defaultCheck2">
+                        <label class="form-check-label" for="defaultCheck2">
+                            Only with photo
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2019 - Adboard.Ui
+        </div>
+    </footer>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

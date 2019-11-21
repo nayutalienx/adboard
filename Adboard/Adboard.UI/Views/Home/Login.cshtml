@@ -1,0 +1,169 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@using Adboard.Contracts.DTOs.Advert
+
+@model Adboard.UI.Models.LoginViewModel
+
+@if (Model.Phone.Equals(""))
+{
+    <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
+        <strong>Successful login!</strong> Please enter your contact information(email, phone).
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if (ViewBag.EditSuccess != null && ViewBag.EditSuccess == true)
+{
+    <div class="alert alert-success mt-2" role="alert">
+        Your information edited.
+    </div>
+}
+
+
+
+<form class="mt-2" asp-route="Login" method="post">
+    <div class="form-group">
+        <label asp-for="NameEmail" for="exampleInputEmail1">Email / Name</label>
+        <input asp-for="NameEmail" type="text" class="form-control" value="@Model.NameEmail" id="contacts" aria-describedby="emailHelp" placeholder="name, email">
+    </div>
+    <div class="form-group">
+        <label asp-for="Phone" for="phoneNumber">Phone number</label>
+        <input asp-for="Phone" type="text" class="form-control" id="phoneNumber" value="@Model.Phone" placeholder="+7xxxxxxxxxx">
+    </div>
+    <div class="row d-flex flex-row-reverse mr-0">
+        <button type="submit" class="btn btn-primary">Update contacts</button>
+    </div>
+
+</form>
+
+
+<hr />
+
+
+<div class="mt-2">
+    <p>
+        <a class="btn btn-primary" data-toggle="collapse" href="#advertCollapse" role="button" aria-expanded="false" aria-controls="advertCollapse">
+            Show my adverts
+        </a>
+    </p>
+    <div class="collapse" id="advertCollapse">
+        <div class="card card-body">
+
+            <div class="d-flex flex-wrap mt-2 justify-content-around">
+                @foreach (AdvertDto advert in ViewBag.Adverts)
+                {
+                    <div class="card" style="width: 18rem; margin:10px;">
+                        @if (advert.Photo.Length > 0)
+                        {
+                            <img class="card-img-top thumb-post" style="object-fit: cover" height="286" src="data:image/jpeg;base64,@Convert.ToBase64String(advert.Photo[0].Data)" alt="Card image cap">
+                        }
+                        else
+                        {
+                            <img class="card-img-top thumb-post" style="object-fit: cover" height="286" src="~/lib/asp.jpg" alt="Card image cap">
+                        }
+                        <div class="card-body p-2 d-flex flex-column">
+                            <div class="d-flex">
+                                <h5 class="card-title"><a href="/Advert/@advert.Id" style="color: #0091d9;">@advert.Header</a></h5>
+                                <h6 class="ml-auto" style="color: dimgray;">@advert.CreatedDateTime.ToShortDateString()</h6>
+                            </div>
+
+                            <div class="d-flex mt-auto">
+                                @if (advert.Category.ParentCategory?.Name != null)
+                                {
+                                    <h6>@advert.Category.ParentCategory.Name, @advert.Category.Name</h6>
+                                }
+                                else
+                                {
+                                    <h6>@advert.Category.Name</h6>
+                                }
+
+
+                                <h6 class="ml-auto text-success">@string.Format("{0:C0}", advert.Price)</h6>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<h3>Advanced info</h3>
+
+<div >
+    <p class="mt-2">
+        <a class="btn btn-danger" href="http://localhost:5005/" role="button">IdentityServer</a>
+    </p>
+    <p class="mt-2">
+        <button class="btn btn-danger" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Show user info</button>
+    </p>
+    <div class="row">
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body">
+
+                    <dl class="row mt-2">
+                        <dt class="col-sm-3">Email / Name:</dt>
+                        <dd class="col-sm-9">@Model.NameEmail</dd>
+
+                        <dt class="col-sm-3">Phone</dt>
+                        <dd class="col-sm-9">@Model.Phone</dd>
+
+                        <dt class="col-sm-3 text-truncate">Role</dt>
+                        <dd class="col-sm-9">@ViewBag.Role</dd>
+
+                    </dl>
+
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card card-body">
+
+                    <h3>Claims:</h3>
+
+                    @{
+                        var props = (await Context.AuthenticateAsync()).Properties.Items;
+                    }
+
+                    <dl>
+                        @foreach (var claim in User.Claims)
+                        {
+                            <dt>@claim.Type</dt>
+                            <dd>@claim.Value</dd>
+                        }
+                    </dl>
+
+                    <h2>Properties</h2>
+
+                    <dl>
+                        @foreach (var (key, value) in props)
+                        {
+                            <dt>@key</dt>
+                            <dd>@value</dd>
+                        }
+                    </dl>
+
+                    @section scripts
+        {
+                        <script type="text/javascript">
+            const service = new UserService('@props[".Token.access_token"]')
+            service.testUserRole()
+            service.testAdminRole()
+                        </script>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
