@@ -82,6 +82,8 @@ namespace BusinessLogicLayer.Implementation
             return _mapper.Map<AdvertDto>(await _advertRepository.GetAsync(id));
         }
 
+        
+
         public async Task<IReadOnlyCollection<AdvertDto>> GetAdvertsByFilterAsync(AdvertFilter filter)
         {
             var adverts = await _advertRepository.GetAllAsync();
@@ -89,11 +91,7 @@ namespace BusinessLogicLayer.Implementation
             if (filter == null)
                 throw new NullReferenceException("Не задан фильтр");
 
-            if (filter.AdvertId != null)
-                adverts = adverts.Where(x => x.Id == filter.AdvertId);
-
-            if (filter.UserId != null)
-                adverts = adverts.Where(x => x.UserId.Equals(filter.UserId));
+            
 
             if (filter.HasPhotoOnly != null && filter.HasPhotoOnly == true)
                 adverts = adverts.Where(x => x.Photos.Count > 0);
@@ -117,6 +115,30 @@ namespace BusinessLogicLayer.Implementation
             if (filter.Price != null)
                 adverts = adverts.Where(x => x.Price > filter.Price.From && x.Price < filter.Price.To);
 
+            if (filter.UserId != null)
+            {
+                adverts = adverts.Where(x => x.UserId.Equals(filter.UserId));
+            }
+           
+
+            if (filter.AdvertId != null)
+            {
+                adverts = adverts.Where(x => x.Id == filter.AdvertId);
+            }
+            else
+            {
+                adverts = adverts.Select(x => new Advert
+                {
+                    Photos = new List<Photo> { x.Photos.FirstOrDefault() },
+                    Id = x.Id,
+                    Header = x.Header,
+                    CreatedDateTime = x.CreatedDateTime,
+                    Category = x.Category,
+                    Price = x.Price
+                });
+            }
+
+            
 
             adverts = adverts.Skip((filter.CurrentPage - 1) * filter.Size).Take(filter.Size);
 

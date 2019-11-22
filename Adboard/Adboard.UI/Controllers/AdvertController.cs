@@ -15,6 +15,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using LazZiya.ImageResize;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+
 namespace Adboard.UI.Controllers
 {
     [Controller]
@@ -66,13 +71,26 @@ namespace Adboard.UI.Controllers
                 foreach (var photo in advert.Photo)
                 {
                     byte[] p1 = null;
-                    using (var fs1 = photo.OpenReadStream())
-                    using (var ms1 = new MemoryStream())
+                    MemoryStream scaled = new MemoryStream();
+
+                    using (var memoryStream = new MemoryStream())
                     {
-                        fs1.CopyTo(ms1);
-                        p1 = ms1.ToArray();
+                        await photo.CopyToAsync(memoryStream);
+                        Image resizedImage = null;
+                        using (var img = Image.FromStream(memoryStream))
+                        {
+                            int w = img.Width;
+                            int h = img.Height;
+                            while (w > 500 || h > 500)
+                            {
+                                w = (int)(w * 0.8);
+                                h = (int)(h * 0.8);
+                            }
+                            resizedImage = img.Resize(w, h);
+                        }
+                        resizedImage.Save(scaled, ImageFormat.Jpeg);
                     }
-                    photoList.Add(new PhotoDto { Data = p1 });
+                    photoList.Add(new PhotoDto { Data = scaled.ToArray() });
                 }
                 dto.Photo = photoList.ToArray();
             }
@@ -181,6 +199,12 @@ namespace Adboard.UI.Controllers
             return View();
         }
 
+
+        
+
+        
+
+
         [Authorize]
         [Route("")]
         [HttpPost]
@@ -199,13 +223,26 @@ namespace Adboard.UI.Controllers
                 foreach (var photo in advert.Photo)
                 {
                     byte[] p1 = null;
-                    using (var fs1 = photo.OpenReadStream())
-                    using (var ms1 = new MemoryStream())
+                    MemoryStream scaled = new MemoryStream();
+
+                    using (var memoryStream = new MemoryStream())
                     {
-                        fs1.CopyTo(ms1);
-                        p1 = ms1.ToArray();
+                        await photo.CopyToAsync(memoryStream);
+                        Image resizedImage = null;
+                        using (var img = Image.FromStream(memoryStream))
+                        {
+                            int w = img.Width;
+                            int h = img.Height;
+                            while (w > 500 || h > 500)
+                            {
+                                w = (int)(w * 0.8);
+                                h = (int)(h * 0.8);
+                            }
+                            resizedImage = img.Resize(w, h);
+                        }
+                        resizedImage.Save(scaled,ImageFormat.Jpeg);
                     }
-                    photoList.Add(new PhotoDto { Data = p1 });
+                    photoList.Add(new PhotoDto { Data = scaled.ToArray()});
                 }
                 dto.Photo = photoList.ToArray();
             }
@@ -215,7 +252,8 @@ namespace Adboard.UI.Controllers
             ApiResponse<AdvertDto> response = null;
             try
             {
-                response = await _advertApiClient.AddAdvertAsync(dto);
+                for(int i = 0; i < 200; i++)
+                    response = await _advertApiClient.AddAdvertAsync(dto);
             }
             catch (ApplicationException ex)
             {
@@ -233,6 +271,7 @@ namespace Adboard.UI.Controllers
             AdvertDto result = response.Data;
             return Redirect($"Advert/{result.Id}");
         }
+
         [Route("Filter")]
         [HttpGet]
         public async Task<IActionResult> Filter(
@@ -371,6 +410,10 @@ namespace Adboard.UI.Controllers
             ViewBag.PhotoData = ad.Photo.Where(p => p.Id == photo_id).FirstOrDefault().Data;
             return PartialView();
         }
+
+
+
+
         
 
     }

@@ -11,6 +11,7 @@ namespace IdentityServer.DataAccessLayer
     public class IdentityContext : IdentityDbContext<IdentityUser>
     {
         DbSet<PhotoCaptcha> PhotoCaptchas { get; set; }
+
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
             

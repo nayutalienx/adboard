@@ -124,6 +124,13 @@ namespace Adboard.UI.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> CategoriesModal() {
+            var cats = await _categoryApiClient.GetCategoriesAsync();
+            ViewBag.Categories = cats.Data;
+            return PartialView();
+        }
+
        
         public async Task<IActionResult> Logout()
         {

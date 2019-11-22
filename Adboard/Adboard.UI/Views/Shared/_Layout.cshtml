@@ -38,17 +38,17 @@
                     </button>
                     <div class="navbar-nav">
 
-                        @{ 
+                        @{
                             IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
 
                         }
 
                         @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
-                        { 
+                        {
                         <a class="nav-item nav-link text-dark" href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
                         }
-                       
-                        <a class="nav-item nav-link text-dark" href="#">More categories..</a>
+
+                        <a class="nav-item nav-link text-dark moreCats" href="~/Home/CategoriesModal">More categories..</a>
                     </div>
                 </div>
                 <div class="d-flex flex-column align-self-center ml-auto">
@@ -131,6 +131,10 @@
     </div>
 
 
+    <div id="modDialogCats" class="modal fade">
+        <div id="dialogContentCats" class="modal-dialog"></div>
+    </div>
+
 
     <div class="container">
         <main role="main" class="pb-3">
@@ -148,5 +152,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+
 </body>
 </html>

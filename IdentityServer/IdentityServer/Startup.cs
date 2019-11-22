@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using IdentityServer.DataAccessLayer;
 using IdentityServer.Objects.AutoMapperProfiles;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -84,7 +85,10 @@ namespace IdentityServer
     static class ServiceCollectionExtensions {
         public static IServiceCollection AddIdentity(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
+            //services.AddDbContext<IdentityContext>(options => options.UseSqlite(connectionString));
+            services.AddDbContext<IdentityContext>(options => options.UseMySql(connectionString));
+            //services.AddDbContext<ConfigurationDbContext>(options => options.UseMySql(connectionString));
+            //services.AddDbContext<PersistedGrantDbContext>(options => options.UseMySql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
@@ -108,11 +112,11 @@ namespace IdentityServer
                 .AddAspNetIdentity<IdentityUser>()
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseMySql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlite(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
+                    options.ConfigureDbContext = b => b.UseMySql(connectionString, sql => sql.MigrationsAssembly(migrationsAssembly));
                     options.EnableTokenCleanup = true;
                 });
             builder.AddDeveloperSigningCredential();

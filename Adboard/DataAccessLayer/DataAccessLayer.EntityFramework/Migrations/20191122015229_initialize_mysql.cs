@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.EntityFramework.Migrations
 {
-    public partial class init2 : Migration
+    public partial class initialize_mysql : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 30, nullable: true),
                     ParentCategoryId = table.Column<long>(nullable: true)
                 },
@@ -32,7 +33,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Header = table.Column<string>(maxLength: 30, nullable: true),
                     Description = table.Column<string>(nullable: true),
                     CategoryId = table.Column<long>(nullable: false),
@@ -56,7 +57,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Country = table.Column<string>(maxLength: 30, nullable: true),
                     Area = table.Column<string>(maxLength: 30, nullable: true),
                     City = table.Column<string>(maxLength: 30, nullable: true),
@@ -80,7 +81,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CreatedDateTime = table.Column<DateTime>(nullable: false),
                     Text = table.Column<string>(maxLength: 300, nullable: true),
                     UserId = table.Column<string>(nullable: true),
@@ -102,7 +103,7 @@ namespace DataAccessLayer.EntityFramework.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Data = table.Column<byte[]>(nullable: true),
                     AdvertId = table.Column<long>(nullable: false)
                 },

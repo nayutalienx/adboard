@@ -3,7 +3,6 @@ using System;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IdentityServer.Migrations.ConfigurationDb
@@ -16,43 +15,41 @@ namespace IdentityServer.Migrations.ConfigurationDb
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.ApiResource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
                         .HasMaxLength(1000);
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("Enabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("LastAccessed")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("NonEditable")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -66,15 +63,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -88,20 +84,19 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.HasKey("Id");
@@ -115,33 +110,32 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
                         .HasMaxLength(1000);
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("Emphasize")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("Required")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ShowInDiscoveryDocument")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -157,15 +151,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ApiScopeId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -179,30 +172,29 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ApiResourceId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
                         .HasMaxLength(1000);
 
                     b.Property<DateTime?>("Expiration")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
@@ -216,8 +208,7 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("AbsoluteRefreshTokenLifetime")
                         .HasColumnType("int");
@@ -229,99 +220,99 @@ namespace IdentityServer.Migrations.ConfigurationDb
                         .HasColumnType("int");
 
                     b.Property<bool>("AllowAccessTokensViaBrowser")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AllowOfflineAccess")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AllowPlainTextPkce")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AllowRememberConsent")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AlwaysIncludeUserClaimsInIdToken")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("AlwaysSendClientClaims")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("AuthorizationCodeLifetime")
                         .HasColumnType("int");
 
                     b.Property<bool>("BackChannelLogoutSessionRequired")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("BackChannelLogoutUri")
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.Property<string>("ClientClaimsPrefix")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("ClientId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("ClientName")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("ClientUri")
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.Property<int?>("ConsentLifetime")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
                         .HasMaxLength(1000);
 
                     b.Property<int>("DeviceCodeLifetime")
                         .HasColumnType("int");
 
                     b.Property<bool>("EnableLocalLogin")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Enabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("FrontChannelLogoutSessionRequired")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("FrontChannelLogoutUri")
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.Property<int>("IdentityTokenLifetime")
                         .HasColumnType("int");
 
                     b.Property<bool>("IncludeJwtId")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("LastAccessed")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("LogoUri")
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.Property<bool>("NonEditable")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("PairWiseSubjectSalt")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<string>("ProtocolType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<int>("RefreshTokenExpiration")
@@ -331,25 +322,25 @@ namespace IdentityServer.Migrations.ConfigurationDb
                         .HasColumnType("int");
 
                     b.Property<bool>("RequireClientSecret")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("RequireConsent")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("RequirePkce")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("SlidingRefreshTokenLifetime")
                         .HasColumnType("int");
 
                     b.Property<bool>("UpdateAccessTokenClaimsOnRefresh")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("UserCodeType")
-                        .HasColumnType("nvarchar(100)")
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
                         .HasMaxLength(100);
 
                     b.Property<int?>("UserSsoLifetime")
@@ -367,20 +358,19 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.HasKey("Id");
@@ -394,15 +384,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Origin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(150)")
+                        .HasColumnType("varchar(150) CHARACTER SET utf8mb4")
                         .HasMaxLength(150);
 
                     b.HasKey("Id");
@@ -416,15 +405,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("GrantType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.HasKey("Id");
@@ -438,15 +426,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Provider")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -460,15 +447,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("PostLogoutRedirectUri")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.HasKey("Id");
@@ -482,20 +468,19 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.HasKey("Id");
@@ -509,15 +494,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("RedirectUri")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.HasKey("Id");
@@ -531,15 +515,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<string>("Scope")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -553,30 +536,29 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.Property<DateTime?>("Expiration")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(4000)")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4")
                         .HasMaxLength(4000);
 
                     b.HasKey("Id");
@@ -590,15 +572,14 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("IdentityResourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.HasKey("Id");
@@ -612,42 +593,41 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("varchar(1000) CHARACTER SET utf8mb4")
                         .HasMaxLength(1000);
 
                     b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("Emphasize")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Enabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(200) CHARACTER SET utf8mb4")
                         .HasMaxLength(200);
 
                     b.Property<bool>("NonEditable")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("Required")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("ShowInDiscoveryDocument")
-                        .HasColumnType("bit");
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
@@ -661,20 +641,19 @@ namespace IdentityServer.Migrations.ConfigurationDb
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("IdentityResourceId")
                         .HasColumnType("int");
 
                     b.Property<string>("Key")
                         .IsRequired()
-                        .HasColumnType("nvarchar(250)")
+                        .HasColumnType("varchar(250) CHARACTER SET utf8mb4")
                         .HasMaxLength(250);
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasColumnType("nvarchar(2000)")
+                        .HasColumnType("varchar(2000) CHARACTER SET utf8mb4")
                         .HasMaxLength(2000);
 
                     b.HasKey("Id");
