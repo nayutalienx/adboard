@@ -1,0 +1,21 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@using Adboard.Contracts.DTOs.Category;
+
+@{
+    IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
+
+}
+
+<div class="modal-content">
+    khooy
+    <div class="d-flex">
+        @foreach (CategoryDto c in cats)
+        {
+        <p> @c.Name </p>
+        }
+    </div>
+
+</div>

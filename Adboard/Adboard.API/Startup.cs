@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Swashbuckle.AspNetCore.Filters;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -49,7 +50,17 @@ namespace Adboard.API
                 });
            
             services.Install();  // dependency injection
-            services.AddDbContext<AdboardContext>(options => options.UseSqlite(Configuration.GetConnectionString("ConnectionSqlite")));
+
+            //services.AddDbContextPool<AdboardContext>( // replace "YourDbContext" with the class name of your DbContext
+            //    options => options.UseMySql(Configuration.GetConnectionString("ConnectionMySQL"), // replace with your Connection String
+            //        mySqlOptions =>
+            //        {
+            //            mySqlOptions.ServerVersion(new Version(5, 7, 28), ServerType.MySql); // replace with your Server Version and Type
+            //        }
+            //));
+
+            services.AddDbContext<AdboardContext>(options => options.UseMySql(Configuration.GetConnectionString("ConnectionMySQL")));
+            //services.AddDbContext<AdboardContext>(options => options.UseSqlite(Configuration.GetConnectionString("ConnectionMySQL")));
 
             services.AddSwaggerGen(x =>
             {

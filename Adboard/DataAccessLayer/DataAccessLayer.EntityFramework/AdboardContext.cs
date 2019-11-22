@@ -13,7 +13,9 @@ namespace DataAccessLayer.EntityFramework
             optionsBuilder
                 .UseLazyLoadingProxies();
 
+
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AdvertConfiguration());
@@ -29,6 +31,7 @@ namespace DataAccessLayer.EntityFramework
         DbSet<Category> Categories { get; set; }
         DbSet<Address> Addresses { get; set; }
         DbSet<Photo> Photos { get; set; }
+          
 
 
 
