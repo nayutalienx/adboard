@@ -41,11 +41,11 @@
 
                 <img class="mb-4" src="~/sale.png" alt="" width="72" height="72">
 
-                <h1 class="h3 mb-3 font-weight-normal">Registration</h1>
+                <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
 
                 <div class="form-group">
-                    <label for="inputUsername" asp-for="Username" class="sr-only">Username</label>
-                    <input type="text" asp-for="Username" id="inputUsername" class="form-control is-invalid" placeholder="Username" required autofocus>
+                    <label for="inputUsername" asp-for="Username" class="sr-only">Никнейм</label>
+                    <input type="text" asp-for="Username" id="inputUsername" class="form-control is-invalid" placeholder="Никнейм" required autofocus>
                     @if (Model?.UsernameError != null)
                     {
                         <div class="invalid-feedback">
@@ -66,8 +66,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputPassword" asp-for="Password" class="sr-only">Password</label>
-                    <input asp-for="Password" type="password" id="inputPassword" class="form-control is-invalid" placeholder="Password" required>
+                    <label for="inputPassword" asp-for="Password" class="sr-only">Пароль</label>
+                    <input asp-for="Password" type="password" id="inputPassword" class="form-control is-invalid" placeholder="Пароль" required>
                     @if (Model?.PasswordError != null)
                     {
                         <div class="invalid-feedback">
@@ -77,8 +77,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputPhone" asp-for="PhoneNumber" class="sr-only">Phone</label>
-                    <input type="text" asp-for="PhoneNumber" id="inputPhone" class="form-control is-invalid" placeholder="Phone" required autofocus>
+                    <label for="inputPhone" asp-for="PhoneNumber" class="sr-only">Телефон</label>
+                    <input type="text" asp-for="PhoneNumber" id="inputPhone" class="form-control is-invalid" placeholder="Телефон" required autofocus>
                     @if (Model?.PhoneNumberError != null)
                     {
                         <div class="invalid-feedback">
@@ -90,8 +90,8 @@
 
                 <img class="card-img-top thumb-post" style="object-fit: cover; margin-bottom: 15px;" width="100" src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Captcha.Data)" alt="Card image cap">
                 <div class="form-group">
-                    <label for="inputCaptcha" asp-for="CaptchaAnswer" class="sr-only">Captcha answer</label>
-                    <input type="text" asp-for="CaptchaAnswer" id="inputCaptcha" class="form-control is-invalid" placeholder="Captcha answer" required autofocus>
+                    <label for="inputCaptcha" asp-for="CaptchaAnswer" class="sr-only">Капча</label>
+                    <input type="text" asp-for="CaptchaAnswer" id="inputCaptcha" class="form-control is-invalid" placeholder="Капча" required autofocus>
                     @if (Model?.CaptchaError != null)
                     {
                         <div class="invalid-feedback">
@@ -103,7 +103,7 @@
 
 
 
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="button" value="register">Register</button>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="button" value="register">Зарегистрироваться</button>
 
 
 

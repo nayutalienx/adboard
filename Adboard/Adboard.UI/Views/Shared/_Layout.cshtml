@@ -15,7 +15,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Adboard.Ui</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -48,7 +48,7 @@
                         <a class="nav-item nav-link text-dark" href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
                         }
 
-                        <a class="nav-item nav-link text-dark moreCats" href="~/Home/CategoriesModal">More categories..</a>
+                        <a class="nav-item nav-link text-dark moreCats" href="~/Home/CategoriesModal">Еще...</a>
                     </div>
                 </div>
                 <div class="d-flex flex-column align-self-center ml-auto">
@@ -68,9 +68,9 @@
                     }
                     else
                     {
-                        <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Login or register</a>
+                        <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Войти или зарегистрироваться</a>
                     }
-                    <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">New advert</a>
+                    <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">Добавить</a>
                 </div>
 
             </div>
@@ -86,7 +86,7 @@
             <div class="container d-flex flex-row pt-1 pl-0 pr-0">
                 <div class="pb-2 flex-sm-grow-0">
                     <select class="custom-select" name="CategoryId">
-                        <option selected value="0">Category</option>
+                        <option selected value="0">Любая категория</option>
                         @foreach (CategoryDto cat in ViewBag.Categories)
                         {
                             if (cat.ParentCategory == null)
@@ -99,13 +99,13 @@
                     </select>
                 </div>
                 <div class="pb-2 pl-1 flex-fill">
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="Header" placeholder="Search">
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="Header" placeholder="Поиск">
                 </div>
                 <div class="pb-2 pl-1 flex-sm-grow-0">
-                    <input type="text" class="form-control" name="region" placeholder="Region" name="Region"></input>
+                    <input type="text" class="form-control" name="region" placeholder="Регион" name="Region"></input>
                 </div>
                 <div class="pl-1 pb-2">
-                    <button class="btn btn-primary text-white" type="submit">Find</button>
+                    <button class="btn btn-primary text-white" type="submit">Найти</button>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="true" name="in_header" id="defaultCheck1">
                         <label class="form-check-label" for="defaultCheck1">
-                            Only in header
+                            Только в заголовке
                         </label>
                     </div>
                 </div>
@@ -122,7 +122,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="true" name="HasPhotoOnly" id="defaultCheck2">
                         <label class="form-check-label" for="defaultCheck2">
-                            Only with photo
+                            Только с фото
                         </label>
                     </div>
                 </div>
@@ -131,8 +131,8 @@
     </div>
 
 
-    <div id="modDialogCats" class="modal fade">
-        <div id="dialogContentCats" class="modal-dialog"></div>
+    <div id="modDialogCats" class="modal fade bd-example-modal-lg">
+        <div id="dialogContentCats" class="modal-dialog modal-lg"></div>
     </div>
 
 
@@ -144,7 +144,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - Adboard.Ui
+            &copy; 2019 - Adboard
         </div>
     </footer>
     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@

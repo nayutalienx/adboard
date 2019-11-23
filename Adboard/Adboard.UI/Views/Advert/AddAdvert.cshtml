@@ -1,7 +1,7 @@
 ﻿@model Adboard.UI.Models.NewAdvertViewModel
 @using Adboard.Contracts.DTOs.Category
 @{
-    ViewData["Title"] = "AddAdvert";
+    ViewData["Title"] = "Добавление";
 }
 
 
@@ -10,20 +10,20 @@
     <input type="hidden" asp-for="UserId"/>
     <fieldset>
         <div class="form-group">
-            <label asp-for="Header"></label>
-            <input required maxlength="29" class="form-control" placeholder="Header(Max 30 symbols)" asp-for="Header" autofocus>
+            <label asp-for="Header">Заголовок</label>
+            <input required maxlength="20" class="form-control" placeholder="Заголовок(20 символов максимально)" asp-for="Header" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="Description"></label>
-            <textarea maxlength="649" required class="form-control" placeholder="Description (Max 650 symbols)" asp-for="Description" autofocus> </textarea>
+            <label asp-for="Description">Описание</label>
+            <textarea maxlength="649" rows="5" required class="form-control" placeholder="Описание (650 символов максимально)" asp-for="Description" autofocus> </textarea>
         </div>
         <div class="form-group">
-            <label asp-for="Price"></label>
-            <input required class="form-control" placeholder="Price" asp-for="Price" autofocus>
+            <label asp-for="Price">Цена в руб.</label>
+            <input required class="form-control" placeholder="Цена в руб." asp-for="Price" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="CategoryId">Category</label>
-            <select required multiple class="form-control" id="CategoryId" name="CategoryId" asp-for="CategoryId">
+            <label asp-for="CategoryId">Категория</label>
+            <select required size="10" class="form-control" id="CategoryId" name="CategoryId" asp-for="CategoryId">
                 @foreach (CategoryDto cat in ViewBag.Categories)
                 {
                     @if (cat.ParentCategory != null)
@@ -38,28 +38,28 @@
             </select>
         </div>
         <div class="form-group">
-            <label asp-for="Country"></label>
-            <input required class="form-control" placeholder="Country" asp-for="Country" autofocus>
+            <label asp-for="Country">Страна</label>
+            <input required class="form-control" placeholder="Страна" asp-for="Country" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="Area"></label>
-            <input required class="form-control" placeholder="Area" asp-for="Area" autofocus>
+            <label asp-for="Area">Область</label>
+            <input required class="form-control" placeholder="Область" asp-for="Area" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="City"></label>
-            <input required class="form-control" placeholder="City" asp-for="City" autofocus>
+            <label asp-for="City">Город</label>
+            <input required class="form-control" placeholder="Город" asp-for="City" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="Street"></label>
-            <input required class="form-control" placeholder="Street" asp-for="Street" autofocus>
+            <label asp-for="Street">Улица</label>
+            <input required class="form-control" placeholder="Улица" asp-for="Street" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="HouseNumber"></label>
-            <input required class="form-control" placeholder="HouseNumber" asp-for="HouseNumber" autofocus>
+            <label asp-for="HouseNumber">Дом</label>
+            <input required class="form-control" placeholder="Дом" asp-for="HouseNumber" autofocus>
         </div>
         <div class="form-group">
-            <label asp-for="Photo"></label>
-            <input type="file" multiple class="form-control-file" placeholder="Photo" asp-for="Photo" autocomplete="off">
+            <label asp-for="Photo">Фото</label>
+            <input type="file" multiple class="form-control-file" placeholder="Фото" asp-for="Photo" autocomplete="off">
         </div>
         <div class="form-group">
 
@@ -67,7 +67,7 @@
 
 
             <div class="row d-flex flex-row-reverse">
-                <button class="btn btn-primary" name="button" value="add">Add</button>
+                <button class="btn btn-primary" name="button" value="add">Добавить</button>
             </div>
         </div>
 

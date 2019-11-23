@@ -35,20 +35,20 @@
 
             <input type="hidden" asp-for="ReturnUrl" />
             <img class="mb-4" src="~/sale.png" alt="" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputEmail" asp-for="Username" class="sr-only">Username</label>
-            <input type="text" asp-for="Username" id="inputEmail" class="form-control" placeholder="Username" required autofocus>
-            <label for="inputPassword" asp-for="Password" class="sr-only">Password</label>
-            <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <h1 class="h3 mb-3 font-weight-normal">Войдите</h1>
+            <label for="inputEmail" asp-for="Username" class="sr-only">Никнейм</label>
+            <input type="text" asp-for="Username" id="inputEmail" class="form-control" placeholder="Никнейм" required autofocus>
+            <label for="inputPassword" asp-for="Password" class="sr-only">Пароль</label>
+            <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
             @if (Model.AllowRememberLogin)
             {
                 <div class="checkbox mb-3">
                     <label asp-for="RememberLogin">
-                        <input type="checkbox" asp-for="RememberLogin"> Remember me
+                        <input type="checkbox" asp-for="RememberLogin"> Запомнить
                     </label>
                 </div>
             }
-            <button class="btn btn-lg btn-primary btn-block" type="submit" name="button" value="login">Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="button" value="login">Войти</button>
 
 
 
@@ -58,11 +58,11 @@
         <div style="margin-top: 10px;" >
             <form asp-action="Register" class="d-flex" method="post">
                 <input type="hidden" asp-for="ReturnUrl" />
-                <button class="btn btn-default btn-sm" name="regbutton" value="reg">Register</button>
+                <button class="btn btn-default btn-sm" name="regbutton" value="reg">Регистрация</button>
                 @foreach (var provider in Model.VisibleExternalProviders)
                 {
 
-                    <a class="btn btn-default pl-2 btn-sm"
+                    <a class="btn btn-default pl-1 btn-sm"
                        asp-controller="External"
                        asp-action="Challenge"
                        asp-route-provider="@provider.AuthenticationScheme"

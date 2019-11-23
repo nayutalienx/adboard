@@ -24,15 +24,15 @@
 
     <div class="page-header logged-out">
         <h1>
-            Logout
-            <small>You are now logged out</small>
+            Выход
+            <small>Вы вышли с площадки объявлений</small>
         </h1>
 
         @if (Model.PostLogoutRedirectUri != null)
         {
             <div>
-                Click <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">here</a> to return to the
-                <span>@Model.ClientName</span> application.
+                Нажмите <a class="PostLogoutRedirectUri" href="@Model.PostLogoutRedirectUri">здесь</a> чтобы вернуться в
+                <span>@Model.ClientName</span> приложение.
             </div>
         }
 
