@@ -133,10 +133,10 @@ namespace IdentityServer.Controllers
 
         [HttpGet]
         public IActionResult UserPanel() {
-            //if (User.IsInRole("Admin"))
+            if (User.IsInRole("Admin"))
                 return View(_mapper.Map<List<UserViewModel>>(_userManager.Users.ToList()));
-            //else
-              //  return Ok("Access denied!");
+            else
+                return Ok("Access denied!");
         }
 
         [HttpGet]

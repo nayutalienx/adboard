@@ -10,11 +10,23 @@
 }
 
 <div class="modal-content">
-    khooy
-    <div class="d-flex">
-        @foreach (CategoryDto c in cats)
+    <div class="d-flex flex-wrap justify-content-between p-2">
+        @foreach (CategoryDto header in cats)
         {
-        <p> @c.Name </p>
+            if(header.ParentCategory == null)
+            {
+            <dl class="m-1" style="width: 240px">
+            <dt><a href="~/Advert/Filter?CategoryId=@header.Id">@header.Name</a></dt>
+                @foreach(CategoryDto item in cats)
+                {
+                    if (item.ParentCategoryId == header.Id) 
+                    {
+                        <dd class="m-0"><a href="~/Advert/Filter?CategoryId=@item.Id">@item.Name</a></dd>
+                    }
+                }
+            </dl>
+            }
+        
         }
     </div>
 

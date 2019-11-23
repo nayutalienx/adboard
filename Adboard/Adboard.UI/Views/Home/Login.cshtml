@@ -3,6 +3,8 @@
 
 @model Adboard.UI.Models.LoginViewModel
 
+@{ViewData["Title"] = "Личный кабинет"; }
+
 @if (Model.Phone.Equals(""))
 {
     <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert">
@@ -24,15 +26,15 @@
 
 <form class="mt-2" asp-route="Login" method="post">
     <div class="form-group">
-        <label asp-for="NameEmail" for="exampleInputEmail1">Email / Name</label>
-        <input asp-for="NameEmail" type="text" class="form-control" value="@Model.NameEmail" id="contacts" aria-describedby="emailHelp" placeholder="name, email">
+        <label asp-for="NameEmail" for="exampleInputEmail1">Email / Имя</label>
+        <input asp-for="NameEmail" type="text" class="form-control" value="@Model.NameEmail" id="contacts" aria-describedby="emailHelp" placeholder="Email или имя">
     </div>
     <div class="form-group">
-        <label asp-for="Phone" for="phoneNumber">Phone number</label>
+        <label asp-for="Phone" for="phoneNumber">Номер телефона</label>
         <input asp-for="Phone" type="text" class="form-control" id="phoneNumber" value="@Model.Phone" placeholder="+7xxxxxxxxxx">
     </div>
     <div class="row d-flex flex-row-reverse mr-0">
-        <button type="submit" class="btn btn-primary">Update contacts</button>
+        <button type="submit" class="btn btn-primary">Обновить контакты</button>
     </div>
 
 </form>
@@ -44,7 +46,7 @@
 <div class="mt-2">
     <p>
         <a class="btn btn-primary" data-toggle="collapse" href="#advertCollapse" role="button" aria-expanded="false" aria-controls="advertCollapse">
-            Show my adverts
+            Показать мои объявления
         </a>
     </p>
     <div class="collapse" id="advertCollapse">
@@ -69,14 +71,9 @@
                             </div>
 
                             <div class="d-flex mt-auto">
-                                @if (advert.Category.ParentCategory?.Name != null)
-                                {
-                                    <h6>@advert.Category.ParentCategory.Name, @advert.Category.Name</h6>
-                                }
-                                else
-                                {
-                                    <h6>@advert.Category.Name</h6>
-                                }
+                                
+                                    <h6 style="width:160px">@advert.Category.Name</h6>
+                                
 
 
                                 <h6 class="ml-auto text-success">@string.Format("{0:C0}", advert.Price)</h6>

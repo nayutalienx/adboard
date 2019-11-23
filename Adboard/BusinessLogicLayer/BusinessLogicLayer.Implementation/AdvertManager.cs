@@ -127,9 +127,10 @@ namespace BusinessLogicLayer.Implementation
             }
             else
             {
+                
                 adverts = adverts.Select(x => new Advert
                 {
-                    Photos = new List<Photo> { x.Photos.FirstOrDefault() },
+                    Photos = (x.Photos.Any()) ? new List<Photo> { x.Photos.FirstOrDefault() } : null,
                     Id = x.Id,
                     Header = x.Header,
                     CreatedDateTime = x.CreatedDateTime,

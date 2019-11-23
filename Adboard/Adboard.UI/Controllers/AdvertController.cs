@@ -246,14 +246,20 @@ namespace Adboard.UI.Controllers
                 }
                 dto.Photo = photoList.ToArray();
             }
- 
 
 
+            //Random rnd = new Random();
             ApiResponse<AdvertDto> response = null;
             try
             {
-                for(int i = 0; i < 200; i++)
+                //for (uint i = 0; i < 4500; i++)
+                //{
+                //    dto.CategoryId = rnd.Next(1, 61);
+                //    dto.Header = $"a{i}";
+                //    dto.Price = 10 * i;
+                //    dto.Photo = dto.Photo.Reverse().ToArray();
                     response = await _advertApiClient.AddAdvertAsync(dto);
+                //}
             }
             catch (ApplicationException ex)
             {
