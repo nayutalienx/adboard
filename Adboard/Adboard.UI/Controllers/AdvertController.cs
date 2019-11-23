@@ -15,11 +15,6 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using LazZiya.ImageResize;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-
 namespace Adboard.UI.Controllers
 {
     [Controller]
@@ -71,26 +66,14 @@ namespace Adboard.UI.Controllers
                 foreach (var photo in advert.Photo)
                 {
                     byte[] p1 = null;
-                    MemoryStream scaled = new MemoryStream();
-
-                    using (var memoryStream = new MemoryStream())
+                    using (var fs1 = photo.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
                     {
-                        await photo.CopyToAsync(memoryStream);
-                        Image resizedImage = null;
-                        using (var img = Image.FromStream(memoryStream))
-                        {
-                            int w = img.Width;
-                            int h = img.Height;
-                            while (w > 500 || h > 500)
-                            {
-                                w = (int)(w * 0.8);
-                                h = (int)(h * 0.8);
-                            }
-                            resizedImage = img.Resize(w, h);
-                        }
-                        resizedImage.Save(scaled, ImageFormat.Jpeg);
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
                     }
-                    photoList.Add(new PhotoDto { Data = scaled.ToArray() });
+
+                    photoList.Add(new PhotoDto { Data = p1 });
                 }
                 dto.Photo = photoList.ToArray();
             }
@@ -223,43 +206,24 @@ namespace Adboard.UI.Controllers
                 foreach (var photo in advert.Photo)
                 {
                     byte[] p1 = null;
-                    MemoryStream scaled = new MemoryStream();
-
-                    using (var memoryStream = new MemoryStream())
+                    using (var fs1 = photo.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
                     {
-                        await photo.CopyToAsync(memoryStream);
-                        Image resizedImage = null;
-                        using (var img = Image.FromStream(memoryStream))
-                        {
-                            int w = img.Width;
-                            int h = img.Height;
-                            while (w > 500 || h > 500)
-                            {
-                                w = (int)(w * 0.8);
-                                h = (int)(h * 0.8);
-                            }
-                            resizedImage = img.Resize(w, h);
-                        }
-                        resizedImage.Save(scaled,ImageFormat.Jpeg);
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
                     }
-                    photoList.Add(new PhotoDto { Data = scaled.ToArray()});
+
+                        photoList.Add(new PhotoDto { Data = p1 });
                 }
                 dto.Photo = photoList.ToArray();
             }
 
 
-            //Random rnd = new Random();
+            
             ApiResponse<AdvertDto> response = null;
             try
             {
-                //for (uint i = 0; i < 4500; i++)
-                //{
-                //    dto.CategoryId = rnd.Next(1, 61);
-                //    dto.Header = $"a{i}";
-                //    dto.Price = 10 * i;
-                //    dto.Photo = dto.Photo.Reverse().ToArray();
-                    response = await _advertApiClient.AddAdvertAsync(dto);
-                //}
+                response = await _advertApiClient.AddAdvertAsync(dto);   
             }
             catch (ApplicationException ex)
             {

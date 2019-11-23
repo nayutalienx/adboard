@@ -67,6 +67,8 @@ namespace IdentityServer.Controllers
         public async Task<IActionResult> Login(string returnUrl)
         {
             //partial
+            if (returnUrl == null)
+                returnUrl = "~/Index";
             return PartialView(await BuildLoginViewModelAsync(returnUrl));
         }
 
