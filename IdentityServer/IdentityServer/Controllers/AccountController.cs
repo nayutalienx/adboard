@@ -68,7 +68,7 @@ namespace IdentityServer.Controllers
         {
             //partial
             if (returnUrl == null)
-                returnUrl = "~/Index";
+                return View("Error", new ErrorViewModel { RequestId = "Вы можете войти только с площадки" });
             return PartialView(await BuildLoginViewModelAsync(returnUrl));
         }
 
@@ -344,7 +344,9 @@ namespace IdentityServer.Controllers
             }
 
             var vm = await BuildLoginViewModelAsync(model);
-            return View(vm);
+            vm.ReturnUrl = model.ReturnUrl;
+            vm.LoginError = "Неправильный логин или пароль";
+            return PartialView(vm);
         }
 
         [HttpGet]

@@ -33,11 +33,19 @@
                 </div>
             }
 
+            @if(Model.LoginError != null) 
+            {
+                <div class="alert alert-danger" role="alert">
+                    @Model.LoginError
+                </div>
+            }
+
             <input type="hidden" asp-for="ReturnUrl" />
             <img class="mb-4" src="~/sale.png" alt="" width="72" height="72">
             <h1 class="h3 mb-3 font-weight-normal">Войдите</h1>
             <label for="inputEmail" asp-for="Username" class="sr-only">Никнейм</label>
             <input type="text" asp-for="Username" id="inputEmail" class="form-control" placeholder="Никнейм" required autofocus>
+            
             <label for="inputPassword" asp-for="Password" class="sr-only">Пароль</label>
             <input asp-for="Password" type="password" id="inputPassword" class="form-control" placeholder="Пароль" required>
             @if (Model.AllowRememberLogin)
