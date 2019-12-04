@@ -1,8 +1,8 @@
 version: '3.4'
 
 services:
-  adboard.api:
-    image: ${DOCKER_REGISTRY-}adboardapi
+  adboard.ui:
+    image: ${DOCKER_REGISTRY-}adboardui
     build:
       context: .
-      dockerfile: Adboard.API/Dockerfile
+      dockerfile: Adboard.UI/Dockerfile
