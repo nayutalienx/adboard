@@ -109,11 +109,18 @@ namespace BusinessLogicLayer.Implementation
             if (!string.IsNullOrEmpty(filter.Description))
                 adverts = adverts.Where(x => EF.Functions.Like(x.Description, $"%{filter.Description}%"));
 
-            if (filter.CreatedDateTime != null)
-                adverts = adverts.Where(x => x.CreatedDateTime > filter.CreatedDateTime.From && x.CreatedDateTime < filter.CreatedDateTime.To);
+            if (filter.CreatedDateTime != null && filter.CreatedDateTime.From != null)
+                adverts = adverts.Where(x => x.CreatedDateTime > filter.CreatedDateTime.From);
 
-            if (filter.Price != null)
-                adverts = adverts.Where(x => x.Price > filter.Price.From && x.Price < filter.Price.To);
+            if (filter.CreatedDateTime != null && filter.CreatedDateTime.To != null)
+                adverts = adverts.Where(x => x.CreatedDateTime < filter.CreatedDateTime.To);
+
+
+            if (filter.Price != null && filter.Price.From != null)
+                adverts = adverts.Where(x => x.Price > filter.Price.From);
+
+            if (filter.Price != null && filter.Price.To != null)
+                adverts = adverts.Where(x => x.Price < filter.Price.To);
 
             if (filter.UserId != null)
             {
