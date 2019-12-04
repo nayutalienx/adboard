@@ -65,6 +65,14 @@
             <param name="category"></param>
             <returns></returns>
         </member>
+        <member name="M:Adboard.API.ExtensionMethods.CreateDatabase``1(Microsoft.AspNetCore.Hosting.IWebHost)">
+            <summary>  
+            Migrates the database.  
+            </summary>  
+            <typeparam name="T"></typeparam>  
+            <param name="webHost">The web host.</param>  
+            <returns>IWebHost.</returns>  
+        </member>
         <member name="M:Dashboard.Api.Controllers.UserController.UserInfo">
             <summary>
             User info

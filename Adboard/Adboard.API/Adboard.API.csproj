@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>D:\study\solar\master\Adboard\Adboard.API\Adboard.API.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Admin\Desktop\master\Adboard\Adboard.API\Adboard.API.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\Users\Admin\Desktop\master\Adboard\Adboard.API\Adboard.API.xml</DocumentationFile>
+    <Optimize>false</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
