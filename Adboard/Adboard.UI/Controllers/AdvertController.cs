@@ -302,31 +302,36 @@ namespace Adboard.UI.Controllers
             int p = page;
             AdvertFilter filter = _mapper.Map<AdvertFilter>(viewFilter);
             filter.CurrentPage = p;
-            if (viewFilter.CreatedDateTimeTo.HasValue)
+
+            if (viewFilter.CreatedDateTimeTo.HasValue || viewFilter.CreatedDateTimeFrom.HasValue)
             {
-                var range = new Range<DateTime>
-                {
-                    To = viewFilter.CreatedDateTimeTo.Value
-                };
+                var range = new Range<DateTime>();
 
                 if (viewFilter.CreatedDateTimeFrom.HasValue)
                     range.From = viewFilter.CreatedDateTimeFrom.Value;
                 else
-                    range.From = DateTime.Now;
+                    range.From = DateTime.MinValue;
+
+                if (viewFilter.CreatedDateTimeTo.HasValue)
+                    range.To = viewFilter.CreatedDateTimeTo.Value;
+                else
+                    range.To = DateTime.MaxValue;
                 filter.CreatedDateTime = range;
             }
 
-            if (viewFilter.PriceTo.HasValue)
+            if (viewFilter.PriceTo.HasValue || viewFilter.PriceFrom.HasValue)
             {
-                var range = new Range<uint>
-                {
-                    To = viewFilter.PriceTo.Value
-                };
+                var range = new Range<uint>();
 
                 if (viewFilter.PriceFrom.HasValue)
                     range.From = viewFilter.PriceFrom.Value;
                 else
-                    range.From = UInt32.MaxValue;
+                    range.From = UInt32.MinValue;
+
+                if (viewFilter.PriceTo.HasValue)
+                    range.To = viewFilter.PriceTo.Value;
+                else
+                    range.To = UInt32.MaxValue;
                 filter.Price = range;
             }
 
