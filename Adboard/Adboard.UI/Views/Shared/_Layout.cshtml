@@ -31,7 +31,7 @@
                     </a>
                     
                 </div>
-                <div class="col-lg-10 ml-auto">
+                <div class="col-lg-10 ml-auto pr-0">
                     <nav>
                         <ul class="menu d-flex justify-content-center">
 
@@ -51,7 +51,7 @@
 
                             @if (IsAuthenticated)
                             {
-                                <div class="col-lg-4 ml-auto">
+                                <div class="">
                                     <nav>
                                         <ul class="menu d-flex">
                                             <li class="menu__item"></li>
@@ -62,10 +62,10 @@
                                                 <div class="dropdown-menu dropdown__style m-0">
                                                     <a class="dropdown-item" asp-controller="Home" asp-action="Login" style="color: black;">Личный кабинет</a>
                                                     <div class="dropdown-divider"></div>
-                                                    <a class="dropdown-item" asp-controller="Advert" asp-action="AddAdvert" style="color: black;">Добавить объявление</a>
-                                                    <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" asp-controller="Home" asp-action="Logout" style="color: black;">Выйти</a>
                                                 </div>
+                                                <br>
+                                                <a class="btn btn-primary text-white btn-sm" asp-controller="Advert" asp-action="AddAdvert">Добавить</a>
                                             </li>
 
                                         </ul>
