@@ -18,69 +18,79 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/style.css" />
 </head>
 <body>
 
-    <header
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
-            <div class="container d-flex flex-row pl-0 pr-0">
-
-
-
-                <div class="collapse navbar-collapse p-0 align-self-end" id="navbarText">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                        <img src="~/lib/sale.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                        Adboard
+    <header id="header" class="header back">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2 pt-3">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="~/lib/sale.png" height="40" alt="adboard" class="logo">
                     </a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-nav">
-
-                        @{
-                            IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
-
-                        }
-
-                        @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
-                        {
-                        <a class="nav-item nav-link text-dark" href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
-                        }
-
-                        <a class="nav-item nav-link text-dark moreCats" href="~/Home/CategoriesModal">Еще...</a>
-                    </div>
+                    
                 </div>
-                <div class="d-flex flex-column align-self-center ml-auto">
-                    @if (IsAuthenticated)
-                    {
-                        <div class="d-flex flex-row">
-                            <a class="p1" asp-controller="Home" asp-action="Login">
-                                @Name
-                            </a>
+                <div class="col-lg-10 ml-auto">
+                    <nav>
+                        <ul class="menu d-flex justify-content-center">
 
-                            <a class="p-1 ml-auto" asp-area="" asp-controller="Home" asp-action="Logout">
-                                <img src="~/lib/logout.png" width="15" height="15" class="d-inline-block align-top" alt="">
-                            </a>
-                        </div>
+                            @{
+                                IReadOnlyCollection<CategoryDto> cats = ViewBag.Categories;
+                            }
+                            @foreach (CategoryDto cat in cats.Where(x => x.ParentCategory == null).Take(4))
+                            {
+                                <li class="menu__item pt-4">
+                                    <a href="~/Advert/Filter?CategoryId=@cat.Id">@cat.Name</a>
+                                </li>
 
+                            }
+                            <li class="menu__item pt-4">
+                                <a class="moreCats" href="~/Home/CategoriesModal">Еще...</a>
+                            </li>
 
-                    }
-                    else
-                    {
-                        <a class="p-1" asp-area="" asp-controller="Home" asp-action="Login">Войти или зарегистрироваться</a>
-                    }
-                    <a class="btn btn-primary text-white" asp-controller="Advert" asp-action="AddAdvert">Добавить</a>
+                            @if (IsAuthenticated)
+                            {
+                                <div class="col-lg-4 ml-auto">
+                                    <nav>
+                                        <ul class="menu d-flex">
+                                            <li class="menu__item"></li>
+
+                                            <li class="menu__item dropdown">
+                                                <a class="dropdown-toggler" data-toggle="dropdown" href="#" role="button"
+                                                   aria-haspopup="true" aria-expanded="false">@Name</a>
+                                                <div class="dropdown-menu dropdown__style m-0">
+                                                    <a class="dropdown-item" asp-controller="Home" asp-action="Login" style="color: black;">Личный кабинет</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" asp-controller="Advert" asp-action="AddAdvert" style="color: black;">Добавить объявление</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" asp-controller="Home" asp-action="Logout" style="color: black;">Выйти</a>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </nav>
+                                </div>
+                            }
+                            else
+                            {
+                        <li class="menu__item">
+                            <a asp-controller="Home" asp-action="Login">Вход или регистрация</a>
+                            <br>
+                            <a class="btn btn-primary text-white btn-sm" asp-controller="Advert" asp-action="AddAdvert">Добавить</a>
+                        </li>
+                            }
+
+                        </ul>
+                    </nav>
                 </div>
-
             </div>
+        </div>
+    </header>
 
 
 
 
-
-        </nav>
-  </header>
     <div class="border-bottom box-shadow">
         <form method="get" asp-controller="Advert" asp-action="Filter">
             <div class="container d-flex flex-row pt-1 pl-0 pr-0">
